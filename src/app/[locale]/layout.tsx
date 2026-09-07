@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fontVariables } from "@/lib/fonts";
 import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
+import { Nav } from "@/components/layout/Nav";
+import { Footer } from "@/components/layout/Footer";
+import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -41,13 +44,19 @@ export default async function LocaleLayout({
 }>) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
+  const dict = getDictionary(locale);
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className={`${fontVariables} antialiased`}>{children}</body>
+      <body className={`${fontVariables} antialiased`}>
+        <Nav locale={locale} dict={dict} />
+        {children}
+        <Footer locale={locale} dict={dict} />
+        <WhatsAppFab dict={dict} />
+      </body>
     </html>
   );
 }

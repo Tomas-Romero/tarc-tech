@@ -11,7 +11,10 @@
     "contact": "Contacto",
     "cta": "Hablemos",
     "languageLabel": "Idioma",
-    "themeLabel": "Tema"
+    "themeLabel": "Tema",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "primaryNav": "Navegación principal"
   },
   "hero": {
     "titleParts": [

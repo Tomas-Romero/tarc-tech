@@ -69,10 +69,30 @@
   --font-accent: var(--tarc-font-accent);
 }
 
+:root {
+  --nav-height: 4.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
+}
+
+/* Foco naranja siempre visible (accesibilidad — ver DESIGN.md/PRODUCT.md) */
+:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-orange);
+  color: #431407;
 }
 
 /* Logotype (nav/footer wordmark only — never body or UI text, per DESIGN.md) */
