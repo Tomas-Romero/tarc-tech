@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "title": "TARC Tech — Software a medida, sistemas y automatizaciones | San Rafael, Mendoza",
+    "description": "Sistemas, apps y automatizaciones a medida para tu negocio. Desarrollo full stack freelance en San Rafael, Mendoza, con clientes reales."
+  },
+  "nav": {
+    "services": "Servicios",
+    "process": "Proceso",
+    "projects": "Proyectos",
+    "about": "Sobre mí",
+    "contact": "Contacto",
+    "cta": "Hablemos",
+    "languageLabel": "Idioma",
+    "themeLabel": "Tema"
+  },
+  "hero": {
+    "titleParts": [
+      { "text": "Software " },
+      { "text": "a medida", "accent": true },
+      { "text": " para tu empresa o negocio." }
+    ],
+    "subtitle": "Sistemas, apps y automatizaciones desarrollados desde cero para cómo trabaja tu negocio. Relevamos, proponemos, desarrollamos con tu feedback y te acompañamos después.",
+    "ctaPrimary": "Contame tu proyecto",
+    "ctaSecondary": "Ver proyectos",
+    "signature": "Desarrollado por Tomás Romero · San Rafael, Mendoza"
+  },
+  "whatsapp": {
+    "nav": "Hola Tomás, vi la web de TARC Tech y quiero consultarte algo.",
+    "hero": "Hola Tomás, quiero contarte un proyecto que tengo en mente.",
+    "solutionSales": "Hola Tomás, necesito un sistema de ventas y stock para mi negocio.",
+    "solutionStore": "Hola Tomás, quiero una tienda online / catálogo digital.",
+    "solutionFood": "Hola Tomás, tengo un negocio gastronómico y quiero un sistema de gestión.",
+    "solutionWeb": "Hola Tomás, necesito una web para mi empresa.",
+    "solutionAutomation": "Hola Tomás, quiero automatizar tareas repetitivas en mi negocio.",
+    "projectModal": "Hola Tomás, vi {project} en tu web y quiero algo parecido.",
+    "finalCta": "Hola Tomás, quiero contarte qué necesito y ver cómo lo resolverías."
+  }
+}

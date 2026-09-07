@@ -1,0 +1,73 @@
+/* TARC Tech — design tokens
+   Generated from the official brand guidelines. Import once at the app root. */
+
+/* 1. Load brand fonts (Google Fonts — all three families confirmed available) */
+@import url('https://fonts.googleapis.com/css2?family=Sansation:ital,wght@0,400;0,700;1,700&family=Fira+Sans:ital,wght@0,400;0,500;0,700&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&display=swap');
+
+:root {
+  /* Orange set */
+  --tarc-orange-primary: #F97316;
+  --tarc-orange-hover: #EA580C;
+  --tarc-orange-soft: #FFEDD5;
+  --tarc-orange-deep: #C2410C;
+
+  /* Accents */
+  --tarc-cyan: #06B6D4;
+  --tarc-green: #10B981;
+
+  /* Light mode surfaces (default) */
+  --tarc-bg: #FAFAFA;
+  --tarc-surface: #FFFFFF;
+  --tarc-border: #E4E4E7;
+  --tarc-text-primary: #18181B;
+  --tarc-text-secondary: #52525B;
+
+  /* Radius */
+  --tarc-radius-sm: 6px;
+  --tarc-radius-md: 8px;
+  --tarc-radius-lg: 10px;
+  --tarc-radius-pill: 999px;
+
+  /* Type */
+  --tarc-font-logotype: 'Sansation', Arial, sans-serif;
+  --tarc-font-primary: 'Fira Sans', system-ui, sans-serif;
+  --tarc-font-accent: 'Fraunces', Georgia, serif; /* italic for quotes/taglines, roman for keyword emphasis */
+  --tarc-font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --tarc-bg: #09090B;
+  --tarc-surface: #18181B;
+  --tarc-border: #27272A;
+  --tarc-text-primary: #FAFAFA;
+  --tarc-text-secondary: #A1A1AA;
+}
+
+/* Logotype (wordmark) */
+.tarc-logotype {
+  font-family: var(--tarc-font-logotype);
+  font-weight: 700;
+}
+
+/* Primary button — dark text on brand orange (accessible contrast) */
+.tarc-btn-primary {
+  background: var(--tarc-orange-primary);
+  color: #431407;
+  font-family: var(--tarc-font-primary);
+  font-weight: 500;
+  border-radius: var(--tarc-radius-md);
+  border: none;
+}
+.tarc-btn-primary:hover { background: var(--tarc-orange-hover); }
+
+/* Accent / pull-quote text */
+.tarc-accent-text {
+  font-family: var(--tarc-font-accent);
+  font-style: italic;
+  color: var(--tarc-orange-deep);
+}
+.tarc-accent-keyword {
+  font-family: var(--tarc-font-accent);
+  font-style: normal;
+  font-weight: 600;
+}

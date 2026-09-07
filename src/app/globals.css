@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* Design tokens adapted from /tokens.css for this app.
+   Two deliberate departures from that file, both required by DESIGN.md:
+   1. No @import of Google Fonts — fonts are self-hosted via next/font
+      (see src/lib/fonts.ts) and exposed as the --font-* variables below.
+   2. Dark is the default theme (PLAN §3 D9), not a prefers-color-scheme
+      variant — [data-theme="light"] is the opt-in, persisted override. */
+
+:root {
+  /* Orange set — brand palette, not to be changed here (see DESIGN.md §Colors) */
+  --tarc-orange-primary: #f97316;
+  --tarc-orange-hover: #ea580c;
+  --tarc-orange-soft: #ffedd5;
+  --tarc-orange-deep: #c2410c;
+
+  /* Secondary accents — used sparingly, never as section color */
+  --tarc-cyan: #06b6d4;
+  --tarc-green: #10b981;
+
+  /* Dark surfaces (default theme) */
+  --tarc-bg: #09090b;
+  --tarc-surface: #18181b;
+  --tarc-border: #27272a;
+  --tarc-text-primary: #fafafa;
+  --tarc-text-secondary: #a1a1aa;
+
+  /* Radius */
+  --tarc-radius-sm: 6px;
+  --tarc-radius-md: 8px;
+  --tarc-radius-lg: 10px;
+  --tarc-radius-pill: 999px;
+
+  /* Type — populated by next/font variables from src/lib/fonts.ts */
+  --tarc-font-logotype: var(--font-sansation), Arial, sans-serif;
+  --tarc-font-primary: var(--font-fira-sans), system-ui, sans-serif;
+  --tarc-font-accent: var(--font-fraunces), Georgia, serif;
+}
+
+[data-theme="light"] {
+  --tarc-bg: #fafafa;
+  --tarc-surface: #ffffff;
+  --tarc-border: #e4e4e7;
+  --tarc-text-primary: #18181b;
+  --tarc-text-secondary: #52525b;
+}
+
+@theme inline {
+  --color-background: var(--tarc-bg);
+  --color-surface: var(--tarc-surface);
+  --color-border: var(--tarc-border);
+  --color-foreground: var(--tarc-text-primary);
+  --color-foreground-secondary: var(--tarc-text-secondary);
+
+  --color-orange: var(--tarc-orange-primary);
+  --color-orange-hover: var(--tarc-orange-hover);
+  --color-orange-soft: var(--tarc-orange-soft);
+  --color-orange-deep: var(--tarc-orange-deep);
+  --color-cyan: var(--tarc-cyan);
+  --color-green: var(--tarc-green);
+
+  --radius-sm: var(--tarc-radius-sm);
+  --radius-md: var(--tarc-radius-md);
+  --radius-lg: var(--tarc-radius-lg);
+  --radius-pill: var(--tarc-radius-pill);
+
+  --font-sans: var(--tarc-font-primary);
+  --font-logotype: var(--tarc-font-logotype);
+  --font-accent: var(--tarc-font-accent);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+/* Logotype (nav/footer wordmark only — never body or UI text, per DESIGN.md) */
+.tarc-logotype {
+  font-family: var(--font-logotype);
+  font-weight: 700;
+}
+
+/* Accent / pull-quote text — Fraunces, at most once per section per DESIGN.md */
+.tarc-accent-text {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--color-orange-deep);
+}
+.tarc-accent-keyword {
+  font-family: var(--font-accent);
+  font-style: normal;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

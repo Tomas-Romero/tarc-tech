@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "TARC Tech — Custom software, systems and automation | Argentina",
+    "description": "Custom-built systems, apps and automation for your business. Freelance full-stack development based in San Rafael, Mendoza, with real clients."
+  },
+  "nav": {
+    "services": "Services",
+    "process": "Process",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "cta": "Let's talk",
+    "languageLabel": "Language",
+    "themeLabel": "Theme"
+  },
+  "hero": {
+    "titleParts": [
+      { "text": "Custom software for your business." }
+    ],
+    "subtitle": "Systems, apps and automations built from scratch around how your business actually works. We scope it, propose it, build it with your feedback, and support it after launch.",
+    "ctaPrimary": "Tell me about your project",
+    "ctaSecondary": "See projects",
+    "signature": "Built by Tomás Romero · San Rafael, Mendoza"
+  },
+  "whatsapp": {
+    "nav": "Hi Tomás, I saw the TARC Tech site and I'd like to ask you something.",
+    "hero": "Hi Tomás, I'd like to tell you about a project I have in mind.",
+    "solutionSales": "Hi Tomás, I need a sales and inventory system for my business.",
+    "solutionStore": "Hi Tomás, I'm looking for an online store / digital catalog.",
+    "solutionFood": "Hi Tomás, I run a food business and I need a management system.",
+    "solutionWeb": "Hi Tomás, I need a website for my company.",
+    "solutionAutomation": "Hi Tomás, I'd like to automate repetitive tasks in my business.",
+    "projectModal": "Hi Tomás, I saw {project} on your site and I'd like something similar.",
+    "finalCta": "Hi Tomás, I'd like to tell you what I need and see how you'd solve it."
+  }
+}
