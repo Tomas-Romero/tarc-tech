@@ -118,6 +118,35 @@ body {
   color: #431407;
 }
 
+/* Invisible tap-target expander for small inline text links (nav, footer) —
+   audit flagged these under the 44px touch-target floor. Growing the link's
+   own padding would visually bloat tight nav rows, so instead a transparent
+   pseudo-element extends the hit area without changing layout. The pseudo
+   is generated content inside the link, so a tap on it still registers as a
+   tap on the link itself. */
+.tap-target-expand,
+.tap-target-expand-sm {
+  position: relative;
+}
+.tap-target-expand::before {
+  content: "";
+  position: absolute;
+  /* Vertical only: several of these links sit close together horizontally
+     (footer's gap-x-6), where an expansion that wide would make adjacent
+     links' hit areas overlap. Height is the actual gap to 44px anyway. */
+  inset-block: -14px;
+  inset-inline: 0;
+}
+
+/* Smaller variant for the footer's wrapped link lists, which reach full-44px
+   spacing between rows only if the row gap grows too (see Footer.tsx). */
+.tap-target-expand-sm::before {
+  content: "";
+  position: absolute;
+  inset-block: -7px;
+  inset-inline: 0;
+}
+
 /* Logotype (nav/footer wordmark only — never body or UI text, per DESIGN.md) */
 .tarc-logotype {
   font-family: var(--tarc-font-logotype);

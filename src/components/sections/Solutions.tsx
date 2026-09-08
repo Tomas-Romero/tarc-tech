@@ -92,7 +92,7 @@ export function Solutions({
                 <button
                   type="button"
                   onClick={() => goToPanel(i)}
-                  className="group/rail relative flex w-full items-center rounded-md py-2 pl-5 pr-2 text-left transition-colors hover:bg-surface"
+                  className="group/rail relative flex min-h-11 w-full items-center rounded-md pl-5 pr-2 text-left transition-colors hover:bg-surface"
                 >
                   <span
                     aria-hidden
@@ -229,7 +229,7 @@ function SolutionPanel({
               href={waLink(dict.whatsapp[solution.whatsappKey])}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors hover:border-orange-deep hover:text-orange-deep"
+              className="inline-flex min-h-11 items-center rounded-md border border-border px-4 text-sm font-medium transition-colors hover:border-orange-deep hover:text-orange-deep"
             >
               {dict.solutions.cta}
             </a>

@@ -38,7 +38,7 @@ export function LocaleToggle({
             key={code}
             href={href}
             aria-current={active ? "true" : undefined}
-            className={`rounded-full px-2.5 py-1 uppercase transition-colors ${
+            className={`flex h-11 min-w-11 items-center justify-center rounded-full px-2.5 uppercase transition-colors ${
               active
                 ? "bg-orange text-[#431407]"
                 : "text-foreground-secondary hover:text-foreground"

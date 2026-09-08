@@ -23,12 +23,12 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         </div>
 
         <nav aria-label={dict.nav.primaryNav}>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground-secondary">
+          <ul className="flex flex-wrap gap-x-6 gap-y-4 text-sm text-foreground-secondary">
             {navLinks.map((link) => (
               <li key={link.id}>
                 <Link
                   href={`/${locale}#${link.id}`}
-                  className="transition-colors hover:text-foreground"
+                  className="tap-target-expand-sm transition-colors hover:text-foreground"
                 >
                   {dict.nav[link.labelKey]}
                 </Link>
@@ -38,12 +38,12 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         </nav>
 
         {(links.length > 0 || social.email) && (
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground-secondary">
+          <ul className="flex flex-wrap gap-x-6 gap-y-4 text-sm text-foreground-secondary">
             {social.email && (
               <li>
                 <a
                   href={`mailto:${social.email}`}
-                  className="transition-colors hover:text-foreground"
+                  className="tap-target-expand-sm transition-colors hover:text-foreground"
                 >
                   {social.email}
                 </a>
@@ -55,7 +55,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors hover:text-foreground"
+                  className="tap-target-expand-sm transition-colors hover:text-foreground"
                 >
                   {link.label}
                 </a>

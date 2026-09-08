@@ -59,7 +59,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               <li key={link.id}>
                 <Link
                   href={`/${locale}#${link.id}`}
-                  className="text-foreground-secondary transition-colors hover:text-foreground"
+                  className="tap-target-expand text-foreground-secondary transition-colors hover:text-foreground"
                 >
                   {dict.nav[link.labelKey]}
                 </Link>
@@ -75,7 +75,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             href={ctaHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-md bg-orange px-4 py-2 text-sm font-medium text-[#431407] transition-colors hover:bg-orange-hover"
+            className="flex min-h-11 items-center rounded-md bg-orange px-4 text-sm font-medium text-[#431407] transition-colors hover:bg-orange-hover"
           >
             {dict.nav.cta}
           </a>
@@ -86,7 +86,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           onClick={() => setMenuOpen(true)}
           aria-label={dict.nav.openMenu}
           aria-expanded={menuOpen}
-          className="flex h-9 w-9 items-center justify-center md:hidden"
+          className="flex h-11 w-11 items-center justify-center md:hidden"
         >
           <MenuIcon className="h-6 w-6" />
         </button>
@@ -100,7 +100,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               type="button"
               onClick={() => setMenuOpen(false)}
               aria-label={dict.nav.closeMenu}
-              className="flex h-9 w-9 items-center justify-center"
+              className="flex h-11 w-11 items-center justify-center"
             >
               <CloseIcon className="h-6 w-6" />
             </button>
@@ -113,6 +113,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                   <Link
                     href={`/${locale}#${link.id}`}
                     onClick={() => setMenuOpen(false)}
+                    className="tap-target-expand-sm"
                   >
                     {dict.nav[link.labelKey]}
                   </Link>
