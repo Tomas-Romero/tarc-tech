@@ -18,7 +18,8 @@
   },
   "hero": {
     "titleParts": [
-      { "text": "Custom software for your business." }
+      { "text": "Custom", "accent": true },
+      { "text": " software for your business." }
     ],
     "subtitle": "Systems, apps and automations built from scratch around how your business actually works. We scope it, propose it, build it with your feedback, and support it after launch.",
     "ctaPrimary": "Tell me about your project",

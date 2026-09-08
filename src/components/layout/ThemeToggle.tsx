@@ -6,20 +6,21 @@ import { SunIcon, MoonIcon } from "@/components/ui/icons";
 const STORAGE_KEY = "tarc-theme";
 
 export function ThemeToggle({ label }: { label: string }) {
-  // Starts in sync with the blocking script in [locale]/layout.tsx — no flash.
-  const [isLight, setIsLight] = useState(
-    () =>
-      typeof document !== "undefined" &&
-      document.documentElement.dataset.theme === "light"
-  );
+  // Must start false on both server and the first client render — reading
+  // `document` in the initializer here would fight the blocking script in
+  // [locale]/layout.tsx and throw a hydration mismatch for any returning
+  // light-theme visitor. The effect below corrects it right after mount
+  // instead, without writing back to a DOM the script already set correctly.
+  const [isLight, setIsLight] = useState(false);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = isLight ? "light" : "dark";
-  }, [isLight]);
+    setIsLight(document.documentElement.dataset.theme === "light");
+  }, []);
 
   function toggle() {
     const next = !isLight;
     setIsLight(next);
+    document.documentElement.dataset.theme = next ? "light" : "dark";
     try {
       localStorage.setItem(STORAGE_KEY, next ? "light" : "dark");
     } catch {
