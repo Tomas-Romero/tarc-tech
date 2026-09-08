@@ -48,3 +48,51 @@ export function ChatIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function CodeIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M8.5 7.5 3.5 12l5 4.5M15.5 7.5l5 4.5-5 4.5M13.5 5.5l-3 13" />
+    </svg>
+  );
+}
+
+export function WorkflowIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="3" y="4" width="6" height="5" rx="1" />
+      <rect x="15" y="4" width="6" height="5" rx="1" />
+      <rect x="9" y="15" width="6" height="5" rx="1" />
+      <path d="M6 9v3a2 2 0 0 0 2 2h1M18 9v3a2 2 0 0 1-2 2h-1M12 15v-1" />
+    </svg>
+  );
+}
+
+export function SmartphoneIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="6.5" y="2.5" width="11" height="19" rx="2.2" />
+      <path d="M10.5 18.5h3" />
+    </svg>
+  );
+}
+
+export function CloudIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M7 18.5a4.5 4.5 0 0 1-.5-8.98A5.5 5.5 0 0 1 17.2 8.3 4 4 0 0 1 17 16.5v0" />
+      <path d="M7 18.5h10" />
+    </svg>
+  );
+}
+
+export function PaletteIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M12 3a9 8 0 1 0 0 16c1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8h2.1c1.8 0 3.3-1.5 3.3-3.3C19.5 5.8 16.1 3 12 3Z" />
+      <circle cx="7.7" cy="10.3" r="1" fill="currentColor" stroke="none" />
+      <circle cx="9.8" cy="6.8" r="1" fill="currentColor" stroke="none" />
+      <circle cx="14.2" cy="6.8" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}

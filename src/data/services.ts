@@ -2,8 +2,7 @@ import type { LocalizedText } from "./projects";
 
 export type Service = {
   id: string;
-  /** Placeholder key for a linear icon (Phase 3 wires an actual icon set). */
-  icon: string;
+  icon: "code" | "workflow" | "smartphone" | "cloud" | "palette";
   title: LocalizedText;
   description: LocalizedText;
 };

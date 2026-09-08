@@ -16,6 +16,12 @@
     "closeMenu": "Close menu",
     "primaryNav": "Main navigation"
   },
+  "trust": {
+    "title": "Businesses already running custom-built software."
+  },
+  "services": {
+    "title": "What I do"
+  },
   "hero": {
     "titleParts": [
       { "text": "Custom", "accent": true },

@@ -1,6 +1,8 @@
 import { getDictionary, isLocale } from "@/i18n";
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/sections/Hero";
+import { Trust } from "@/components/sections/Trust";
+import { Services } from "@/components/sections/Services";
 
 export default async function LocaleHomePage({
   params,
@@ -14,6 +16,8 @@ export default async function LocaleHomePage({
   return (
     <main>
       <Hero dict={dict} />
+      <Trust dict={dict} />
+      <Services dict={dict} locale={locale} />
     </main>
   );
 }

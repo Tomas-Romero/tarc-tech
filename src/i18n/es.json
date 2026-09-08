@@ -16,6 +16,12 @@
     "closeMenu": "Cerrar menú",
     "primaryNav": "Navegación principal"
   },
+  "trust": {
+    "title": "Negocios que ya trabajan con software hecho a medida."
+  },
+  "services": {
+    "title": "Qué hago"
+  },
   "hero": {
     "titleParts": [
       { "text": "Software " },

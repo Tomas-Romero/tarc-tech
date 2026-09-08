@@ -113,6 +113,23 @@ body {
   font-weight: 600;
 }
 
+/* Trust-bar marquee (mobile only — see Trust.tsx). Duplicated content track
+   scrolls one full width, looping seamlessly. Gated to below `sm` — at and
+   above that breakpoint the track wraps and centers instead (no scroll). */
+@keyframes tarc-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 639px) {
+  .tarc-marquee-track {
+    animation: tarc-marquee 18s linear infinite;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
