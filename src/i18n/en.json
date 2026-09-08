@@ -22,6 +22,14 @@
   "services": {
     "title": "What I do"
   },
+  "about": {
+    "title": "About me",
+    "bio": "I'm Tomás Romero. I build custom software from San Rafael, Mendoza, and I'm a senior Information Systems Engineering student at UTN (FRSR). I've worked as a freelance full-stack developer since 2023.",
+    "method": "I get to know your business before proposing anything, build while showing you prototypes so you can correct course along the way, and stay available after delivery. You talk to me, not to a department.",
+    "stackLabel": "What I work with",
+    "portraitPending": "Photo coming",
+    "whatsapp": "WhatsApp"
+  },
   "projects": {
     "title": "Projects",
     "intro": "Real systems, running for real businesses.",

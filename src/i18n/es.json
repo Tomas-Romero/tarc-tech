@@ -22,6 +22,14 @@
   "services": {
     "title": "Qué hago"
   },
+  "about": {
+    "title": "Sobre mí",
+    "bio": "Soy Tomás Romero. Desarrollo software a medida desde San Rafael, Mendoza, y soy estudiante avanzado de Ingeniería en Sistemas de Información en la UTN (FRSR). Trabajo como freelance full stack desde 2023.",
+    "method": "Relevo tu negocio antes de proponer nada, desarrollo mostrándote prototipos para que corrijas en el camino, y sigo disponible después de la entrega. Hablás conmigo, no con un departamento.",
+    "stackLabel": "En qué trabajo",
+    "portraitPending": "Foto en camino",
+    "whatsapp": "WhatsApp"
+  },
   "projects": {
     "title": "Proyectos",
     "intro": "Sistemas reales, funcionando para negocios reales.",
