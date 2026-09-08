@@ -145,7 +145,7 @@ function ProjectCard({
     >
       <MockupFrame
         src={project.images[0]}
-        alt={project.name}
+        alt={`${project.name} — ${project.tagline[locale]}`}
         note={isInDevelopment ? dict.projects.inDevelopmentNote : undefined}
       />
 
@@ -194,7 +194,7 @@ function ProjectDetail({
       <div className="mt-6">
         <MockupFrame
           src={project.images[0]}
-          alt={project.name}
+          alt={`${project.name} — ${project.tagline[locale]}`}
           note={isInDevelopment ? dict.projects.inDevelopmentNote : undefined}
         />
       </div>
