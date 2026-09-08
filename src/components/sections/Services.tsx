@@ -47,7 +47,12 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 768px)");
+    // 1024px, not 768px: a portrait tablet at 768px only has room to show
+    // about 1.8 of the 380px cards mid-pin — a worse reveal than either the
+    // desktop pin (full cards) or the mobile carousel (one full card at a
+    // time). Matches the breakpoint Solutions already uses for its own
+    // desktop-only rail, so "tablet" gets one consistent treatment.
+    const query = window.matchMedia("(min-width: 1024px)");
     function sync() {
       // Pinning is a desktop affordance, and it is dropped entirely under
       // reduced motion — a scroll the visitor cannot predict is exactly what

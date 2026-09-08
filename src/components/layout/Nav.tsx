@@ -126,7 +126,10 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             </div>
           </nav>
 
-          <div className="p-6 pb-10">
+          <div
+            className="p-6"
+            style={{ paddingBottom: "max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom)))" }}
+          >
             <a
               href={ctaHref}
               target="_blank"

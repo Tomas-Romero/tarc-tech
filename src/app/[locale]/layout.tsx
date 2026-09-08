@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { fontVariables } from "@/lib/fonts";
 import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
@@ -14,6 +14,15 @@ export function generateStaticParams() {
 }
 
 const OG_LOCALE: Record<Locale, string> = { es: "es_AR", en: "en_US" };
+
+// viewport-fit=cover is what makes env(safe-area-inset-*) resolve to real
+// values on notched/gesture-bar phones instead of 0 — the WhatsApp FAB and
+// the mobile menu's bottom CTA both sit close to that edge.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export async function generateMetadata({
   params,
