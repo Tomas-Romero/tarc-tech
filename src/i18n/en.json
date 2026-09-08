@@ -22,6 +22,10 @@
   "services": {
     "title": "What I do"
   },
+  "process": {
+    "title": "How I work",
+    "intro": "A method, not improvisation. These are the five steps of every project."
+  },
   "solutions": {
     "title": "What I can build for you",
     "intro": "Pick whichever is closest to your case and tell me the details.",
