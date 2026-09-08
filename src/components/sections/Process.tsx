@@ -124,7 +124,12 @@ function Step({
     [0, 1],
     ["var(--color-foreground-secondary)", "var(--color-orange)"]
   );
-  const bodyOpacity = useTransform(lit, [0, 1], [0.55, 1]);
+  // Floor is 0.85, not the more dramatic 0.55 it started at: Lighthouse
+  // caught that dimming text-foreground-secondary (7.4:1 at full opacity)
+  // down to 0.55 drops it to ~2.6:1, failing AA for anyone who lands on the
+  // page before scrolling reaches a given step. 0.85 keeps a visible "not
+  // lit yet" dim while staying above 4.5:1.
+  const bodyOpacity = useTransform(lit, [0, 1], [0.85, 1]);
 
   return (
     <li className="relative flex gap-5 md:flex-1 md:flex-col md:gap-0">
