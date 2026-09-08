@@ -22,6 +22,15 @@
   "services": {
     "title": "What I do"
   },
+  "faq": {
+    "title": "Frequently asked questions"
+  },
+  "finalCta": {
+    "title": "Got an idea or a problem to solve?",
+    "subtitle": "Tell me what you need and I'll tell you how I'd solve it. No strings attached.",
+    "button": "Message me on WhatsApp",
+    "location": "San Rafael, Mendoza, Argentina — working remotely across the country."
+  },
   "about": {
     "title": "About me",
     "bio": "I'm Tomás Romero. I build custom software from San Rafael, Mendoza, and I'm a senior Information Systems Engineering student at UTN (FRSR). I've worked as a freelance full-stack developer since 2023.",

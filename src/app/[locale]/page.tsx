@@ -7,6 +7,8 @@ import { Solutions } from "@/components/sections/Solutions";
 import { Process } from "@/components/sections/Process";
 import { Projects } from "@/components/sections/Projects";
 import { About } from "@/components/sections/About";
+import { Faq } from "@/components/sections/Faq";
+import { FinalCta } from "@/components/sections/FinalCta";
 
 export default async function LocaleHomePage({
   params,
@@ -26,6 +28,8 @@ export default async function LocaleHomePage({
       <Process dict={dict} locale={locale} />
       <Projects dict={dict} locale={locale} />
       <About dict={dict} />
+      <Faq dict={dict} locale={locale} />
+      <FinalCta dict={dict} />
     </main>
   );
 }
