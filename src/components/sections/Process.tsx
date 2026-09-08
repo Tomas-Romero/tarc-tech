@@ -130,12 +130,18 @@ function Step({
     <li className="relative flex gap-5 md:flex-1 md:flex-col md:gap-0">
       <motion.span
         aria-hidden
-        style={
-          reduceMotion
+        style={{
+          // Corner-cut octagon, not a circle: DESIGN.md bans "burbujas" and
+          // asks for the isotipo's own faceted, angular language everywhere,
+          // and this badge repeats 5 times — the site's most-visible place
+          // to get that rule wrong.
+          clipPath:
+            "polygon(10px 0, 30px 0, 40px 10px, 40px 30px, 30px 40px, 10px 40px, 0 30px, 0 10px)",
+          ...(reduceMotion
             ? { borderColor: "var(--color-orange)", color: "var(--color-orange)" }
-            : { borderColor: numberColor, color: numberText }
-        }
-        className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border bg-background font-bold"
+            : { borderColor: numberColor, color: numberText }),
+        }}
+        className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center border bg-background font-bold"
       >
         {step.number}
       </motion.span>

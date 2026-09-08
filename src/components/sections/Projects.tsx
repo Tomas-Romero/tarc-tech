@@ -102,7 +102,7 @@ export function Projects({
 
 function StatusBadge({ label }: { label: string }) {
   return (
-    <span className="rounded-full border border-cyan px-2.5 py-0.5 text-xs font-medium text-cyan">
+    <span className="rounded-full border border-cyan-deep px-2.5 py-0.5 text-xs font-medium text-cyan-deep">
       {label}
     </span>
   );

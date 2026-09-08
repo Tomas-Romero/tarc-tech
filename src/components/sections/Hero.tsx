@@ -11,8 +11,15 @@ export function Hero({ dict }: { dict: Dictionary }) {
     >
       <HeroBackground />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 px-6 py-16 md:flex-row md:gap-16">
-        <div className="flex flex-col items-center text-center md:w-[58%] md:items-start md:text-left">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-8 px-6 py-10 md:flex-row md:gap-16 md:py-16">
+        {/* Mark comes first in DOM/visual order on mobile so the hero's one
+            deliberate motion moment plays inside the first viewport instead
+            of firing (and finishing) off-screen while the visitor is still
+            reading the headline above it — its assembly animation runs once
+            on mount, not on scroll-into-view, so being below the fold meant
+            most visitors never saw it move at all. Desktop keeps the
+            original text-then-mark reading order. */}
+        <div className="order-last flex flex-col items-center text-center md:order-none md:w-[58%] md:items-start md:text-left">
           <h1 className="max-w-xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
             {dict.hero.titleParts.map((part, i) =>
               part.accent ? (
@@ -51,7 +58,7 @@ export function Hero({ dict }: { dict: Dictionary }) {
           </p>
         </div>
 
-        <div className="w-44 shrink-0 sm:w-60 md:w-[42%] md:max-w-md">
+        <div className="order-first w-40 shrink-0 sm:w-60 md:order-none md:w-[42%] md:max-w-md">
           <HeroBrand />
         </div>
       </div>

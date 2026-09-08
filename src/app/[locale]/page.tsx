@@ -22,7 +22,7 @@ export default async function LocaleHomePage({
   return (
     <main>
       <Hero dict={dict} />
-      <Trust dict={dict} />
+      <Trust dict={dict} locale={locale} />
       <Services dict={dict} locale={locale} />
       <Solutions dict={dict} locale={locale} />
       <Process dict={dict} locale={locale} />

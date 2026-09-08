@@ -18,6 +18,12 @@
   /* Secondary accents — used sparingly, never as section color */
   --tarc-cyan: #06b6d4;
   --tarc-green: #10b981;
+  /* #06b6d4 is only ~2.4:1 on the light surfaces below (fails AA 4.5:1) —
+     the same problem DESIGN.md already solved for orange with a "deep"
+     variant for light backgrounds. This one is theme-aware: it stays the
+     vivid #06b6d4 in dark (already ~7-8:1 there) and swaps to a darker
+     value in light, so callers never have to know which theme is active. */
+  --tarc-cyan-deep: #0e7490;
 
   /* Light surfaces (default theme) */
   --tarc-bg: #fafafa;
@@ -39,6 +45,7 @@
   --tarc-border: #27272a;
   --tarc-text-primary: #fafafa;
   --tarc-text-secondary: #a1a1aa;
+  --tarc-cyan-deep: #06b6d4;
 }
 
 @theme inline {
@@ -53,6 +60,7 @@
   --color-orange-soft: var(--tarc-orange-soft);
   --color-orange-deep: var(--tarc-orange-deep);
   --color-cyan: var(--tarc-cyan);
+  --color-cyan-deep: var(--tarc-cyan-deep);
   --color-green: var(--tarc-green);
 
   --radius-sm: var(--tarc-radius-sm);
@@ -126,23 +134,6 @@ body {
   font-family: var(--tarc-font-accent);
   font-style: normal;
   font-weight: 600;
-}
-
-/* Trust-bar marquee (mobile only — see Trust.tsx). Duplicated content track
-   scrolls one full width, looping seamlessly. Gated to below `sm` — at and
-   above that breakpoint the track wraps and centers instead (no scroll). */
-@keyframes tarc-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-@media (max-width: 639px) {
-  .tarc-marquee-track {
-    animation: tarc-marquee 18s linear infinite;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
