@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 /* Design tokens adapted from /tokens.css for this app.
-   Two deliberate departures from that file, both required by DESIGN.md:
+   Two deliberate departures from that file:
    1. No @import of Google Fonts — fonts are self-hosted via next/font
       (see src/lib/fonts.ts) and exposed as the --font-* variables below.
-   2. Dark is the default theme (PLAN §3 D9), not a prefers-color-scheme
-      variant — [data-theme="light"] is the opt-in, persisted override. */
+   2. LIGHT is the default theme, by the owner's later instruction — this
+      reverses PLAN §3 D9 and DESIGN.md's "oscuro por defecto", which both
+      still say dark. [data-theme="dark"] is the opt-in, persisted override. */
 
 :root {
   /* Orange set — brand palette, not to be changed here (see DESIGN.md §Colors) */
@@ -18,12 +19,12 @@
   --tarc-cyan: #06b6d4;
   --tarc-green: #10b981;
 
-  /* Dark surfaces (default theme) */
-  --tarc-bg: #09090b;
-  --tarc-surface: #18181b;
-  --tarc-border: #27272a;
-  --tarc-text-primary: #fafafa;
-  --tarc-text-secondary: #a1a1aa;
+  /* Light surfaces (default theme) */
+  --tarc-bg: #fafafa;
+  --tarc-surface: #ffffff;
+  --tarc-border: #e4e4e7;
+  --tarc-text-primary: #18181b;
+  --tarc-text-secondary: #52525b;
 
   /* Radius */
   --tarc-radius-sm: 6px;
@@ -37,12 +38,12 @@
   --tarc-font-accent: var(--font-fraunces), Georgia, serif;
 }
 
-[data-theme="light"] {
-  --tarc-bg: #fafafa;
-  --tarc-surface: #ffffff;
-  --tarc-border: #e4e4e7;
-  --tarc-text-primary: #18181b;
-  --tarc-text-secondary: #52525b;
+[data-theme="dark"] {
+  --tarc-bg: #09090b;
+  --tarc-surface: #18181b;
+  --tarc-border: #27272a;
+  --tarc-text-primary: #fafafa;
+  --tarc-text-secondary: #a1a1aa;
 }
 
 @theme inline {

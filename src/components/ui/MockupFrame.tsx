@@ -28,11 +28,13 @@ export function MockupFrame({
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-4">
             <Image
-              src="/brand/isotipo-mono-white.svg"
+              // Solid orange rather than a mono silhouette: the watermark has
+              // to read on both the light default and the dark theme.
+              src="/brand/isotipo-solid-orange.svg"
               alt=""
               width={56}
               height={46}
-              className="h-auto w-12 opacity-[0.12]"
+              className="h-auto w-12 opacity-20"
             />
             {note && (
               <p className="text-center text-xs text-foreground-secondary">

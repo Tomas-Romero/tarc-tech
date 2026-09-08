@@ -65,11 +65,11 @@ export function AboutPortrait({
         {!media && (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-4">
             <Image
-              src="/brand/isotipo-mono-white.svg"
+              src="/brand/isotipo-solid-orange.svg"
               alt=""
               width={64}
               height={52}
-              className="h-auto w-14 opacity-[0.12]"
+              className="h-auto w-14 opacity-20"
             />
             <p className="text-center text-xs text-foreground-secondary">
               {placeholder}

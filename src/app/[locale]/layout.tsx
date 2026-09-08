@@ -30,11 +30,11 @@ export async function generateMetadata({
   };
 }
 
-// Dark is the default theme (PLAN §3 D9); this inline script runs before
-// paint so an explicit "light" choice in localStorage never flashes dark
-// first. Absence of the key (or "dark") needs no attribute — :root is
-// already dark by default.
-const themeInitScript = `(function(){try{var t=localStorage.getItem('tarc-theme');if(t==='light'){document.documentElement.dataset.theme='light';}}catch(e){}})();`;
+// Light is the default theme (owner's instruction, reversing PLAN §3 D9);
+// this inline script runs before paint so an explicit "dark" choice in
+// localStorage never flashes light first. Absence of the key (or "light")
+// needs no attribute — :root is already light by default.
+const themeInitScript = `(function(){try{var t=localStorage.getItem('tarc-theme');if(t==='dark'){document.documentElement.dataset.theme='dark';}}catch(e){}})();`;
 
 export default async function LocaleLayout({
   children,

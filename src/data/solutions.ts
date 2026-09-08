@@ -3,6 +3,7 @@ import type { Dictionary } from "@/i18n";
 
 export type Solution = {
   id: string;
+  icon: "register" | "storefront" | "tray" | "browser" | "bolt";
   title: LocalizedText;
   body: LocalizedText;
   /** Real project this solution has actually shipped as — omitted when none. */
@@ -17,6 +18,7 @@ export type Solution = {
 export const solutions: Solution[] = [
   {
     id: "ventas-stock",
+    icon: "register",
     title: {
       es: "Sistema de ventas y stock",
       en: "Sales and inventory system",
@@ -30,6 +32,7 @@ export const solutions: Solution[] = [
   },
   {
     id: "tienda-online",
+    icon: "storefront",
     title: {
       es: "Tienda online y catálogo digital",
       en: "Online store and digital catalog",
@@ -43,6 +46,7 @@ export const solutions: Solution[] = [
   },
   {
     id: "gastronomico",
+    icon: "tray",
     title: {
       es: "Gestión gastronómica",
       en: "Restaurant management",
@@ -56,6 +60,7 @@ export const solutions: Solution[] = [
   },
   {
     id: "web-institucional",
+    icon: "browser",
     title: {
       es: "Web institucional o de servicios",
       en: "Company or services website",
@@ -69,6 +74,7 @@ export const solutions: Solution[] = [
   },
   {
     id: "automatizaciones",
+    icon: "bolt",
     title: {
       es: "Automatizaciones a medida",
       en: "Custom automation",

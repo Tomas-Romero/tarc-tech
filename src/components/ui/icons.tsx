@@ -49,6 +49,58 @@ export function ChatIcon({ className }: IconProps) {
   );
 }
 
+export function RegisterIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M3.5 20.5V10l3-4.5h11l3 4.5v10.5z" />
+      <path d="M3.5 10h17" />
+      <path d="M9 14h6" />
+      <path d="M9 17.5h3" />
+    </svg>
+  );
+}
+
+export function StorefrontIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M4 10v10.5h16V10" />
+      <path d="M2.5 10 4.6 4.5h14.8L21.5 10a3 3 0 0 1-5.8.9 3 3 0 0 1-5.8 0 3 3 0 0 1-5.8-.9Z" />
+      <path d="M9.5 20.5V15h5v5.5" />
+    </svg>
+  );
+}
+
+export function TrayIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M3 15.5h18a6.5 6.5 0 0 0-6.5-6.5h-5A6.5 6.5 0 0 0 3 15.5Z" />
+      <path d="M2 19h20" />
+      <path d="M12 9V5.5" />
+      <path d="M10 5.5h4" />
+    </svg>
+  );
+}
+
+export function BrowserIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="3" y="4.5" width="18" height="15" rx="2" />
+      <path d="M3 9.5h18" />
+      <path d="M6.5 7h2" />
+      <path d="M7 13.5h7" />
+      <path d="M7 16.5h4" />
+    </svg>
+  );
+}
+
+export function BoltIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M13.5 2.5 5 13.5h5.5L9.5 21.5 19 10.5h-6z" />
+    </svg>
+  );
+}
+
 export function ExternalLinkIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>

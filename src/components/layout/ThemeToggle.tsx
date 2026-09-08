@@ -6,23 +6,24 @@ import { SunIcon, MoonIcon } from "@/components/ui/icons";
 const STORAGE_KEY = "tarc-theme";
 
 export function ThemeToggle({ label }: { label: string }) {
-  // Must start false on both server and the first client render — reading
-  // `document` in the initializer here would fight the blocking script in
-  // [locale]/layout.tsx and throw a hydration mismatch for any returning
-  // light-theme visitor. The effect below corrects it right after mount
-  // instead, without writing back to a DOM the script already set correctly.
-  const [isLight, setIsLight] = useState(false);
+  // Must start at the DEFAULT theme (light) on both server and the first
+  // client render — reading `document` in the initializer would fight the
+  // blocking script in [locale]/layout.tsx and throw a hydration mismatch
+  // for any returning dark-theme visitor. The effect below corrects it
+  // right after mount, without writing back to a DOM the script already
+  // set correctly.
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    setIsLight(document.documentElement.dataset.theme === "light");
+    setIsDark(document.documentElement.dataset.theme === "dark");
   }, []);
 
   function toggle() {
-    const next = !isLight;
-    setIsLight(next);
-    document.documentElement.dataset.theme = next ? "light" : "dark";
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.dataset.theme = next ? "dark" : "light";
     try {
-      localStorage.setItem(STORAGE_KEY, next ? "light" : "dark");
+      localStorage.setItem(STORAGE_KEY, next ? "dark" : "light");
     } catch {
       // Private browsing / storage disabled — theme still works for this session.
     }
@@ -33,10 +34,10 @@ export function ThemeToggle({ label }: { label: string }) {
       type="button"
       onClick={toggle}
       aria-label={label}
-      aria-pressed={isLight}
-      className="flex h-9 w-9 items-center justify-center rounded-md text-foreground-secondary transition-colors hover:text-foreground"
+      aria-pressed={isDark}
+      className="flex h-11 w-11 items-center justify-center rounded-md text-foreground-secondary transition-colors hover:text-foreground"
     >
-      {isLight ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
+      {isDark ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
     </button>
   );
 }
