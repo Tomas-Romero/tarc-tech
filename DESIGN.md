@@ -31,7 +31,7 @@ Filosofía visual, en orden de importancia:
 2. **Aristas antes que blandura.** El isotipo es facetado y anguloso; el sistema lo acompaña con radios contenidos y bordes definidos. Nada de burbujas ni de sombras difusas por todos lados.
 3. **Densidad baja, aire alto.** Secciones respiradas, texto corto, una idea por bloque. El visitante lee de pie, en un celular.
 4. **El movimiento explica.** Reveals al entrar en viewport, feedback en hover, progreso al scrollear. Una sola excepción deliberada: el hero, donde el movimiento es la marca presentándose.
-5. **Oscuro por defecto.** El modo oscuro es el diseño principal, no una variante. El modo claro debe verse igual de intencional, no como una versión "apagada".
+5. **Claro por defecto, oscuro igual de intencional.** El modo claro es lo primero que ve el visitante (decisión de Tomás durante el pulido — ver `PLAN-LANDING-TARC-TECH.md` D9); el modo oscuro sigue siendo un diseño de primera clase, no una variante "apagada" del claro. Ninguno de los dos tema se trata como el secundario: ambos usan la misma escala zinc y el mismo naranja como único acento, solo invierten qué extremo de la escala hace de superficie.
 
 ## Colors
 

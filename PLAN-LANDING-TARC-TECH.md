@@ -53,7 +53,7 @@ Todo lo demás en la página (proyectos, proceso, sobre mí) existe para reducir
 | D6 | Stack | Next.js 15 (App Router) + TypeScript + Tailwind CSS + Motion. Deploy en Vercel |
 | D7 | Canales de contacto | WhatsApp (principal) + email visible. **Sin formulario, sin backend, sin API keys** |
 | D8 | Animación | Base intermedia + **un momento de alto impacto en el hero** y un segundo momento fuerte en la sección Proceso |
-| D9 | Tema | Modo oscuro por defecto + toggle a modo claro (persistido) |
+| D9 | Tema | Modo claro por defecto + toggle a modo oscuro (persistido) — revertido desde "oscuro por defecto" durante la fase de pulido, a pedido explícito de Tomás |
 | D10 | Idiomas | **Español (rioplatense) e inglés**, con selector visible |
 | D11 | Sistema de diseño | Impeccable (`impeccable.style`) — ver sección 13 |
 | D12 | Sección personal | "Sobre mí" con foto animada + links a LinkedIn, portfolio y WhatsApp |
