@@ -22,6 +22,23 @@
   "services": {
     "title": "Qué hago"
   },
+  "projects": {
+    "title": "Proyectos",
+    "intro": "Sistemas reales, funcionando para negocios reales.",
+    "filterAll": "Todos",
+    "filterClients": "Clientes",
+    "filterOwn": "Productos propios",
+    "inDevelopment": "En desarrollo",
+    "inDevelopmentNote": "En construcción — pedime un adelanto",
+    "openDetail": "Ver detalle",
+    "closeDetail": "Cerrar detalle",
+    "problemLabel": "El problema",
+    "solutionLabel": "La solución",
+    "featuresLabel": "Funcionalidades clave",
+    "stackLabel": "Stack",
+    "visitSite": "Ver sitio",
+    "wantSimilar": "Quiero algo parecido"
+  },
   "process": {
     "title": "Cómo trabajo",
     "intro": "Un método, no improvisación. Estos son los cinco pasos de cada proyecto."
