@@ -31,11 +31,6 @@
   --tarc-radius-md: 8px;
   --tarc-radius-lg: 10px;
   --tarc-radius-pill: 999px;
-
-  /* Type — populated by next/font variables from src/lib/fonts.ts */
-  --tarc-font-logotype: var(--font-sansation), Arial, sans-serif;
-  --tarc-font-primary: var(--font-fira-sans), system-ui, sans-serif;
-  --tarc-font-accent: var(--font-fraunces), Georgia, serif;
 }
 
 [data-theme="dark"] {
@@ -80,9 +75,23 @@ html {
 }
 
 body {
+  /* Type — populated by next/font variables from src/lib/fonts.ts. Declared
+     here rather than on :root: next/font attaches --font-sansation etc. via
+     a class on <body> itself, not <html>, so a :root rule referencing them
+     sees an undefined variable and silently invalidates (falls through to
+     Tailwind's preflight default, -apple-system, with no visible error). */
+  --tarc-font-logotype: var(--font-sansation), Arial, sans-serif;
+  --tarc-font-primary: var(--font-fira-sans), system-ui, sans-serif;
+  --tarc-font-accent: var(--font-fraunces), Georgia, serif;
+
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-sans);
+  /* Not var(--font-sans): under `@theme inline`, Tailwind never emits that
+     as a real CSS custom property — it only inlines the value into
+     generated utility classes (e.g. a `font-sans` class), which nothing
+     here uses. Hand-written CSS has to read the raw --tarc-font-* variable
+     directly. */
+  font-family: var(--tarc-font-primary);
 }
 
 /* Foco naranja siempre visible (accesibilidad — ver DESIGN.md/PRODUCT.md).
@@ -103,18 +112,18 @@ body {
 
 /* Logotype (nav/footer wordmark only — never body or UI text, per DESIGN.md) */
 .tarc-logotype {
-  font-family: var(--font-logotype);
+  font-family: var(--tarc-font-logotype);
   font-weight: 700;
 }
 
 /* Accent / pull-quote text — Fraunces, at most once per section per DESIGN.md */
 .tarc-accent-text {
-  font-family: var(--font-accent);
+  font-family: var(--tarc-font-accent);
   font-style: italic;
   color: var(--color-orange-deep);
 }
 .tarc-accent-keyword {
-  font-family: var(--font-accent);
+  font-family: var(--tarc-font-accent);
   font-style: normal;
   font-weight: 600;
 }

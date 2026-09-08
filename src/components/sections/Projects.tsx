@@ -141,27 +141,50 @@ function ProjectCard({
     <button
       type="button"
       onClick={onOpen}
-      className="group flex h-full w-full flex-col rounded-lg border border-border bg-surface p-4 text-left transition-all hover:-translate-y-0.5 hover:border-orange-deep"
+      className="group relative flex h-full w-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-4 text-left transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2 hover:border-orange hover:shadow-[0_28px_56px_-24px_rgba(249,115,22,0.4)]"
     >
-      <MockupFrame
-        src={project.images[0]}
-        alt={`${project.name} — ${project.tagline[locale]}`}
-        note={isInDevelopment ? dict.projects.inDevelopmentNote : undefined}
+      {/* Warm wash rising behind the content on hover — the same "heating up"
+          language as the services/solutions hover, kept subtle here since a
+          real screenshot already carries most of the visual weight. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--color-orange) 10%, transparent), transparent 70%)",
+        }}
       />
 
-      <div className="mt-4 flex items-start justify-between gap-3">
+      <div className="relative">
+        <MockupFrame
+          src={project.images[0]}
+          alt={`${project.name} — ${project.tagline[locale]}`}
+          note={isInDevelopment ? dict.projects.inDevelopmentNote : undefined}
+          zoomOnHover
+        />
+      </div>
+
+      <div className="relative mt-4 flex items-start justify-between gap-3">
         <h3 className="text-lg font-bold">{project.name}</h3>
         {isInDevelopment && <StatusBadge label={dict.projects.inDevelopment} />}
       </div>
 
-      <p className="mt-1 text-sm text-foreground-secondary">
+      <p className="relative mt-1 text-sm text-foreground-secondary">
         {project.tagline[locale]}
       </p>
 
-      <StackBadges stack={project.stack} />
+      <div className="relative">
+        <StackBadges stack={project.stack} />
+      </div>
 
-      <span className="mt-4 text-sm font-medium text-orange-deep">
+      <span className="relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-orange-deep">
         {dict.projects.openDetail}
+        <span
+          aria-hidden
+          className="transition-transform duration-300 group-hover:translate-x-1"
+        >
+          →
+        </span>
       </span>
     </button>
   );

@@ -27,9 +27,13 @@ export function Process({
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
+  // Wide trigger window on purpose: the timeline row itself is short, so a
+  // tight window (e.g. "start 75%"/"end 65%") drew the whole line and lit
+  // every step within a few hundred pixels of scroll — felt rushed. This
+  // spreads the same animation across most of a screen height of scrolling.
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 75%", "end 65%"],
+    offset: ["start 90%", "end 20%"],
   });
 
   // Reduced motion: the line is simply already drawn, and every step is lit.

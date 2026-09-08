@@ -38,8 +38,17 @@ export function Solutions({
   dict: Dictionary;
   locale: Locale;
 }) {
+  const reduceMotion = useReducedMotion();
   const [active, setActive] = useState(0);
   const panelsRef = useRef<(HTMLElement | null)[]>([]);
+
+  function goToPanel(i: number) {
+    setActive(i);
+    panelsRef.current[i]?.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "center",
+    });
+  }
 
   useEffect(() => {
     const nodes = panelsRef.current.filter(Boolean) as HTMLElement[];
@@ -74,31 +83,41 @@ export function Solutions({
 
       <div className="mt-14 gap-16 lg:grid lg:grid-cols-[13rem_1fr]">
         {/* Sticky index — desktop only; on mobile the panels speak for
-            themselves and a rail would just cost vertical space. */}
-        <nav aria-hidden className="hidden lg:block">
-          <ol className="sticky top-[calc(var(--nav-height)+3rem)] space-y-3">
+            themselves and a rail would just cost vertical space. Clickable:
+            it jumps the scroll to that panel instead of only reflecting it. */}
+        <nav aria-label={dict.solutions.railLabel} className="hidden lg:block">
+          <ol className="sticky top-[calc(var(--nav-height)+3rem)] space-y-1">
             {solutions.map((solution, i) => (
-              <li key={solution.id} className="relative pl-5">
-                <span
-                  className={`absolute left-0 top-1/2 h-4 w-px -translate-y-1/2 transition-colors duration-300 ${
-                    i === active ? "bg-orange" : "bg-border"
-                  }`}
-                />
-                <span
-                  className={`block text-sm transition-colors duration-300 ${
-                    i === active
-                      ? "font-medium text-foreground"
-                      : "text-foreground-secondary"
-                  }`}
+              <li key={solution.id}>
+                <button
+                  type="button"
+                  onClick={() => goToPanel(i)}
+                  className="group/rail relative flex w-full items-center rounded-md py-2 pl-5 pr-2 text-left transition-colors hover:bg-surface"
                 >
-                  {solution.title[locale]}
-                </span>
+                  <span
+                    aria-hidden
+                    className={`absolute left-0 top-1/2 h-4 w-px -translate-y-1/2 transition-colors duration-300 ${
+                      i === active
+                        ? "bg-orange"
+                        : "bg-border group-hover/rail:bg-orange-deep"
+                    }`}
+                  />
+                  <span
+                    className={`block text-sm transition-colors duration-300 ${
+                      i === active
+                        ? "font-medium text-foreground"
+                        : "text-foreground-secondary group-hover/rail:text-foreground"
+                    }`}
+                  >
+                    {solution.title[locale]}
+                  </span>
+                </button>
               </li>
             ))}
           </ol>
         </nav>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {solutions.map((solution, i) => (
             <SolutionPanel
               key={solution.id}
@@ -159,7 +178,10 @@ function SolutionPanel({
       ref={panelRef}
       initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -15% 0px" }}
+      // Later trigger margin than a typical reveal on purpose: panels used to
+      // fire almost as soon as the section came into view, so most of the
+      // list appeared as a single batch instead of unfolding with the scroll.
+      viewport={{ once: true, margin: "0px 0px -35% 0px" }}
       transition={{
         duration: reduceMotion ? 0.4 : 0.6,
         ease: EASE_OUT_EXPO,

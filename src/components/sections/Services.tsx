@@ -28,6 +28,12 @@ const ICONS: Record<Service["icon"], ComponentType<{ className?: string }>> = {
 
 const CARD_W = 380;
 const GAP = 24;
+// Extra scroll distance so the row doesn't race past — Tomás felt the first
+// version rushed through the cards before he could read them. PACE stretches
+// how much scrolling one pixel of horizontal travel costs, and HOLD_OUT_VH
+// keeps the last card on screen for a beat before the page continues.
+const PACE = 1.7;
+const HOLD_OUT_VH = 0.5;
 
 // Desktop: the section pins and the row of services travels sideways as the
 // visitor scrolls, then the page releases and carries on. Mobile keeps its
@@ -37,6 +43,7 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
   const reduceMotion = useReducedMotion();
   const [pinned, setPinned] = useState(false);
   const [travel, setTravel] = useState(0);
+  const [scrollDistance, setScrollDistance] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,7 +56,9 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
       setPinned(on);
       if (!on) return setTravel(0);
       const trackWidth = services.length * CARD_W + (services.length - 1) * GAP;
-      setTravel(Math.max(0, trackWidth - (window.innerWidth - 96)));
+      const rawTravel = Math.max(0, trackWidth - (window.innerWidth - 96));
+      setTravel(rawTravel);
+      setScrollDistance(rawTravel * PACE + window.innerHeight * HOLD_OUT_VH);
     }
     sync();
     query.addEventListener("change", sync);
@@ -65,15 +74,25 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
     offset: ["start start", "end end"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], [0, -travel]);
+  // The row finishes traveling partway through the pinned scroll (moveFrac)
+  // and then holds in place for the remainder — that held beat is the pause
+  // the rushed version was missing.
+  const moveFrac = scrollDistance > 0 ? (travel * PACE) / scrollDistance : 1;
+  const x = useTransform(scrollYProgress, [0, moveFrac], [0, -travel], {
+    clamp: true,
+  });
+  const trackProgress = useTransform(scrollYProgress, [0, moveFrac], [0, 1], {
+    clamp: true,
+  });
 
   return (
     <section
       id="servicios"
       ref={sectionRef}
-      // The extra height IS the horizontal distance: while the sticky child
-      // is stuck, scrolling it is what moves the row.
-      style={pinned ? { height: `calc(100vh + ${travel}px)` } : undefined}
+      // The extra height IS the scroll runway: while the sticky child is
+      // stuck, scrolling it is what moves the row (paced slower than a 1:1
+      // pixel mapping, plus a hold-out beat once every card has arrived).
+      style={pinned ? { height: `calc(100vh + ${scrollDistance}px)` } : undefined}
     >
       <div
         className={
@@ -105,7 +124,7 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
                 ))}
               </motion.div>
             </div>
-            <ScrollProgress progress={scrollYProgress} />
+            <ScrollProgress progress={trackProgress} />
           </>
         ) : (
           // Mobile / reduced motion: a snap carousel the thumb controls.

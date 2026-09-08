@@ -10,10 +10,14 @@ export function MockupFrame({
   src,
   alt,
   note,
+  zoomOnHover,
 }: {
   src?: string;
   alt?: string;
   note?: string;
+  /** Scales the screenshot slightly on hover — only has an effect nested
+   *  inside a `.group` ancestor (e.g. a hoverable project card). */
+  zoomOnHover?: boolean;
 }) {
   return (
     <div className="overflow-hidden rounded-md border border-border bg-background">
@@ -24,7 +28,15 @@ export function MockupFrame({
 
       <div className="relative aspect-[16/10]">
         {src ? (
-          <Image src={src} alt={alt ?? ""} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+          <Image
+            src={src}
+            alt={alt ?? ""}
+            fill
+            className={`object-cover transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              zoomOnHover ? "group-hover:scale-[1.06]" : ""
+            }`}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-4">
             <Image

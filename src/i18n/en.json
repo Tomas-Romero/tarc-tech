@@ -64,6 +64,7 @@
     "title": "What I can build for you",
     "intro": "Pick whichever is closest to your case and tell me the details.",
     "exampleLabel": "Example",
+    "railLabel": "Solutions index",
     "cta": "Let's talk about this",
     "fallbackTitle": "Not seeing yours here?",
     "fallbackBody": "Tell me what you need and I'll tell you how I'd solve it.",

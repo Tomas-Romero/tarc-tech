@@ -64,6 +64,7 @@
     "title": "Qué te puedo desarrollar",
     "intro": "Elegí lo que más se parezca a tu caso y contame los detalles.",
     "exampleLabel": "Ejemplo",
+    "railLabel": "Índice de soluciones",
     "cta": "Hablemos de esto",
     "fallbackTitle": "¿Lo tuyo no está en la lista?",
     "fallbackBody": "Contame qué necesitás y te digo cómo lo resolvería.",
