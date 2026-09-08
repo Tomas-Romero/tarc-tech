@@ -49,6 +49,14 @@ export function ChatIcon({ className }: IconProps) {
   );
 }
 
+export function ChevronDownIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M5 9.5l7 6 7-6" />
+    </svg>
+  );
+}
+
 export function CodeIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>

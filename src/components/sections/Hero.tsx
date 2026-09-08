@@ -1,7 +1,7 @@
 import type { Dictionary } from "@/i18n";
 import { waLink } from "@/lib/whatsapp";
 import { HeroBackground } from "@/components/motion/HeroBackground";
-import { HeroMark } from "@/components/motion/HeroMark";
+import { HeroBrand } from "@/components/motion/HeroBrand";
 
 export function Hero({ dict }: { dict: Dictionary }) {
   return (
@@ -51,8 +51,8 @@ export function Hero({ dict }: { dict: Dictionary }) {
           </p>
         </div>
 
-        <div className="w-32 shrink-0 sm:w-48 md:w-[42%] md:max-w-md">
-          <HeroMark className="block h-auto w-full" />
+        <div className="w-44 shrink-0 sm:w-60 md:w-[42%] md:max-w-md">
+          <HeroBrand />
         </div>
       </div>
     </section>

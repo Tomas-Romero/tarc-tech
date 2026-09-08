@@ -9,54 +9,73 @@ import {
   useReducedMotion,
   useAnimationFrame,
 } from "motion/react";
-import { isotipoGroups } from "./isotipo-paths";
+import {
+  isotipoArtwork,
+  isotipoClips,
+  isotipoOffset,
+  isotipoViewBox,
+} from "./isotipo-paths";
 
-// Assembly choreography (PLAN §6.2): the crossbar+wings drop in from a
-// diagonal first, the stem rises into place next, then both chevrons close
-// in from the sides together. Spring physics (not a tween) so each piece
-// settles with a small, tactile overshoot — metal easing into place, not a
-// slide that stops on cue.
-const SPRING = { type: "spring" as const, stiffness: 140, damping: 13, mass: 1 };
+const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+// Motion thesis — "la forja facetada": the mark is struck into being, not
+// slid into place. The brackets close first and frame the empty space, the
+// crossbar drops into that frame, the stem rises to meet it, and the moment
+// the last piece seats, the whole mark takes a heat pulse and the glow
+// blooms and cools. Spring physics so each piece seats with real weight.
+const SPRING = { type: "spring" as const, stiffness: 150, damping: 14, mass: 1 };
 
 const ENTRANCE = {
-  crossbar: {
-    initial: { x: -60, y: -46, opacity: 0, rotate: -6 },
-    animate: { x: 0, y: 0, opacity: 1, rotate: 0 },
+  chevronLeft: {
+    initial: { x: -150, opacity: 0, rotate: -14, scale: 0.9 },
     transition: { ...SPRING, delay: 0 },
   },
-  stem: {
-    initial: { y: 70, opacity: 0, scaleY: 0.85 },
-    animate: { y: 0, opacity: 1, scaleY: 1 },
-    transition: { ...SPRING, delay: 0.16 },
-  },
-  chevronLeft: {
-    initial: { x: -70, opacity: 0, rotate: -10 },
-    animate: { x: 0, opacity: 1, rotate: 0 },
-    transition: { ...SPRING, delay: 0.3 },
-  },
   chevronRight: {
-    initial: { x: 70, opacity: 0, rotate: 10 },
-    animate: { x: 0, opacity: 1, rotate: 0 },
-    transition: { ...SPRING, delay: 0.3 },
+    initial: { x: 150, opacity: 0, rotate: 14, scale: 0.9 },
+    transition: { ...SPRING, delay: 0.06 },
   },
-};
+  crossbar: {
+    initial: { y: -120, opacity: 0, rotate: -4 },
+    transition: { ...SPRING, delay: 0.26 },
+  },
+  stem: {
+    initial: { y: 110, opacity: 0, scaleY: 0.8 },
+    transition: { ...SPRING, delay: 0.42 },
+  },
+} as const;
 
-// Per-group idle-parallax depth: chevrons read as closer/foreground, so they
-// drift a little more than the crossbar/stem once assembly finishes.
+const SETTLED = { x: 0, y: 0, opacity: 1, rotate: 0, scale: 1, scaleY: 1 };
+
+// The stem lands last, so it owns the impact moment.
+const IMPACT_KEY = "stem";
+
+// Idle parallax depth per group: the brackets read as nearest, so they lead.
 const PARALLAX_DEPTH = {
-  crossbar: 5,
-  stem: 5,
-  chevronLeft: 11,
-  chevronRight: 11,
+  crossbar: 6,
+  stem: 4,
+  chevronLeft: 13,
+  chevronRight: 13,
 };
 
-export function HeroMark({ className }: { className?: string }) {
+const GROUPS = [
+  ["chevronLeft", isotipoClips.chevronLeft],
+  ["chevronRight", isotipoClips.chevronRight],
+  ["crossbar", isotipoClips.crossbar],
+  ["stem", isotipoClips.stem],
+] as const;
+
+export function HeroMark({
+  className,
+  onAssembled,
+}: {
+  className?: string;
+  onAssembled?: () => void;
+}) {
   const reduceMotion = useReducedMotion();
   const [assembled, setAssembled] = useState(false);
   const [hasFinePointer, setHasFinePointer] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const shimmerRef = useRef<SVGAnimateElement>(null);
-  const chevronsSettled = useRef(0);
 
   useEffect(() => {
     setHasFinePointer(
@@ -64,22 +83,22 @@ export function HeroMark({ className }: { className?: string }) {
     );
   }, []);
 
-  // Fires once BOTH chevrons (the last piece to lock) have actually settled
-  // — event-driven off Motion's own callback, not a guessed timeout, so the
-  // heat shimmer + glow always land exactly when the mark finishes, spring
-  // physics or not.
-  function onChevronSettled() {
-    chevronsSettled.current += 1;
-    if (chevronsSettled.current !== 2) return;
+  // Event-driven off the last piece actually seating, not a guessed timeout.
+  function onImpact() {
     setAssembled(true);
     shimmerRef.current?.beginElement();
+    onAssembled?.();
   }
 
   useEffect(() => {
-    if (reduceMotion) setAssembled(true);
+    if (!reduceMotion) return;
+    setAssembled(true);
+    onAssembled?.();
+    // onAssembled is a stable callback from the parent; re-running on its
+    // identity would re-fire the impact.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduceMotion]);
 
-  // Normalized [-1, 1] pointer offset from the mark's own center.
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
   const springX = useSpring(rawX, { stiffness: 60, damping: 18 });
@@ -97,7 +116,6 @@ export function HeroMark({ className }: { className?: string }) {
     rawY.set(0);
   }
 
-  // No fine pointer (touch/mobile): drift slowly and automatically instead.
   useAnimationFrame((t) => {
     if (hasFinePointer || reduceMotion) return;
     rawX.set(Math.sin(t / 3000) * 0.5);
@@ -130,17 +148,33 @@ export function HeroMark({ className }: { className?: string }) {
       onMouseLeave={onMouseLeave}
       className={className}
     >
-      <svg viewBox="0 0 680 680" className="h-full w-full overflow-visible">
+      <svg viewBox={isotipoViewBox} className="h-full w-full overflow-visible">
         <defs>
           <radialGradient id="hero-mark-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-orange-deep)" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="var(--color-orange-deep)" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--color-orange)" stopOpacity="0.5" />
+            <stop
+              offset="55%"
+              stopColor="var(--color-orange-deep)"
+              stopOpacity="0.22"
+            />
+            <stop
+              offset="100%"
+              stopColor="var(--color-orange-deep)"
+              stopOpacity="0"
+            />
           </radialGradient>
 
-          {/* Heat-shimmer (North Star: "la forja facetada" — metal caliente
-              sobre grafito frío). A single displacement pulse, begun
-              imperatively the instant the last piece settles — not looped,
-              not decorative background noise. */}
+          {/* The artwork, authored once and reused by every group — each
+              group shows it through its own clip, so paint order and color
+              stay exactly the source file's. */}
+          <g id="hero-mark-art">{isotipoArtwork}</g>
+
+          {GROUPS.map(([key, clip]) => (
+            <clipPath key={key} id={`hero-mark-clip-${key}`}>
+              {clip}
+            </clipPath>
+          ))}
+
           {!reduceMotion && (
             <filter
               id="hero-mark-shimmer"
@@ -151,7 +185,7 @@ export function HeroMark({ className }: { className?: string }) {
             >
               <feTurbulence
                 type="fractalNoise"
-                baseFrequency="0.012 0.05"
+                baseFrequency="0.011 0.045"
                 numOctaves="2"
                 seed="7"
                 result="noise"
@@ -166,54 +200,56 @@ export function HeroMark({ className }: { className?: string }) {
                 <animate
                   ref={shimmerRef}
                   attributeName="scale"
-                  values="0;26;0"
-                  dur="0.7s"
+                  values="0;30;0"
+                  dur="0.75s"
                   begin="indefinite"
                   fill="freeze"
                   calcMode="spline"
                   keySplines="0.16 1 0.3 1; 0.7 0 0.84 0"
-                  keyTimes="0; 0.3; 1"
+                  keyTimes="0; 0.28; 1"
                 />
               </feDisplacementMap>
             </filter>
           )}
         </defs>
 
+        {/* Heat bloom: swells on impact, then cools to a low resting ember. */}
         <motion.circle
-          cx="340"
-          cy="340"
-          r="260"
+          cx="323"
+          cy="266"
+          r="250"
           fill="url(#hero-mark-glow)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: assembled && !reduceMotion ? [0, 0.7, 0] : 0 }}
-          transition={{ duration: 0.5, times: [0, 0.35, 1] }}
+          initial={{ opacity: 0, scale: 0.75 }}
+          animate={
+            assembled && !reduceMotion
+              ? { opacity: [0, 1, 0.32], scale: [0.75, 1.06, 1] }
+              : { opacity: reduceMotion ? 0.25 : 0, scale: 1 }
+          }
+          transition={{ duration: 1.1, times: [0, 0.22, 1], ease: EASE_OUT_EXPO }}
+          style={{ transformOrigin: "323px 266px" }}
         />
 
-        <g filter={reduceMotion ? undefined : "url(#hero-mark-shimmer)"}>
-          {(
-            [
-              ["crossbar", isotipoGroups.crossbar],
-              ["stem", isotipoGroups.stem],
-              ["chevronLeft", isotipoGroups.chevronLeft],
-              ["chevronRight", isotipoGroups.chevronRight],
-            ] as const
-          ).map(([key, content]) => (
+        <g
+          filter={reduceMotion ? undefined : "url(#hero-mark-shimmer)"}
+          transform={`translate(${isotipoOffset.x},${isotipoOffset.y})`}
+        >
+          {GROUPS.map(([key]) => (
             <motion.g key={key} style={parallax[key]}>
               <motion.g
                 initial={reduceMotion ? { opacity: 0 } : ENTRANCE[key].initial}
-                animate={reduceMotion ? { opacity: 1 } : ENTRANCE[key].animate}
+                animate={reduceMotion ? { opacity: 1 } : SETTLED}
                 transition={
                   reduceMotion
-                    ? { duration: 0.4, ease: "easeOut" }
+                    ? { duration: 0.45, ease: "easeOut" }
                     : ENTRANCE[key].transition
                 }
-                onAnimationComplete={
-                  key === "chevronLeft" || key === "chevronRight"
-                    ? onChevronSettled
-                    : undefined
-                }
+                onAnimationComplete={key === IMPACT_KEY ? onImpact : undefined}
+                style={{ transformOrigin: "323px 266px" }}
               >
-                {content}
+                <use
+                  href="#hero-mark-art"
+                  clipPath={`url(#hero-mark-clip-${key})`}
+                />
               </motion.g>
             </motion.g>
           ))}

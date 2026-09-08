@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Dictionary, Locale } from "@/i18n";
 import { navLinks } from "@/lib/nav-links";
 import { social } from "@/lib/social";
+import { FooterBrand } from "./FooterBrand";
 
 export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const year = new Date().getFullYear();
@@ -17,8 +18,8 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:items-start md:justify-between">
         <div className="flex items-center gap-2">
-          <Image src="/brand/isotipo.svg" alt="" width={24} height={24} />
-          <span className="tarc-logotype text-base">TARC Tech</span>
+          <Image src="/brand/isotipo.svg" alt="" width={28} height={28} />
+          <span className="sr-only">TARC Tech</span>
         </div>
 
         <nav aria-label={dict.nav.primaryNav}>
@@ -67,6 +68,8 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <div className="border-t border-border px-6 py-6 text-center text-xs text-foreground-secondary">
         © {year} TARC Tech — Tomas Agustin Romero Code
       </div>
+
+      <FooterBrand />
     </footer>
   );
 }

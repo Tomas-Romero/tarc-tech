@@ -22,13 +22,22 @@
   "services": {
     "title": "What I do"
   },
+  "solutions": {
+    "title": "What I can build for you",
+    "intro": "Pick whichever is closest to your case and tell me the details.",
+    "exampleLabel": "Example",
+    "cta": "Let's talk about this",
+    "fallbackTitle": "Not seeing yours here?",
+    "fallbackBody": "Tell me what you need and I'll tell you how I'd solve it.",
+    "fallbackCta": "Tell me what you need"
+  },
   "hero": {
     "titleParts": [
       { "text": "Custom", "accent": true },
       { "text": " software for your business." }
     ],
     "subtitle": "Systems, apps and automations built from scratch around how your business actually works. We scope it, propose it, build it with your feedback, and support it after launch.",
-    "ctaPrimary": "Tell me about your project",
+    "ctaPrimary": "Let's work together",
     "ctaSecondary": "See projects",
     "signature": "Built by Tomás Romero · San Rafael, Mendoza"
   },

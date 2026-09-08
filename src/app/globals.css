@@ -84,9 +84,14 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Foco naranja siempre visible (accesibilidad — ver DESIGN.md/PRODUCT.md) */
+/* Foco naranja siempre visible (accesibilidad — ver DESIGN.md/PRODUCT.md).
+   Solo longhands, a propósito: el shorthand `outline` sale mutilado del
+   pipeline de CSS (emitía `outline-style: ; outline-width: ;` vacíos), así
+   que el anillo caía al default blanco del navegador. */
 :focus-visible {
-  outline: 2px solid var(--color-orange);
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: var(--tarc-orange-primary);
   outline-offset: 2px;
 }
 

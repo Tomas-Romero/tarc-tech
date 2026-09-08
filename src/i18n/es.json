@@ -22,6 +22,15 @@
   "services": {
     "title": "Qué hago"
   },
+  "solutions": {
+    "title": "Qué te puedo desarrollar",
+    "intro": "Elegí lo que más se parezca a tu caso y contame los detalles.",
+    "exampleLabel": "Ejemplo",
+    "cta": "Hablemos de esto",
+    "fallbackTitle": "¿Lo tuyo no está en la lista?",
+    "fallbackBody": "Contame qué necesitás y te digo cómo lo resolvería.",
+    "fallbackCta": "Contame qué necesitás"
+  },
   "hero": {
     "titleParts": [
       { "text": "Software " },
@@ -29,7 +38,7 @@
       { "text": " para tu empresa o negocio." }
     ],
     "subtitle": "Sistemas, apps y automatizaciones desarrollados desde cero para cómo trabaja tu negocio. Relevamos, proponemos, desarrollamos con tu feedback y te acompañamos después.",
-    "ctaPrimary": "Contame tu proyecto",
+    "ctaPrimary": "Trabajemos juntos",
     "ctaSecondary": "Ver proyectos",
     "signature": "Desarrollado por Tomás Romero · San Rafael, Mendoza"
   },

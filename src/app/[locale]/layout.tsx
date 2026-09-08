@@ -5,6 +5,7 @@ import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
+import { LoadingScreen } from "@/components/motion/LoadingScreen";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -52,6 +53,7 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className={`${fontVariables} antialiased`}>
+        <LoadingScreen />
         <Nav locale={locale} dict={dict} />
         {children}
         <Footer locale={locale} dict={dict} />

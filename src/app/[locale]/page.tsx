@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Hero } from "@/components/sections/Hero";
 import { Trust } from "@/components/sections/Trust";
 import { Services } from "@/components/sections/Services";
+import { Solutions } from "@/components/sections/Solutions";
 
 export default async function LocaleHomePage({
   params,
@@ -18,6 +19,7 @@ export default async function LocaleHomePage({
       <Hero dict={dict} />
       <Trust dict={dict} />
       <Services dict={dict} locale={locale} />
+      <Solutions dict={dict} locale={locale} />
     </main>
   );
 }
