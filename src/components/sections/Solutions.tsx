@@ -125,7 +125,6 @@ export function Solutions({
                 panelsRef.current[i] = node;
               }}
               solution={solution}
-              index={i}
               dict={dict}
               locale={locale}
             />
@@ -145,7 +144,7 @@ export function Solutions({
                 href={waLink(dict.whatsapp.finalCta)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-block rounded-md bg-orange px-5 py-3 font-medium text-[#431407] transition-colors hover:bg-orange-hover"
+                className="tarc-cta-glow mt-5 inline-block rounded-md bg-orange px-5 py-3 font-medium text-[#431407] hover:bg-orange-hover"
               >
                 {dict.solutions.fallbackCta}
               </a>
@@ -160,13 +159,11 @@ export function Solutions({
 function SolutionPanel({
   panelRef,
   solution,
-  index,
   dict,
   locale,
 }: {
   panelRef: (node: HTMLElement | null) => void;
   solution: Solution;
-  index: number;
   dict: Dictionary;
   locale: Locale;
 }) {
@@ -205,11 +202,7 @@ function SolutionPanel({
         </span>
 
         <div className="min-w-0">
-          <span aria-hidden className="text-xs text-foreground-secondary">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-
-          <h3 className="mt-1 text-xl font-bold">{solution.title[locale]}</h3>
+          <h3 className="text-xl font-bold">{solution.title[locale]}</h3>
 
           <p className="mt-2 text-foreground-secondary">
             {solution.body[locale]}

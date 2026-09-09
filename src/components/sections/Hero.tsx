@@ -41,7 +41,7 @@ export function Hero({ dict }: { dict: Dictionary }) {
               href={waLink(dict.whatsapp.hero)}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-md bg-orange px-6 py-3 text-center font-medium text-[#431407] transition-colors hover:bg-orange-hover"
+              className="tarc-cta-glow rounded-md bg-orange px-6 py-3 text-center font-medium text-[#431407] hover:bg-orange-hover"
             >
               {dict.hero.ctaPrimary}
             </a>

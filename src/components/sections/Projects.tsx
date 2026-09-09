@@ -267,7 +267,7 @@ function ProjectDetail({
           )}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-md bg-orange px-5 py-3 font-medium text-[#431407] transition-colors hover:bg-orange-hover"
+          className="tarc-cta-glow rounded-md bg-orange px-5 py-3 font-medium text-[#431407] hover:bg-orange-hover"
         >
           {dict.projects.wantSimilar}
         </a>

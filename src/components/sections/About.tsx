@@ -71,7 +71,7 @@ export function About({ dict }: { dict: Dictionary }) {
                 href={waLink(dict.whatsapp.nav)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex min-h-11 items-center gap-2 rounded-md bg-orange px-5 font-medium text-[#431407] transition-colors hover:bg-orange-hover"
+                className="tarc-cta-glow flex min-h-11 items-center gap-2 rounded-md bg-orange px-5 font-medium text-[#431407] hover:bg-orange-hover"
               >
                 <ChatIcon className="h-5 w-5" />
                 {dict.about.whatsapp}

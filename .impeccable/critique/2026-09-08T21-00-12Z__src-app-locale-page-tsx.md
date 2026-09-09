@@ -10,6 +10,7 @@ target_fingerprint: "sha256:631e46a018fa10ee1d33fa2eb72737680470b802cc1c5f05b09b
 target_path: "C:\\Users\\Lenovo\\Documents\\Programacion\\Proyectos\\TARC Tech\\src\\app\\[locale]\\page.tsx"
 timestamp: 2026-09-08T21-00-12Z
 slug: src-app-locale-page-tsx
+closed: true
 ---
 Method: dual-agent (A: aae0648b916ad0102 · B: a3c70fa072cb20755)
 

@@ -118,6 +118,27 @@ body {
   color: #431407;
 }
 
+/* DESIGN.md's primary-button spec calls for "un glow sutil" on hover, but no
+   CTA anywhere actually shipped it — one shared rule instead of seven
+   repeated box-shadow declarations, since every WhatsApp CTA on the page
+   uses this same primary-button role. */
+.tarc-cta-glow {
+  transition:
+    box-shadow 300ms ease,
+    background-color 300ms ease,
+    transform 300ms ease;
+  box-shadow: 0 0 0 0 transparent;
+}
+.tarc-cta-glow:hover {
+  /* Blur radius alone gives the soft falloff a glow needs — no color-mix()
+     for the opacity: Tailwind's Lightning CSS wraps that in a nested
+     @supports fallback, and nested @supports-inside-a-selector silently
+     fails to match in at least one real browser engine, dropping the whole
+     rule with no visible error. A plain solid color plus blur has nothing
+     to fail. */
+  box-shadow: 0 0 24px var(--color-orange-deep);
+}
+
 /* Invisible tap-target expander for small inline text links (nav, footer) —
    audit flagged these under the 44px touch-target floor. Growing the link's
    own padding would visually bloat tight nav rows, so instead a transparent

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import type { Dictionary, Locale } from "@/i18n";
 import { navLinks } from "@/lib/nav-links";
 import { waLink } from "@/lib/whatsapp";
@@ -10,7 +11,10 @@ import { ThemeToggle } from "./ThemeToggle";
 import { LocaleToggle } from "./LocaleToggle";
 import { MenuIcon, CloseIcon } from "@/components/ui/icons";
 
+const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const reduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -75,7 +79,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             href={ctaHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-11 items-center rounded-md bg-orange px-4 text-sm font-medium text-[#431407] transition-colors hover:bg-orange-hover"
+            className="tarc-cta-glow flex min-h-11 items-center rounded-md bg-orange px-4 text-sm font-medium text-[#431407] hover:bg-orange-hover"
           >
             {dict.nav.cta}
           </a>
@@ -92,55 +96,63 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         </button>
       </div>
 
-      {menuOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-background md:hidden">
-          <div className="flex h-[var(--nav-height)] items-center justify-between px-6">
-            <span className="tarc-logotype text-lg">TARC Tech</span>
-            <button
-              type="button"
-              onClick={() => setMenuOpen(false)}
-              aria-label={dict.nav.closeMenu}
-              className="flex h-11 w-11 items-center justify-center"
-            >
-              <CloseIcon className="h-6 w-6" />
-            </button>
-          </div>
-
-          <nav className="flex flex-1 flex-col items-center justify-center gap-8">
-            <ul className="flex flex-col items-center gap-6 text-xl font-medium">
-              {navLinks.map((link) => (
-                <li key={link.id}>
-                  <Link
-                    href={`/${locale}#${link.id}`}
-                    onClick={() => setMenuOpen(false)}
-                    className="tap-target-expand-sm"
-                  >
-                    {dict.nav[link.labelKey]}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="flex items-center gap-4">
-              <LocaleToggle locale={locale} label={dict.nav.languageLabel} />
-              <ThemeToggle label={dict.nav.themeLabel} />
-            </div>
-          </nav>
-
-          <div
-            className="p-6"
-            style={{ paddingBottom: "max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom)))" }}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+            transition={{ duration: reduceMotion ? 0.12 : 0.28, ease: EASE_OUT_EXPO }}
+            className="fixed inset-0 z-50 flex flex-col bg-background md:hidden"
           >
-            <a
-              href={ctaHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full rounded-md bg-orange px-4 py-3 text-center font-medium text-[#431407] transition-colors hover:bg-orange-hover"
+            <div className="flex h-[var(--nav-height)] items-center justify-between px-6">
+              <span className="tarc-logotype text-lg">TARC Tech</span>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                aria-label={dict.nav.closeMenu}
+                className="flex h-11 w-11 items-center justify-center"
+              >
+                <CloseIcon className="h-6 w-6" />
+              </button>
+            </div>
+
+            <nav className="flex flex-1 flex-col items-center justify-center gap-8">
+              <ul className="flex flex-col items-center gap-6 text-xl font-medium">
+                {navLinks.map((link) => (
+                  <li key={link.id}>
+                    <Link
+                      href={`/${locale}#${link.id}`}
+                      onClick={() => setMenuOpen(false)}
+                      className="tap-target-expand-sm"
+                    >
+                      {dict.nav[link.labelKey]}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex items-center gap-4">
+                <LocaleToggle locale={locale} label={dict.nav.languageLabel} />
+                <ThemeToggle label={dict.nav.themeLabel} />
+              </div>
+            </nav>
+
+            <div
+              className="p-6"
+              style={{ paddingBottom: "max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom)))" }}
             >
-              {dict.nav.cta}
-            </a>
-          </div>
-        </div>
-      )}
+              <a
+                href={ctaHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tarc-cta-glow block w-full rounded-md bg-orange px-4 py-3 text-center font-medium text-[#431407] hover:bg-orange-hover"
+              >
+                {dict.nav.cta}
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
