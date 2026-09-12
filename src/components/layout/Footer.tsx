@@ -40,7 +40,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <div className="flex flex-col gap-4">
             <Link
               href={`/${locale}#top`}
-              className="group/logo flex items-center gap-2"
+              className="group/logo flex w-fit items-center gap-2 transition-transform duration-150 active:scale-95"
               aria-label="TARC Tech"
             >
               <Image
@@ -58,10 +58,16 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {social.email && (
               <a
                 href={`mailto:${social.email}`}
-                className="group flex items-center gap-2 text-sm text-foreground-secondary transition-colors hover:text-foreground"
+                className="group/mail relative flex w-fit items-center gap-2 text-sm text-foreground-secondary transition-all duration-150 hover:text-foreground active:scale-95"
               >
-                <MailIcon className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                {social.email}
+                <MailIcon className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover/mail:scale-110" />
+                <span className="relative">
+                  {social.email}
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-orange transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/mail:scale-x-100"
+                  />
+                </span>
               </a>
             )}
 
@@ -77,9 +83,13 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 <li key={link.id}>
                   <Link
                     href={`/${locale}#${link.id}`}
-                    className="tap-target-expand-sm transition-colors hover:text-foreground"
+                    className="tap-target-expand-sm group/flink relative inline-block transition-all duration-150 hover:text-foreground active:scale-95"
                   >
                     {dict.nav[link.labelKey]}
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-orange transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/flink:scale-x-100"
+                    />
                   </Link>
                 </li>
               ))}
@@ -96,9 +106,13 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={label}
-                    className="group flex h-11 w-11 items-center justify-center rounded-md border border-border text-foreground-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-deep hover:text-orange-deep"
+                    className="group relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-md border border-border text-foreground-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-deep hover:text-orange-deep active:translate-y-0 active:scale-90"
                   >
-                    <Icon className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 origin-bottom scale-y-0 bg-orange-soft transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
+                    />
+                    <Icon className="relative h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
                   </a>
                 </li>
               ))}
