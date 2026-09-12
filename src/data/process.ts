@@ -3,55 +3,63 @@ import type { LocalizedText } from "./projects";
 export type ProcessStep = {
   id: string;
   number: number;
+  icon: "ear" | "lightbulb" | "hammer" | "rocket" | "shield";
   title: LocalizedText;
   description: LocalizedText;
 };
 
-// Real content only — see PLAN-LANDING-TARC-TECH.md §6.6.
+// Real content only — see PLAN-LANDING-TARC-TECH.md §6.6. Step names read as
+// verbs on purpose ("Escuchamos", not "Relevamiento") — the plural, active
+// voice the rest of the work-facing copy uses.
 export const processSteps: ProcessStep[] = [
   {
-    id: "discovery",
+    id: "listen",
     number: 1,
-    title: { es: "Relevamiento", en: "Discovery" },
+    icon: "ear",
+    title: { es: "Escuchamos", en: "We listen" },
     description: {
-      es: "Entiendo tu negocio y detecto qué te falta realmente.",
-      en: "I get to know your business and find out what's really missing.",
+      es: "Relevamos tu negocio a fondo antes de proponer nada: cómo trabajás hoy y qué te está frenando.",
+      en: "We get to know your business in depth before proposing anything: how you work today and what's holding you back.",
     },
   },
   {
-    id: "proposal",
+    id: "propose",
     number: 2,
-    title: { es: "Propuesta", en: "Proposal" },
+    icon: "lightbulb",
+    title: { es: "Proponemos", en: "We propose" },
     description: {
-      es: "Te presento una solución concreta con alcance claro.",
-      en: "I present a concrete solution with a clear scope.",
+      es: "Te presentamos una solución concreta, con alcance y expectativas claras desde el primer día.",
+      en: "We present a concrete solution, with clear scope and expectations from day one.",
     },
   },
   {
-    id: "iterative-development",
+    id: "build",
     number: 3,
-    title: { es: "Desarrollo iterativo", en: "Iterative development" },
+    icon: "hammer",
+    title: { es: "Construimos", en: "We build" },
     description: {
-      es: "Vas viendo prototipos y me das feedback en el camino. Nada de sorpresas al final.",
-      en: "You see prototypes and give feedback along the way. No surprises at the end.",
+      es: "Desarrollo iterativo: vas viendo el avance real y nos das feedback en el camino. Nada de sorpresas al final.",
+      en: "Iterative development: you see real progress and give us feedback along the way. No surprises at the end.",
     },
   },
   {
-    id: "delivery",
+    id: "launch",
     number: 4,
-    title: { es: "Entrega", en: "Delivery" },
+    icon: "rocket",
+    title: { es: "Lanzamos", en: "We launch" },
     description: {
-      es: "Sistema funcionando, con la puesta en marcha acompañada.",
-      en: "A working system, with hands-on launch support.",
+      es: "Sistema funcionando en producción, con la puesta en marcha acompañada de principio a fin.",
+      en: "A working system in production, with hands-on launch support from start to finish.",
     },
   },
   {
     id: "support",
     number: 5,
-    title: { es: "Soporte y mantenimiento", en: "Support & maintenance" },
+    icon: "shield",
+    title: { es: "Acompañamos", en: "We support" },
     description: {
-      es: "Sigo disponible: mejoras, ajustes y respaldo.",
-      en: "I stay available: improvements, adjustments, and backup.",
+      es: "Seguimos disponibles después de la entrega: mejoras, ajustes y respaldo cuando lo necesites.",
+      en: "We stay available after delivery: improvements, adjustments and backup whenever you need them.",
     },
   },
 ];

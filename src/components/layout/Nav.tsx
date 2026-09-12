@@ -17,6 +17,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const reduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   useEffect(() => {
     function onScroll() {
@@ -25,6 +26,29 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Scroll-spy: highlight whichever nav link's section currently owns the
+  // middle of the viewport, so the nav finally says where you are on this
+  // long single-page scroll — it never did before.
+  useEffect(() => {
+    const sections = navLinks
+      .map((link) => document.getElementById(link.id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   // Lock body scroll while the mobile menu is open.
@@ -50,25 +74,46 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6">
         <Link
           href={`/${locale}#top`}
-          className="flex items-center gap-2"
+          className="group/logo flex items-center gap-2"
           aria-label="TARC Tech"
         >
-          <Image src="/brand/isotipo.svg" alt="" width={28} height={28} priority />
-          <span className="tarc-logotype text-lg">TARC Tech</span>
+          <Image
+            src="/brand/isotipo.svg"
+            alt=""
+            width={28}
+            height={28}
+            priority
+            className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/logo:scale-110 group-hover/logo:-rotate-6"
+          />
+          <span className="tarc-logotype text-lg">
+            TARC <span className="text-orange">Tech</span>
+          </span>
         </Link>
 
         <nav aria-label={dict.nav.primaryNav} className="hidden md:block">
           <ul className="flex items-center gap-8 text-sm font-medium">
-            {navLinks.map((link) => (
-              <li key={link.id}>
-                <Link
-                  href={`/${locale}#${link.id}`}
-                  className="tap-target-expand text-foreground-secondary transition-colors hover:text-foreground"
-                >
-                  {dict.nav[link.labelKey]}
-                </Link>
-              </li>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <li key={link.id}>
+                  <Link
+                    href={`/${locale}#${link.id}`}
+                    aria-current={isActive ? "location" : undefined}
+                    className={`tap-target-expand group/link relative inline-block py-1 transition-colors ${
+                      isActive ? "text-foreground" : "text-foreground-secondary hover:text-foreground"
+                    }`}
+                  >
+                    {dict.nav[link.labelKey]}
+                    <span
+                      aria-hidden
+                      className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-orange transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover/link:scale-x-100"
+                      }`}
+                    />
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
@@ -106,7 +151,9 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             className="fixed inset-0 z-50 flex flex-col bg-background md:hidden"
           >
             <div className="flex h-[var(--nav-height)] items-center justify-between px-6">
-              <span className="tarc-logotype text-lg">TARC Tech</span>
+              <span className="tarc-logotype text-lg">
+                TARC <span className="text-orange">Tech</span>
+              </span>
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}

@@ -208,15 +208,6 @@ function SolutionPanel({
             {solution.body[locale]}
           </p>
 
-          {solution.example && (
-            <p className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-foreground-secondary">
-              {dict.solutions.exampleLabel}:
-              <span className="font-medium text-foreground">
-                {solution.example}
-              </span>
-            </p>
-          )}
-
           <div className="mt-5">
             <a
               href={waLink(dict.whatsapp[solution.whatsappKey])}

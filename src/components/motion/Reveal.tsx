@@ -12,10 +12,15 @@ export function Reveal({
   children,
   delay = 0,
   className,
+  repeat = false,
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  /** Re-plays every time this scrolls back into view instead of once ever —
+   *  for a closing element (the footer) that should still feel alive if the
+   *  visitor scrolls back up and down again, not just on first arrival. */
+  repeat?: boolean;
 }) {
   const reduceMotion = useReducedMotion();
 
@@ -24,7 +29,7 @@ export function Reveal({
       className={className}
       initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      viewport={{ once: !repeat, margin: "0px 0px -10% 0px" }}
       transition={{ duration: 0.5, delay: reduceMotion ? 0 : delay, ease: EASE_OUT_EXPO }}
     >
       {children}

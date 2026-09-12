@@ -1,15 +1,31 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ComponentType } from "react";
 import {
   motion,
   useScroll,
   useTransform,
+  useMotionValue,
   useReducedMotion,
   type MotionValue,
 } from "motion/react";
 import type { Dictionary, Locale } from "@/i18n";
 import { processSteps, type ProcessStep } from "@/data/process";
+import {
+  EarIcon,
+  LightbulbIcon,
+  HammerIcon,
+  RocketIcon,
+  ShieldCheckIcon,
+} from "@/components/ui/icons";
+
+const ICONS: Record<ProcessStep["icon"], ComponentType<{ className?: string }>> = {
+  ear: EarIcon,
+  lightbulb: LightbulbIcon,
+  hammer: HammerIcon,
+  rocket: RocketIcon,
+  shield: ShieldCheckIcon,
+};
 
 // Second authored moment of the page (PLAN §6.6): the line is drawn by the
 // scroll itself and each step ignites as the line reaches it — the method
@@ -107,11 +123,21 @@ function Step({
   threshold: number;
   reduceMotion: boolean;
 }) {
-  const lit = useTransform(
+  const Icon = ICONS[step.icon];
+  // Hovering a step ignites it on its own, independent of where the scroll
+  // line actually is — parked there for the length of its own transition
+  // instead of jumping straight to lit, and it never drags any other step
+  // along with it. Whichever source (scroll or hover) is further along wins.
+  const hoverLit = useMotionValue(0);
+
+  const scrollLit = useTransform(
     progress,
     [Math.max(threshold - 0.06, 0), threshold],
     [0, 1],
     { clamp: true }
+  );
+  const lit = useTransform([scrollLit, hoverLit], (values: number[]) =>
+    Math.max(values[0], values[1])
   );
 
   const numberColor = useTransform(
@@ -132,7 +158,11 @@ function Step({
   const bodyOpacity = useTransform(lit, [0, 1], [0.85, 1]);
 
   return (
-    <li className="relative flex gap-5 md:flex-1 md:flex-col md:gap-0">
+    <li
+      className="relative flex gap-5 md:flex-1 md:flex-col md:gap-0"
+      onMouseEnter={() => hoverLit.set(1)}
+      onMouseLeave={() => hoverLit.set(0)}
+    >
       <motion.span
         aria-hidden
         style={{
@@ -146,16 +176,21 @@ function Step({
             ? { borderColor: "var(--color-orange)", color: "var(--color-orange)" }
             : { borderColor: numberColor, color: numberText }),
         }}
-        className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center border bg-background font-bold"
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center border bg-background"
       >
-        {step.number}
+        <Icon className="h-6 w-6" />
       </motion.span>
 
       <motion.div
         style={reduceMotion ? undefined : { opacity: bodyOpacity }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="md:mt-6"
       >
-        <h3 className="font-bold">{step.title[locale]}</h3>
+        <span aria-hidden className="text-xs font-medium text-foreground-secondary">
+          {String(step.number).padStart(2, "0")}
+        </span>
+        <h3 className="mt-0.5 font-bold">{step.title[locale]}</h3>
         <p className="mt-2 text-sm text-foreground-secondary">
           {step.description[locale]}
         </p>

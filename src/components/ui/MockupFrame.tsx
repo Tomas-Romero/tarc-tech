@@ -6,6 +6,13 @@ import Image from "next/image";
 // When a project has no real screenshot yet, this shows a branded panel —
 // never a fabricated or stock mockup (PLAN §0.3, §15 R5). `note` carries the
 // honest line for a project that is still being built.
+//
+// Tried a shared `layoutId` here at one point so the card's screenshot would
+// morph into the modal's larger one — reverted. With the card's copy never
+// unmounting (it stays in the grid behind the modal), Motion's shared-layout
+// tracking left the modal's own exit animation unable to complete, so the
+// close button stopped removing it from the DOM. A broken close button is a
+// worse regression than the transition it was meant to add.
 export function MockupFrame({
   src,
   alt,

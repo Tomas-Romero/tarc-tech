@@ -2,6 +2,7 @@ import type { Dictionary } from "@/i18n";
 import { waLink } from "@/lib/whatsapp";
 import { HeroBackground } from "@/components/motion/HeroBackground";
 import { HeroBrand } from "@/components/motion/HeroBrand";
+import { HeroSignature } from "@/components/motion/HeroSignature";
 
 export function Hero({ dict }: { dict: Dictionary }) {
   return (
@@ -53,9 +54,11 @@ export function Hero({ dict }: { dict: Dictionary }) {
             </a>
           </div>
 
-          <p className="mt-8 text-sm text-foreground-secondary">
-            {dict.hero.signature}
-          </p>
+          <HeroSignature
+            prefix={dict.hero.signaturePrefix}
+            name={dict.hero.signatureName}
+            suffix={dict.hero.signatureSuffix}
+          />
         </div>
 
         <div className="order-first w-40 shrink-0 sm:w-60 md:order-none md:w-[42%] md:max-w-md">

@@ -16,18 +16,16 @@
     "closeMenu": "Cerrar menú",
     "primaryNav": "Navegación principal"
   },
-  "trust": {
-    "title": "Negocios que ya trabajan con software hecho a medida."
-  },
   "services": {
-    "title": "Qué hago"
+    "title": "Qué hacemos",
+    "intro": "Software a medida, de punta a punta."
   },
   "faq": {
     "title": "Preguntas frecuentes"
   },
   "finalCta": {
-    "title": "¿Tenés una idea o un problema para resolver?",
-    "subtitle": "Contame qué necesitás y te digo cómo lo resolvería. Sin compromiso.",
+    "title": "Contame en qué estás pensando",
+    "subtitle": "Sin vueltas: me contás tu idea, la pensamos juntos y te digo con sinceridad si puedo ayudarte.",
     "button": "Escribime por WhatsApp",
     "location": "San Rafael, Mendoza, Argentina — trabajo remoto con todo el país."
   },
@@ -36,6 +34,7 @@
     "bio": "Soy Tomás Romero. Desarrollo software a medida desde San Rafael, Mendoza, y soy estudiante avanzado de Ingeniería en Sistemas de Información en la UTN (FRSR). Trabajo como freelance full stack desde 2023.",
     "method": "Relevo tu negocio antes de proponer nada, desarrollo mostrándote prototipos para que corrijas en el camino, y sigo disponible después de la entrega. Hablás conmigo, no con un departamento.",
     "stackLabel": "En qué trabajo",
+    "contactLabel": "Hablemos",
     "portraitPending": "Foto en camino",
     "whatsapp": "WhatsApp"
   },
@@ -57,18 +56,17 @@
     "wantSimilar": "Quiero algo parecido"
   },
   "process": {
-    "title": "Cómo trabajo",
+    "title": "Cómo trabajamos",
     "intro": "Un método, no improvisación. Estos son los cinco pasos de cada proyecto."
   },
   "solutions": {
-    "title": "Qué te puedo desarrollar",
+    "title": "Ideas para desarrollar",
     "intro": "Elegí lo que más se parezca a tu caso y contame los detalles.",
-    "exampleLabel": "Ejemplo",
-    "railLabel": "Índice de soluciones",
+    "railLabel": "Índice de ideas",
     "cta": "Hablemos de esto",
-    "fallbackTitle": "¿Lo tuyo no está en la lista?",
-    "fallbackBody": "Contame qué necesitás y te digo cómo lo resolvería.",
-    "fallbackCta": "Contame qué necesitás"
+    "fallbackTitle": "Analicemos tu caso puntual",
+    "fallbackBody": "Seguramente tu negocio tiene algo particular que ninguna lista cubre del todo. Contámelo y buscamos juntos la forma de resolverlo.",
+    "fallbackCta": "Charlemos de tu proyecto"
   },
   "hero": {
     "titleParts": [
@@ -79,7 +77,9 @@
     "subtitle": "Sistemas, apps y automatizaciones desarrollados desde cero para cómo trabaja tu negocio. Relevamos, proponemos, desarrollamos con tu feedback y te acompañamos después.",
     "ctaPrimary": "Trabajemos juntos",
     "ctaSecondary": "Ver proyectos",
-    "signature": "Desarrollado por Tomás Romero · San Rafael, Mendoza"
+    "signaturePrefix": "Desarrollado por ",
+    "signatureName": "Tomás Romero",
+    "signatureSuffix": " · San Rafael, Mendoza"
   },
   "whatsapp": {
     "nav": "Hola Tomás, vi la web de TARC Tech y quiero consultarte algo.",

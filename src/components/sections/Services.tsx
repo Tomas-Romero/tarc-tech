@@ -5,6 +5,7 @@ import {
   motion,
   useScroll,
   useTransform,
+  useMotionValueEvent,
   useReducedMotion,
   type MotionValue,
 } from "motion/react";
@@ -45,6 +46,16 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
   const [travel, setTravel] = useState(0);
   const [scrollDistance, setScrollDistance] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+
+  // Desktop: which card is centered in the pinned track right now — driven
+  // by scroll position, not just hover, so each item ignites on its own
+  // timing as it arrives, the same visual state a mouse hover triggers.
+  const [activeIndex, setActiveIndex] = useState(0);
+  // Mobile: same idea, but tracked via the carousel's own horizontal scroll
+  // instead of the page's vertical one.
+  const [carouselActive, setCarouselActive] = useState(0);
 
   useEffect(() => {
     // 1024px, not 768px: a portrait tablet at 768px only has room to show
@@ -90,6 +101,36 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
     clamp: true,
   });
 
+  useMotionValueEvent(trackProgress, "change", (v) => {
+    const idx = Math.round(v * (services.length - 1));
+    setActiveIndex((prev) => (prev === idx ? prev : idx));
+  });
+
+  // Mobile carousel: the card nearest the container's center counts as
+  // "arrived," mirroring the desktop pin's activation with a normal
+  // IntersectionObserver instead of a scroll-progress calculation.
+  useEffect(() => {
+    if (pinned) return;
+    const root = carouselRef.current;
+    const nodes = cardRefs.current.filter(Boolean) as HTMLElement[];
+    if (!root || nodes.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const idx = nodes.indexOf(visible.target as HTMLElement);
+        if (idx >= 0) setCarouselActive(idx);
+      },
+      { root, threshold: [0.6] },
+    );
+
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, [pinned]);
+
   return (
     <section
       id="servicios"
@@ -110,21 +151,22 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             {dict.services.title}
           </h2>
+          <p className="mt-4 max-w-xl text-foreground-secondary">
+            {dict.services.intro}
+          </p>
         </div>
 
         {pinned ? (
           <>
             <div className="mt-12 overflow-hidden px-12">
-              <motion.div
-                style={{ x, gap: GAP }}
-                className="flex w-max"
-              >
-                {services.map((service) => (
+              <motion.div style={{ x, gap: GAP }} className="flex w-max">
+                {services.map((service, i) => (
                   <ServiceCard
                     key={service.id}
                     service={service}
                     locale={locale}
                     width={CARD_W}
+                    isActive={i === activeIndex}
                   />
                 ))}
               </motion.div>
@@ -134,16 +176,21 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
         ) : (
           // Mobile / reduced motion: a snap carousel the thumb controls.
           <div
+            ref={carouselRef}
             className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4"
             style={{ scrollbarWidth: "none" }}
           >
-            {services.map((service) => (
+            {services.map((service, i) => (
               <ServiceCard
                 key={service.id}
+                ref={(node) => {
+                  cardRefs.current[i] = node;
+                }}
                 service={service}
                 locale={locale}
                 width={300}
                 snap
+                isActive={i === carouselActive}
               />
             ))}
           </div>
@@ -167,40 +214,63 @@ function ScrollProgress({ progress }: { progress: MotionValue<number> }) {
 }
 
 function ServiceCard({
+  ref,
   service,
   locale,
   width,
   snap,
+  isActive,
 }: {
+  ref?: (node: HTMLElement | null) => void;
   service: Service;
   locale: Locale;
   width: number;
   snap?: boolean;
+  isActive?: boolean;
 }) {
   const Icon = ICONS[service.icon];
 
   return (
     <article
+      ref={ref}
       style={{ width }}
-      className={`group relative shrink-0 overflow-hidden rounded-lg border border-border bg-surface p-8 transition-colors duration-300 hover:border-orange ${
-        snap ? "snap-start" : ""
-      }`}
+      className={`group relative shrink-0 overflow-hidden rounded-lg border bg-surface p-8 transition-colors duration-300 ${
+        isActive ? "border-orange" : "border-border hover:border-orange"
+      } ${snap ? "snap-start" : ""}`}
     >
-      {/* The ember floods up from the base on hover — the panel heats rather
+      {/* The ember floods up from the base on hover — or on its own, once
+          scroll (desktop pin) or swipe (mobile carousel) brings this card to
+          the front. Same visual state either way: the panel heats rather
           than lifting, which is the world DESIGN.md commits to. */}
       <span
         aria-hidden
-        className="absolute inset-0 origin-bottom scale-y-0 bg-orange transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
+        className={`absolute inset-0 origin-bottom bg-orange transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isActive ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"
+        }`}
       />
 
       <div className="relative flex h-full flex-col">
-        <Icon className="h-9 w-9 text-orange transition-colors duration-300 group-hover:text-[#431407]" />
+        <Icon
+          className={`h-9 w-9 transition-colors duration-300 ${
+            isActive ? "text-[#431407]" : "text-orange group-hover:text-[#431407]"
+          }`}
+        />
 
-        <h3 className="mt-6 text-xl font-bold transition-colors duration-300 group-hover:text-[#431407]">
+        <h3
+          className={`mt-6 text-xl font-bold transition-colors duration-300 ${
+            isActive ? "text-[#431407]" : "group-hover:text-[#431407]"
+          }`}
+        >
           {service.title[locale]}
         </h3>
 
-        <p className="mt-3 text-foreground-secondary transition-colors duration-300 group-hover:text-[#5a2410]">
+        <p
+          className={`mt-3 transition-colors duration-300 ${
+            isActive
+              ? "text-[#5a2410]"
+              : "text-foreground-secondary group-hover:text-[#5a2410]"
+          }`}
+        >
           {service.description[locale]}
         </p>
       </div>

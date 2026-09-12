@@ -35,7 +35,7 @@ export function HeroBrand() {
           }
           transition={{ duration: reduceMotion ? 0.4 : 0.62, ease: EASE_OUT_EXPO }}
         >
-          TARC Tech
+          TARC <span className="text-orange">Tech</span>
         </motion.p>
 
         <motion.div

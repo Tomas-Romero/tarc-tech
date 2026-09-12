@@ -165,3 +165,85 @@ export function PaletteIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+// The five "Cómo trabajamos" step icons — one per step, none reused
+// elsewhere on the site, so the timeline reads as its own small set.
+
+export function EarIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M8.5 13.5c0-3.9 2.5-7 6-7s5.5 2.8 5.5 6c0 2.6-1.6 3.6-2.7 4.7-.8.8-1.3 1.6-1.3 2.8a2.3 2.3 0 0 1-4.6 0v-.7" />
+      <path d="M8.5 13.5c0 2 .7 3 2 4" />
+      <path d="M12.5 9.8c1.4 0 2.5 1.2 2.5 3" />
+    </svg>
+  );
+}
+
+export function LightbulbIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M9 18h6" />
+      <path d="M10 21h4" />
+      <path d="M12 3a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.7v.5h6v-.5c0-.7.3-1.3.8-1.7A6.5 6.5 0 0 0 12 3Z" />
+      <path d="M12 6.5c-1.7 0-3 1.3-3 3" />
+    </svg>
+  );
+}
+
+export function HammerIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M13.5 6.5 17 3l4 4-3.5 3.5" />
+      <path d="M15 5 8 12" />
+      <rect
+        x="2.5"
+        y="14.5"
+        width="4.5"
+        height="10"
+        rx="1"
+        transform="rotate(-45 4.75 19.5)"
+      />
+      <path d="M10.5 10 3 17.5" />
+    </svg>
+  );
+}
+
+export function RocketIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M12 2.5c2.5 1.6 4 4.6 4 8.5 0 2.7-.7 4.8-1.4 6.2h-5.2C8.7 15.8 8 13.7 8 11c0-3.9 1.5-6.9 4-8.5Z" />
+      <circle cx="12" cy="10" r="1.6" />
+      <path d="M9.4 17.2 7 21l2.8-1.2" />
+      <path d="M14.6 17.2 17 21l-2.8-1.2" />
+      <path d="M8 13.5c-1.8.5-2.8 1.8-3 4 1.9.3 3.3-.4 4-1.7" />
+      <path d="M16 13.5c1.8.5 2.8 1.8 3 4-1.9.3-3.3-.4-4-1.7" />
+    </svg>
+  );
+}
+
+export function ShieldCheckIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M12 3.5 5 6v5.5c0 4.6 2.9 7.8 7 9 4.1-1.2 7-4.4 7-9V6Z" />
+      <path d="m9 12 2 2 4-4.5" />
+    </svg>
+  );
+}
+
+export function MailIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m4 6.5 8 6.5 8-6.5" />
+    </svg>
+  );
+}
+
+export function MapPinIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M12 21.5c4-4 7-7.9 7-11.5a7 7 0 1 0-14 0c0 3.6 3 7.5 7 11.5Z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  );
+}

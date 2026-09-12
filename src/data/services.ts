@@ -14,8 +14,8 @@ export const services: Service[] = [
     icon: "code",
     title: { es: "Software a medida", en: "Custom software" },
     description: {
-      es: "Sistemas hechos para tu forma de trabajar, no al revés.",
-      en: "Systems built around how you work, not the other way around.",
+      es: "Construimos sistemas para tu forma de trabajar, no al revés.",
+      en: "We build systems around how you work, not the other way around.",
     },
   },
   {
@@ -32,8 +32,8 @@ export const services: Service[] = [
     icon: "smartphone",
     title: { es: "Apps mobile y de escritorio", en: "Mobile & desktop apps" },
     description: {
-      es: "Aplicaciones que funcionan donde trabajás, incluso sin internet.",
-      en: "Applications that work wherever you do business, even without internet.",
+      es: "Desarrollamos apps que funcionan donde trabajás, incluso sin internet.",
+      en: "We build apps that work wherever you do business, even without internet.",
     },
   },
   {
@@ -41,8 +41,8 @@ export const services: Service[] = [
     icon: "cloud",
     title: { es: "Productos SaaS", en: "SaaS products" },
     description: {
-      es: "Plataformas multi-cliente pensadas para escalar y venderse por suscripción.",
-      en: "Multi-client platforms built to scale and sell by subscription.",
+      es: "Diseñamos plataformas multi-cliente pensadas para escalar y venderse por suscripción.",
+      en: "We design multi-client platforms built to scale and sell by subscription.",
     },
   },
   {
@@ -50,8 +50,8 @@ export const services: Service[] = [
     icon: "palette",
     title: { es: "Diseño e identidad", en: "Design & identity" },
     description: {
-      es: "Interfaces y marca cuidadas: logo, paleta, tipografía y experiencia.",
-      en: "Thoughtful interfaces and branding: logo, palette, typography and experience.",
+      es: "Cuidamos cada interfaz y marca: logo, paleta, tipografía y experiencia.",
+      en: "We take care of every interface and brand: logo, palette, typography and experience.",
     },
   },
 ];
