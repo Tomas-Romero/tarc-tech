@@ -155,6 +155,40 @@ export function CloudIcon({ className }: IconProps) {
   );
 }
 
+export function CardLockIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="2.5" y="5" width="14" height="11" rx="1.8" />
+      <path d="M2.5 9h14" />
+      <path d="M5.5 12.5h4" />
+      <path d="M15.5 16v-2.2a3 3 0 0 1 6 0V16" />
+      <rect x="14.3" y="16" width="8.2" height="6.5" rx="1.4" />
+    </svg>
+  );
+}
+
+export function HeadsetIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M4 13v-1.5a8 8 0 0 1 16 0V13" />
+      <rect x="2.5" y="12.5" width="4.5" height="6.5" rx="1.4" />
+      <rect x="17" y="12.5" width="4.5" height="6.5" rx="1.4" />
+      <path d="M19.2 19v.8a3 3 0 0 1-3 3h-3.4" />
+    </svg>
+  );
+}
+
+export function BuildingIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="4" y="3" width="11" height="18" rx="1" />
+      <path d="M15 9.5h5v11.5h-5" />
+      <path d="M7 7h2M11 7h1M7 10.5h2M11 10.5h1M7 14h2M11 14h1M7 17.5h2M11 17.5h1" />
+      <path d="M18 13h1M18 16.5h1" />
+    </svg>
+  );
+}
+
 export function PaletteIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>

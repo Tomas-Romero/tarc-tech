@@ -118,13 +118,13 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <LocaleToggle locale={locale} label={dict.nav.languageLabel} />
+          <LocaleToggle locale={locale} label={dict.nav.languageLabel} scope="desktop" />
           <ThemeToggle label={dict.nav.themeLabel} />
           <a
             href={ctaHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="tarc-cta-glow flex min-h-11 items-center rounded-md bg-orange px-4 text-sm font-medium text-[#431407] hover:bg-orange-hover"
+            className="tarc-cta-glow flex min-h-11 items-center rounded-md bg-orange px-4 text-sm font-medium text-[#431407] transition-transform duration-150 hover:bg-orange-hover active:scale-95"
           >
             {dict.nav.cta}
           </a>
@@ -135,7 +135,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           onClick={() => setMenuOpen(true)}
           aria-label={dict.nav.openMenu}
           aria-expanded={menuOpen}
-          className="flex h-11 w-11 items-center justify-center md:hidden"
+          className="flex h-11 w-11 items-center justify-center transition-transform duration-150 active:scale-90 md:hidden"
         >
           <MenuIcon className="h-6 w-6" />
         </button>
@@ -158,7 +158,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 type="button"
                 onClick={() => setMenuOpen(false)}
                 aria-label={dict.nav.closeMenu}
-                className="flex h-11 w-11 items-center justify-center"
+                className="flex h-11 w-11 items-center justify-center transition-transform duration-150 active:scale-90"
               >
                 <CloseIcon className="h-6 w-6" />
               </button>
@@ -166,20 +166,29 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
             <nav className="flex flex-1 flex-col items-center justify-center gap-8">
               <ul className="flex flex-col items-center gap-6 text-xl font-medium">
-                {navLinks.map((link) => (
-                  <li key={link.id}>
+                {navLinks.map((link, i) => (
+                  <motion.li
+                    key={link.id}
+                    initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: reduceMotion ? 0.12 : 0.3,
+                      delay: reduceMotion ? 0 : 0.08 + i * 0.05,
+                      ease: EASE_OUT_EXPO,
+                    }}
+                  >
                     <Link
                       href={`/${locale}#${link.id}`}
                       onClick={() => setMenuOpen(false)}
-                      className="tap-target-expand-sm"
+                      className="tap-target-expand-sm inline-block transition-transform duration-150 active:scale-95"
                     >
                       {dict.nav[link.labelKey]}
                     </Link>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
               <div className="flex items-center gap-4">
-                <LocaleToggle locale={locale} label={dict.nav.languageLabel} />
+                <LocaleToggle locale={locale} label={dict.nav.languageLabel} scope="mobile" />
                 <ThemeToggle label={dict.nav.themeLabel} />
               </div>
             </nav>
@@ -192,7 +201,7 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 href={ctaHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="tarc-cta-glow block w-full rounded-md bg-orange px-4 py-3 text-center font-medium text-[#431407] hover:bg-orange-hover"
+                className="tarc-cta-glow block w-full rounded-md bg-orange px-4 py-3 text-center font-medium text-[#431407] transition-transform duration-150 hover:bg-orange-hover active:scale-95"
               >
                 {dict.nav.cta}
               </a>

@@ -58,7 +58,7 @@ export const projects: Project[] = [
       ],
     },
     stack: ["React", "Node.js", "Express", "PostgreSQL"],
-    images: [],
+    images: ["/projects/modas-vanina-home.png"],
   },
   {
     id: "gatheringhr",
@@ -79,7 +79,7 @@ export const projects: Project[] = [
       en: [],
     },
     stack: ["JavaScript", "SCSS", "Tailwind CSS"],
-    images: [],
+    images: ["/projects/gatheringhr-home.png"],
   },
   {
     id: "kioscontrol",
@@ -112,7 +112,7 @@ export const projects: Project[] = [
       ],
     },
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Supabase", "PostgreSQL"],
-    images: [],
+    images: ["/projects/kioscontrol-caja.png"],
     mascot: "Kio",
   },
   {

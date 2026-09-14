@@ -83,8 +83,22 @@ export function HeroMark({
     );
   }, []);
 
-  // Event-driven off the last piece actually seating, not a guessed timeout.
+  // Event-driven off the last piece actually seating, not a guessed timeout
+  // — except this now also has a guessed-timeout fallback (see below):
+  // Motion's `onAnimationComplete` for a spring on an SVG `<g>` occasionally
+  // never fires (observed directly: the wordmark stayed clipped/hidden on a
+  // handful of loads, both at mobile and desktop widths, with no console
+  // error — a spring has no fixed duration, and completion is detected by
+  // convergence rather than a timer, which is inherently less deterministic
+  // than a tween's). Since the wordmark's own reveal depends entirely on
+  // this firing, a missed event meant "TARC Tech" simply never appeared
+  // under the mark. The guard ref below keeps whichever path fires first as
+  // the only one that counts.
+  const impactFiredRef = useRef(false);
+
   function onImpact() {
+    if (impactFiredRef.current) return;
+    impactFiredRef.current = true;
     setAssembled(true);
     shimmerRef.current?.beginElement();
     onAssembled?.();
@@ -92,10 +106,20 @@ export function HeroMark({
 
   useEffect(() => {
     if (!reduceMotion) return;
-    setAssembled(true);
-    onAssembled?.();
+    onImpact();
     // onAssembled is a stable callback from the parent; re-running on its
     // identity would re-fire the impact.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    // The stem is the slowest piece (0.42s delay + this spring's own settle
+    // time); comfortably past that is a safe worst case for when every
+    // piece must have visually seated even if the completion event itself
+    // got lost.
+    const fallback = setTimeout(onImpact, 1800);
+    return () => clearTimeout(fallback);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduceMotion]);
 

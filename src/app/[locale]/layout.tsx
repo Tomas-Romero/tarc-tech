@@ -6,6 +6,7 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
 import { LoadingScreen } from "@/components/motion/LoadingScreen";
+import { PageGrid } from "@/components/motion/PageGrid";
 import { JsonLd } from "@/components/seo/JsonLd";
 import "../globals.css";
 
@@ -84,6 +85,7 @@ export default async function LocaleLayout({
         <JsonLd dict={dict} locale={locale} />
       </head>
       <body className={`${fontVariables} antialiased`}>
+        <PageGrid />
         <LoadingScreen />
         <Nav locale={locale} dict={dict} />
         {children}

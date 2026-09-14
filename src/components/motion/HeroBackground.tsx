@@ -74,16 +74,10 @@ export function HeroBackground() {
       aria-hidden
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-      {/* Faceted lattice, not an orthogonal checkerboard — two diagonal line
-          sets crossing at the isotipo's own angles ("aristas antes que
-          blandura"), not the generic SaaS grid-background default. */}
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(55deg, var(--color-foreground-secondary) 0 1px, transparent 1px 64px), repeating-linear-gradient(-55deg, var(--color-foreground-secondary) 0 1px, transparent 1px 90px)",
-        }}
-      />
+      {/* The faceted diagonal lattice ("aristas antes que blandura") is
+          `PageGrid` now — one fixed layer behind the whole document, so
+          the Hero's own patch of it can't fall out of phase at the seam
+          where Hero ends and the next section begins. */}
       <motion.div
         className="absolute inset-0 opacity-20"
         style={{

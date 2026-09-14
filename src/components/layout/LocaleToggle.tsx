@@ -3,16 +3,25 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, useReducedMotion } from "motion/react";
 import { locales, type Locale } from "@/i18n";
 
 export function LocaleToggle({
   locale,
   label,
+  scope = "default",
 }: {
   locale: Locale;
   label: string;
+  /** Distinguishes the sliding-pill `layoutId` between simultaneously
+   *  mounted instances (desktop nav vs. the mobile menu's own copy, which
+   *  stays in the DOM — just `hidden` — while the other is open) so Motion
+   *  never tries to sync one shared layout animation across two unrelated
+   *  elements. */
+  scope?: string;
 }) {
   const pathname = usePathname();
+  const reduceMotion = useReducedMotion();
   // Read after mount, not during render: the initial (SSR-matching) render
   // must be hash-free, so the anchor is only known once we're safely on the
   // client — reading window.location.hash inline here is unreliable across
@@ -38,13 +47,22 @@ export function LocaleToggle({
             key={code}
             href={href}
             aria-current={active ? "true" : undefined}
-            className={`flex h-11 min-w-11 items-center justify-center rounded-full px-2.5 uppercase transition-colors ${
-              active
-                ? "bg-orange text-[#431407]"
-                : "text-foreground-secondary hover:text-foreground"
+            className={`relative flex h-11 min-w-11 items-center justify-center rounded-full px-2.5 uppercase transition-[color,transform] duration-150 active:scale-90 ${
+              active ? "text-[#431407]" : "text-foreground-secondary hover:text-foreground"
             }`}
           >
-            {code}
+            {active && (
+              <motion.span
+                layoutId={`locale-pill-${scope}`}
+                className="absolute inset-0 rounded-full bg-orange"
+                transition={
+                  reduceMotion
+                    ? { duration: 0.1 }
+                    : { type: "spring", duration: 0.4, bounce: 0.15 }
+                }
+              />
+            )}
+            <span className="relative">{code}</span>
           </Link>
         );
       })}

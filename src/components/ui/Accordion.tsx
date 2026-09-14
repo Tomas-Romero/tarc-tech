@@ -39,7 +39,7 @@ export function Accordion({ items }: { items: AccordionItem[] }) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpenId(isOpen ? null : item.id)}
-                className="group flex w-full items-center justify-between gap-4 py-5 text-left transition-colors hover:text-orange-deep"
+                className="group flex w-full items-center justify-between gap-4 py-5 text-left transition-[color,transform] duration-150 hover:text-orange-deep active:scale-[0.99]"
               >
                 <span className="text-lg font-bold sm:text-xl">{item.title}</span>
                 <motion.span

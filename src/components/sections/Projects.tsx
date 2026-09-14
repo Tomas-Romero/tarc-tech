@@ -141,7 +141,7 @@ function ProjectCard({
     <button
       type="button"
       onClick={onOpen}
-      className="group relative flex h-full w-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-4 text-left transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2 hover:border-orange hover:shadow-[0_28px_56px_-24px_rgba(249,115,22,0.4)]"
+      className="group relative flex h-full w-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-4 text-left transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2 hover:border-orange hover:shadow-[0_28px_56px_-24px_rgba(249,115,22,0.4)] active:translate-y-0 active:scale-[0.98]"
     >
       {/* Warm wash rising behind the content on hover — the same "heating up"
           language as the services/solutions hover, kept subtle here since a

@@ -17,8 +17,8 @@
     "primaryNav": "Navegación principal"
   },
   "services": {
-    "title": "Qué hacemos",
-    "intro": "Software a medida, de punta a punta."
+    "title": "Servicios",
+    "intro": "Todo lo que tu negocio necesita para operar en digital."
   },
   "faq": {
     "title": "Preguntas frecuentes"
@@ -74,7 +74,7 @@
       { "text": "a medida", "accent": true },
       { "text": " para tu empresa o negocio." }
     ],
-    "subtitle": "Sistemas, apps y automatizaciones desarrollados desde cero para cómo trabaja tu negocio. Relevamos, proponemos, desarrollamos con tu feedback y te acompañamos después.",
+    "subtitle": "Diseño y desarrollo software a medida para tu negocio: relevo cómo trabajás hoy, te propongo la solución justa, la construyo con tu feedback en el camino y sigo cerca después de la entrega.",
     "ctaPrimary": "Trabajemos juntos",
     "ctaSecondary": "Ver proyectos",
     "signaturePrefix": "Desarrollado por ",

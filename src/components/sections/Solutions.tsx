@@ -6,6 +6,7 @@ import type { Dictionary, Locale } from "@/i18n";
 import { solutions, type Solution } from "@/data/solutions";
 import { waLink } from "@/lib/whatsapp";
 import { Reveal } from "@/components/motion/Reveal";
+import { SectionBackdrop } from "@/components/motion/SectionBackdrop";
 import {
   RegisterIcon,
   StorefrontIcon,
@@ -73,83 +74,87 @@ export function Solutions({
   }, []);
 
   return (
-    <section id="soluciones" className="mx-auto max-w-6xl px-6 py-24">
-      <Reveal className="max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {dict.solutions.title}
-        </h2>
-        <p className="mt-4 text-foreground-secondary">{dict.solutions.intro}</p>
-      </Reveal>
+    <section id="soluciones" className="relative overflow-hidden">
+      <SectionBackdrop />
 
-      <div className="mt-14 gap-16 lg:grid lg:grid-cols-[13rem_1fr]">
-        {/* Sticky index — desktop only; on mobile the panels speak for
-            themselves and a rail would just cost vertical space. Clickable:
-            it jumps the scroll to that panel instead of only reflecting it. */}
-        <nav aria-label={dict.solutions.railLabel} className="hidden lg:block">
-          <ol className="sticky top-[calc(var(--nav-height)+3rem)] space-y-1">
-            {solutions.map((solution, i) => (
-              <li key={solution.id}>
-                <button
-                  type="button"
-                  onClick={() => goToPanel(i)}
-                  className="group/rail relative flex min-h-11 w-full items-center rounded-md pl-5 pr-2 text-left transition-colors hover:bg-surface"
-                >
-                  <span
-                    aria-hidden
-                    className={`absolute left-0 top-1/2 h-4 w-px -translate-y-1/2 transition-colors duration-300 ${
-                      i === active
-                        ? "bg-orange"
-                        : "bg-border group-hover/rail:bg-orange-deep"
-                    }`}
-                  />
-                  <span
-                    className={`block text-sm transition-colors duration-300 ${
-                      i === active
-                        ? "font-medium text-foreground"
-                        : "text-foreground-secondary group-hover/rail:text-foreground"
-                    }`}
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-24">
+        <Reveal className="max-w-2xl">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {dict.solutions.title}
+          </h2>
+          <p className="mt-4 text-foreground-secondary">{dict.solutions.intro}</p>
+        </Reveal>
+
+        <div className="mt-14 gap-16 lg:grid lg:grid-cols-[13rem_1fr]">
+          {/* Sticky index — desktop only; on mobile the panels speak for
+              themselves and a rail would just cost vertical space. Clickable:
+              it jumps the scroll to that panel instead of only reflecting it. */}
+          <nav aria-label={dict.solutions.railLabel} className="hidden lg:block">
+            <ol className="sticky top-[calc(var(--nav-height)+3rem)] space-y-1">
+              {solutions.map((solution, i) => (
+                <li key={solution.id}>
+                  <button
+                    type="button"
+                    onClick={() => goToPanel(i)}
+                    className="group/rail relative flex min-h-11 w-full items-center rounded-md pl-5 pr-2 text-left transition-colors hover:bg-surface"
                   >
-                    {solution.title[locale]}
-                  </span>
-                </button>
-              </li>
+                    <span
+                      aria-hidden
+                      className={`absolute left-0 top-1/2 h-4 w-px -translate-y-1/2 transition-colors duration-300 ${
+                        i === active
+                          ? "bg-orange"
+                          : "bg-border group-hover/rail:bg-orange-deep"
+                      }`}
+                    />
+                    <span
+                      className={`block text-sm transition-colors duration-300 ${
+                        i === active
+                          ? "font-medium text-foreground"
+                          : "text-foreground-secondary group-hover/rail:text-foreground"
+                      }`}
+                    >
+                      {solution.title[locale]}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <div className="space-y-8">
+            {solutions.map((solution, i) => (
+              <SolutionPanel
+                key={solution.id}
+                panelRef={(node) => {
+                  panelsRef.current[i] = node;
+                }}
+                solution={solution}
+                dict={dict}
+                locale={locale}
+              />
             ))}
-          </ol>
-        </nav>
 
-        <div className="space-y-8">
-          {solutions.map((solution, i) => (
-            <SolutionPanel
-              key={solution.id}
-              panelRef={(node) => {
-                panelsRef.current[i] = node;
-              }}
-              solution={solution}
-              dict={dict}
-              locale={locale}
-            />
-          ))}
-
-          {/* Closing card for everything the list doesn't cover — the one place
-              in this section that gets the solid orange CTA. */}
-          <Reveal delay={0.06}>
-            <div className="rounded-lg border border-border bg-surface p-6 sm:p-8">
-              <h3 className="text-lg font-bold sm:text-xl">
-                {dict.solutions.fallbackTitle}
-              </h3>
-              <p className="mt-2 text-foreground-secondary">
-                {dict.solutions.fallbackBody}
-              </p>
-              <a
-                href={waLink(dict.whatsapp.finalCta)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="tarc-cta-glow mt-5 inline-block rounded-md bg-orange px-5 py-3 font-medium text-[#431407] hover:bg-orange-hover"
-              >
-                {dict.solutions.fallbackCta}
-              </a>
-            </div>
-          </Reveal>
+            {/* Closing card for everything the list doesn't cover — the one place
+                in this section that gets the solid orange CTA. */}
+            <Reveal delay={0.06}>
+              <div className="rounded-lg border border-border bg-surface p-6 sm:p-8">
+                <h3 className="text-lg font-bold sm:text-xl">
+                  {dict.solutions.fallbackTitle}
+                </h3>
+                <p className="mt-2 text-foreground-secondary">
+                  {dict.solutions.fallbackBody}
+                </p>
+                <a
+                  href={waLink(dict.whatsapp.finalCta)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tarc-cta-glow mt-5 inline-block rounded-md bg-orange px-5 py-3 font-medium text-[#431407] hover:bg-orange-hover"
+                >
+                  {dict.solutions.fallbackCta}
+                </a>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>

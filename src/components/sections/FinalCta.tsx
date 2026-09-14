@@ -29,7 +29,21 @@ export function FinalCta({ dict }: { dict: Dictionary }) {
   });
 
   return (
-    <section id="contacto" className="px-6 py-24">
+    <section id="contacto" className="relative overflow-hidden px-6 py-24">
+      {/* Real photo Tomás picked for this section, held well behind the
+          orange card (desaturated, dimmed) so it reads as atmosphere, not a
+          second focal point — it never touches the card, so it can never put
+          a busy photo behind the ON_ORANGE text and break the contrast this
+          block is built around. */}
+      <Image
+        src="/contact/contact-visual.jpg"
+        alt=""
+        aria-hidden
+        fill
+        className="pointer-events-none absolute inset-0 object-cover opacity-[0.1] grayscale"
+        sizes="100vw"
+      />
+
       <motion.div
         initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 28, scale: 0.97 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -42,14 +56,16 @@ export function FinalCta({ dict }: { dict: Dictionary }) {
             page" language FooterBrand uses at the very end of the document,
             echoed here at the end of the content instead. Low-opacity white
             so it reads as an embossed watermark on the orange, not a second
-            logo competing with the CTA. */}
+            logo competing with the CTA. Bottom-right, not top-right: up top
+            it landed right behind the headline and mostly outside the
+            card's own clip, so it read as a stray, cropped-off fragment. */}
         <Image
           src="/brand/isotipo-mono-white.svg"
           alt=""
           aria-hidden
           width={280}
           height={228}
-          className="pointer-events-none absolute -right-14 -top-14 h-auto w-48 opacity-[0.12] sm:w-64"
+          className="pointer-events-none absolute -bottom-10 -right-10 h-auto w-40 opacity-[0.12] sm:w-56"
         />
 
         <motion.h2

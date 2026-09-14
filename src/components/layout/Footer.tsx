@@ -58,7 +58,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {social.email && (
               <a
                 href={`mailto:${social.email}`}
-                className="group/mail relative flex w-fit items-center gap-2 text-sm text-foreground-secondary transition-all duration-150 hover:text-foreground active:scale-95"
+                className="group/mail relative flex w-fit items-center gap-2 text-sm text-foreground-secondary transition-[transform,color] duration-150 hover:text-foreground active:scale-95"
               >
                 <MailIcon className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover/mail:scale-110" />
                 <span className="relative">
@@ -83,7 +83,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 <li key={link.id}>
                   <Link
                     href={`/${locale}#${link.id}`}
-                    className="tap-target-expand-sm group/flink relative inline-block transition-all duration-150 hover:text-foreground active:scale-95"
+                    className="tap-target-expand-sm group/flink relative inline-block transition-[transform,color] duration-150 hover:text-foreground active:scale-95"
                   >
                     {dict.nav[link.labelKey]}
                     <span
@@ -106,7 +106,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={label}
-                    className="group relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-md border border-border text-foreground-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-deep hover:text-orange-deep active:translate-y-0 active:scale-90"
+                    className="group relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-md border border-border text-foreground-secondary transition-[transform,border-color,color] duration-200 hover:-translate-y-0.5 hover:border-orange-deep hover:text-orange-deep active:translate-y-0 active:scale-90"
                   >
                     <span
                       aria-hidden

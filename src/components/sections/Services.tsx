@@ -5,6 +5,7 @@ import {
   motion,
   useScroll,
   useTransform,
+  useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
   type MotionValue,
@@ -16,7 +17,9 @@ import {
   WorkflowIcon,
   SmartphoneIcon,
   CloudIcon,
-  PaletteIcon,
+  CardLockIcon,
+  HeadsetIcon,
+  BuildingIcon,
 } from "@/components/ui/icons";
 
 const ICONS: Record<Service["icon"], ComponentType<{ className?: string }>> = {
@@ -24,7 +27,9 @@ const ICONS: Record<Service["icon"], ComponentType<{ className?: string }>> = {
   workflow: WorkflowIcon,
   smartphone: SmartphoneIcon,
   cloud: CloudIcon,
-  palette: PaletteIcon,
+  cardLock: CardLockIcon,
+  headset: HeadsetIcon,
+  building: BuildingIcon,
 };
 
 const CARD_W = 380;
@@ -167,6 +172,9 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
                     locale={locale}
                     width={CARD_W}
                     isActive={i === activeIndex}
+                    trackProgress={trackProgress}
+                    index={i}
+                    count={services.length}
                   />
                 ))}
               </motion.div>
@@ -220,6 +228,9 @@ function ServiceCard({
   width,
   snap,
   isActive,
+  trackProgress,
+  index,
+  count,
 }: {
   ref?: (node: HTMLElement | null) => void;
   service: Service;
@@ -227,53 +238,105 @@ function ServiceCard({
   width: number;
   snap?: boolean;
   isActive?: boolean;
+  /** Only passed for the desktop pinned track — lets this card compute how
+   *  close IT is to centered, as a continuous 0–1 value, instead of only
+   *  knowing the single nearest-index winner. Without this, every card
+   *  outside the active one sat fully cold until the instant the rounded
+   *  index ticked over to it — no in-between, no matter how much further
+   *  scrolling it took to actually arrive. */
+  trackProgress?: MotionValue<number>;
+  index?: number;
+  count?: number;
 }) {
   const Icon = ICONS[service.icon];
+  const hoverLit = useMotionValue(isActive ? 1 : 0);
+
+  // Triangular falloff around this card's own ideal center: 1 exactly at its
+  // center position in the track, fading to 0 by the time the halfway point
+  // to either neighbor is reached — continuous, so the highlight visibly
+  // migrates from one card to the next as the track keeps moving instead of
+  // snapping the moment a rounded index changes.
+  const idealCenter = trackProgress && count && count > 1 ? (index ?? 0) / (count - 1) : 0;
+  const falloff = trackProgress && count ? 2 * (count - 1) : 1;
+  const scrollCloseness = useTransform(trackProgress ?? hoverLit, (v) =>
+    trackProgress ? Math.max(0, 1 - Math.abs(v - idealCenter) * falloff) : v
+  );
+  const lit = useTransform([scrollCloseness, hoverLit], (values: number[]) =>
+    Math.max(values[0], values[1])
+  );
+
+  const borderColor = useTransform(lit, [0, 1], ["var(--color-border)", "var(--color-orange)"]);
+  const emberScale = useTransform(lit, [0, 1], [0, 1]);
+  const iconColor = useTransform(lit, [0, 1], ["var(--color-orange)", "#431407"]);
+  const titleColor = useTransform(lit, [0, 1], ["var(--color-foreground)", "#431407"]);
+  const bodyColor = useTransform(lit, [0, 1], ["var(--color-foreground-secondary)", "#5a2410"]);
 
   return (
-    <article
+    <motion.article
       ref={ref}
-      style={{ width }}
+      style={trackProgress ? { width, borderColor } : { width }}
+      onMouseEnter={() => hoverLit.set(1)}
+      onMouseLeave={() => hoverLit.set(trackProgress ? 0 : isActive ? 1 : 0)}
       className={`group relative shrink-0 overflow-hidden rounded-lg border bg-surface p-8 transition-colors duration-300 ${
-        isActive ? "border-orange" : "border-border hover:border-orange"
+        trackProgress ? "" : isActive ? "border-orange" : "border-border hover:border-orange"
       } ${snap ? "snap-start" : ""}`}
     >
       {/* The ember floods up from the base on hover — or on its own, once
           scroll (desktop pin) or swipe (mobile carousel) brings this card to
           the front. Same visual state either way: the panel heats rather
-          than lifting, which is the world DESIGN.md commits to. */}
-      <span
+          than lifting, which is the world DESIGN.md commits to. On the
+          pinned track its height now tracks scroll continuously; the mobile
+          carousel keeps the simpler on/off class swap since swipe arrival
+          there is already a discrete, IntersectionObserver-driven event. */}
+      <motion.span
         aria-hidden
-        className={`absolute inset-0 origin-bottom bg-orange transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isActive ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"
+        style={trackProgress ? { scaleY: emberScale } : undefined}
+        className={`absolute inset-0 origin-bottom bg-orange ${
+          trackProgress
+            ? ""
+            : `transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isActive ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"
+              }`
         }`}
       />
 
       <div className="relative flex h-full flex-col">
-        <Icon
-          className={`h-9 w-9 transition-colors duration-300 ${
-            isActive ? "text-[#431407]" : "text-orange group-hover:text-[#431407]"
-          }`}
-        />
+        <motion.div style={trackProgress ? { color: iconColor } : undefined}>
+          <Icon
+            className={`h-9 w-9 ${
+              trackProgress
+                ? ""
+                : `transition-colors duration-300 ${
+                    isActive ? "text-[#431407]" : "text-orange group-hover:text-[#431407]"
+                  }`
+            }`}
+          />
+        </motion.div>
 
-        <h3
-          className={`mt-6 text-xl font-bold transition-colors duration-300 ${
-            isActive ? "text-[#431407]" : "group-hover:text-[#431407]"
+        <motion.h3
+          style={trackProgress ? { color: titleColor } : undefined}
+          className={`mt-6 text-xl font-bold ${
+            trackProgress
+              ? ""
+              : `transition-colors duration-300 ${isActive ? "text-[#431407]" : "group-hover:text-[#431407]"}`
           }`}
         >
           {service.title[locale]}
-        </h3>
+        </motion.h3>
 
-        <p
-          className={`mt-3 transition-colors duration-300 ${
-            isActive
-              ? "text-[#5a2410]"
-              : "text-foreground-secondary group-hover:text-[#5a2410]"
+        <motion.p
+          style={trackProgress ? { color: bodyColor } : undefined}
+          className={`mt-3 ${
+            trackProgress
+              ? ""
+              : `transition-colors duration-300 ${
+                  isActive ? "text-[#5a2410]" : "text-foreground-secondary group-hover:text-[#5a2410]"
+                }`
           }`}
         >
           {service.description[locale]}
-        </p>
+        </motion.p>
       </div>
-    </article>
+    </motion.article>
   );
 }

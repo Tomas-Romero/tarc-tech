@@ -17,8 +17,8 @@
     "primaryNav": "Main navigation"
   },
   "services": {
-    "title": "What we do",
-    "intro": "Custom software, start to finish."
+    "title": "Services",
+    "intro": "Everything your business needs to operate digitally."
   },
   "faq": {
     "title": "Frequently asked questions"
@@ -73,7 +73,7 @@
       { "text": "Custom", "accent": true },
       { "text": " software for your business." }
     ],
-    "subtitle": "Systems, apps and automations built from scratch around how your business actually works. We scope it, propose it, build it with your feedback, and support it after launch.",
+    "subtitle": "I design and build custom software for your business: I map out how you work today, propose the right solution, build it with your feedback along the way, and stay close after delivery.",
     "ctaPrimary": "Let's work together",
     "ctaSecondary": "See projects",
     "signaturePrefix": "Built by ",
