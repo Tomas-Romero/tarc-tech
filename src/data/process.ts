@@ -6,6 +6,9 @@ export type ProcessStep = {
   icon: "ear" | "lightbulb" | "hammer" | "rocket" | "shield";
   title: LocalizedText;
   description: LocalizedText;
+  /** One frame per step, cropped from the same source photo set —
+   *  `public/process/process-<id>.jpg`. */
+  image: string;
 };
 
 // Real content only — see PLAN-LANDING-TARC-TECH.md §6.6. Step names read as
@@ -21,6 +24,7 @@ export const processSteps: ProcessStep[] = [
       es: "Relevamos tu negocio a fondo antes de proponer nada: cómo trabajás hoy y qué te está frenando.",
       en: "We get to know your business in depth before proposing anything: how you work today and what's holding you back.",
     },
+    image: "/process/process-listen.jpg",
   },
   {
     id: "propose",
@@ -31,6 +35,7 @@ export const processSteps: ProcessStep[] = [
       es: "Te presentamos una solución concreta, con alcance y expectativas claras desde el primer día.",
       en: "We present a concrete solution, with clear scope and expectations from day one.",
     },
+    image: "/process/process-propose.jpg",
   },
   {
     id: "build",
@@ -41,6 +46,7 @@ export const processSteps: ProcessStep[] = [
       es: "Desarrollo iterativo: vas viendo el avance real y nos das feedback en el camino. Nada de sorpresas al final.",
       en: "Iterative development: you see real progress and give us feedback along the way. No surprises at the end.",
     },
+    image: "/process/process-build.jpg",
   },
   {
     id: "launch",
@@ -51,6 +57,7 @@ export const processSteps: ProcessStep[] = [
       es: "Sistema funcionando en producción, con la puesta en marcha acompañada de principio a fin.",
       en: "A working system in production, with hands-on launch support from start to finish.",
     },
+    image: "/process/process-launch.jpg",
   },
   {
     id: "support",
@@ -61,5 +68,6 @@ export const processSteps: ProcessStep[] = [
       es: "Seguimos disponibles después de la entrega: mejoras, ajustes y respaldo cuando lo necesites.",
       en: "We stay available after delivery: improvements, adjustments and backup whenever you need them.",
     },
+    image: "/process/process-support.jpg",
   },
 ];

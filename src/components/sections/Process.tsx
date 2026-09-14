@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState, type ComponentType } from "react";
+import Image from "next/image";
 import {
   motion,
   useScroll,
   useTransform,
-  useMotionValue,
+  useMotionValueEvent,
   useReducedMotion,
   type MotionValue,
 } from "motion/react";
@@ -30,30 +31,24 @@ const ICONS: Record<ProcessStep["icon"], ComponentType<{ className?: string }>> 
 const OCTAGON =
   "polygon(22% 0, 78% 0, 100% 22%, 100% 78%, 78% 100%, 22% 100%, 0 78%, 0 22%)";
 
-// Second authored moment of the page (PLAN §6.6): the line is drawn by the
-// scroll itself and each step ignites as the line reaches it — the method
-// literally advancing in front of the visitor. Drawn with a transform
-// (scaleX/scaleY) rather than an animated SVG path length: same authored
-// effect, but it stays on the compositor, which matters on the mid-range
-// phone PRODUCT.md names as the judge.
-//
-// Was feeling flat and lifeless: five lines of text floating on a blank
-// background with a thin rule underneath. This pass gives each step real
-// weight (a bordered card, not bare text), puts a marker that visibly
-// travels the line as it draws — so something is always in motion, not just
-// "eventually lit or not" — and adds the same restrained floating shapes
-// Solutions/About use for ambient depth, driven off the section's own
-// `drawn` progress (not a second independent scroll tracker) since this
-// section spends most of its life pinned, where a sticky element's own
-// bounding box stops moving relative to the viewport.
-//
-// Desktop: the section pins in place — the same mechanism "Qué hacemos"
-// uses — so the timeline finishes lighting every step before the page is
-// allowed to keep scrolling, instead of racing past mid-draw. Mobile keeps
-// its normal scroll-through: pinning a vertically-stacked list adds
-// scroll-hijack risk without the horizontal-reveal payoff it buys on
-// desktop, so it's dropped there and under reduced motion, same as
-// "Qué hacemos".
+const CARD_W = 260;
+const GAP = 20;
+// Same pacing knobs Services uses for its own horizontal pin, tuned further
+// out than Services' own — Tomás felt the row still raced past. A bigger
+// PACE means more scrolling buys less horizontal travel; HOLD_OUT_VH is a
+// flat readjng pause added on top once the row finishes moving.
+const PACE = 2.6;
+const HOLD_OUT_VH = 0.6;
+
+// Second authored moment of the page (PLAN §6.6) — rebuilt as the same
+// pinned horizontal-scroll track "Qué hacemos" uses (motion.dev's own
+// recipe: a tall section, a sticky viewport-height child, and the track's
+// `x` driven by `scrollYProgress`), one real photo per step instead of an
+// icon-and-line timeline that read as flat and empty. Desktop pins and
+// travels sideways as you scroll; mobile keeps its thumb — a native snap
+// carousel instead of hijacking the scroll, same split Services already
+// makes and for the same reason (PRODUCT.md's mid-range-phone judge would
+// feel a forced pin as jank there).
 export function Process({
   dict,
   locale,
@@ -63,8 +58,14 @@ export function Process({
 }) {
   const reduceMotion = useReducedMotion();
   const [pinned, setPinned] = useState(false);
+  const [travel, setTravel] = useState(0);
   const [scrollDistance, setScrollDistance] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [carouselActive, setCarouselActive] = useState(0);
 
   useEffect(() => {
     // 1024px matches the breakpoint "Qué hacemos" and the Solutions rail
@@ -74,10 +75,11 @@ export function Process({
     function sync() {
       const on = query.matches && !reduceMotion;
       setPinned(on);
-      if (!on) return setScrollDistance(0);
-      // Generous runway: five steps need to ignite one at a time and still
-      // feel readable, not raced through.
-      setScrollDistance(window.innerHeight * 1.7);
+      if (!on) return setTravel(0);
+      const trackWidth = processSteps.length * CARD_W + (processSteps.length - 1) * GAP;
+      const rawTravel = Math.max(0, trackWidth - (window.innerWidth - 96));
+      setTravel(rawTravel);
+      setScrollDistance(rawTravel * PACE + window.innerHeight * HOLD_OUT_VH);
     }
     sync();
     query.addEventListener("change", sync);
@@ -88,248 +90,197 @@ export function Process({
     };
   }, [reduceMotion]);
 
-  // Pinned: progress spans exactly the pin's own extra scroll height, same
-  // as "Qué hacemos". Not pinned (mobile / reduced motion): the original
-  // wide trigger window, since the timeline row itself is short and a tight
-  // window drew the whole line within a few hundred pixels of scroll.
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: pinned ? ["start start", "end end"] : ["start 90%", "end 20%"],
+    offset: ["start start", "end end"],
   });
 
-  // Reduced motion: the line is simply already drawn, and every step is lit.
-  const drawn = useTransform(scrollYProgress, (v) => (reduceMotion ? 1 : v));
+  // The row finishes traveling partway through the pinned scroll (moveFrac)
+  // and holds for the remainder — a beat to actually read the last step
+  // before the page releases and carries on.
+  const moveFrac = scrollDistance > 0 ? (travel * PACE) / scrollDistance : 1;
+  const x = useTransform(scrollYProgress, [0, moveFrac], [0, -travel], {
+    clamp: true,
+  });
+  const trackProgress = useTransform(scrollYProgress, [0, moveFrac], [0, 1], {
+    clamp: true,
+  });
 
-  // Ambient shapes, tied to the same progress the line uses: a gentle
-  // fade/scale-in as the method starts advancing, not a separate scroll
-  // tracker that would read a sticky element's frozen bounding box.
-  const shapeOpacity = useTransform(drawn, [0, 0.3], [0, 1], { clamp: true });
-  const shapeShift = useTransform(drawn, [0, 1], [24, -24]);
-  const shapeShiftInverse = useTransform(shapeShift, (v) => -v);
+  useMotionValueEvent(trackProgress, "change", (v) => {
+    const idx = Math.round(v * (processSteps.length - 1));
+    setActiveIndex((prev) => (prev === idx ? prev : idx));
+  });
+
+  // Mobile carousel: the step nearest the container's center counts as
+  // "arrived," mirroring the desktop pin's activation with a normal
+  // IntersectionObserver instead of a scroll-progress calculation.
+  useEffect(() => {
+    if (pinned) return;
+    const root = carouselRef.current;
+    const nodes = cardRefs.current.filter(Boolean) as HTMLElement[];
+    if (!root || nodes.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const idx = nodes.indexOf(visible.target as HTMLElement);
+        if (idx >= 0) setCarouselActive(idx);
+      },
+      { root, threshold: [0.6] },
+    );
+
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, [pinned]);
 
   return (
     <section
       id="proceso"
       ref={sectionRef}
       // The extra height IS the scroll runway while pinned — scrolling it
-      // is what advances the ignite sequence, then releases.
+      // is what moves the row, then releases.
       style={pinned ? { height: `calc(100vh + ${scrollDistance}px)` } : undefined}
     >
       <div
         className={
           pinned
-            ? "sticky top-0 flex h-screen flex-col justify-center overflow-hidden"
-            : "relative overflow-hidden py-24"
+            ? // `justify-start` + a fixed top offset instead of centering:
+              // with `justify-center`, how much of the block actually fits
+              // depends on its own total height relative to the viewport —
+              // the title and body text were spilling past the bottom edge
+              // and getting clipped by `overflow-hidden` on shorter
+              // viewports. A fixed offset is easy to guarantee fits instead.
+              "sticky top-0 flex h-screen flex-col overflow-hidden pt-14"
+            : "py-24"
         }
       >
-        {/* Floating faceted shapes — same restrained vocabulary as
-            Solutions/About's SectionBackdrop, but driven by `drawn` instead
-            of an independent `useScroll` target: a sticky element's own
-            bounding rect stays put once stuck, so a fresh scroll tracker
-            here would never see any movement to react to. */}
-        <motion.span
-          aria-hidden
-          style={{ opacity: reduceMotion ? 0.6 : shapeOpacity, y: reduceMotion ? 0 : shapeShift, clipPath: OCTAGON }}
-          className="pointer-events-none absolute -right-8 top-[6%] h-40 w-40 border border-foreground-secondary/25 sm:h-56 sm:w-56"
-        />
-        <motion.span
-          aria-hidden
-          style={{
-            opacity: reduceMotion ? 0.6 : shapeOpacity,
-            y: reduceMotion ? 0 : shapeShiftInverse,
-            rotate: 45,
-          }}
-          className="pointer-events-none absolute -left-10 bottom-[8%] h-24 w-24 border border-orange-deep/25 sm:h-32 sm:w-32"
-        />
-
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
+        <div className="mx-auto w-full max-w-6xl px-6">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             {dict.process.title}
           </h2>
           <p className="mt-4 max-w-xl text-foreground-secondary">
             {dict.process.intro}
           </p>
-
-          <div className="relative mt-16">
-            {/* Track + drawn line. The wrapper owns the centering translate
-                and the animated child owns only its scale — Motion writes
-                transform inline, so sharing one element would silently drop
-                the centering. */}
-            <div
-              aria-hidden
-              className="absolute left-5 top-0 h-full w-px -translate-x-1/2 md:hidden"
-            >
-              <div className="h-full w-full bg-border" />
-              <motion.div
-                style={{ scaleY: drawn }}
-                className="absolute inset-0 origin-top bg-orange"
-              />
-              <TravelMarker progress={drawn} axis="y" />
-            </div>
-
-            <div
-              aria-hidden
-              className="absolute left-0 top-5 hidden h-px w-full -translate-y-1/2 md:block"
-            >
-              <div className="h-full w-full bg-border" />
-              <motion.div
-                style={{ scaleX: drawn }}
-                className="absolute inset-0 origin-left bg-orange"
-              />
-              <TravelMarker progress={drawn} axis="x" />
-            </div>
-
-            <ol className="flex flex-col gap-10 md:flex-row md:gap-8">
-              {processSteps.map((step, i) => (
-                <Step
-                  key={step.id}
-                  step={step}
-                  locale={locale}
-                  progress={drawn}
-                  // Ignites as the line passes this step. Thresholds sit
-                  // inside the run (0.1 … 0.9 for five steps) so no step is
-                  // already lit before the line has been drawn to it.
-                  threshold={(i + 0.5) / processSteps.length}
-                  reduceMotion={Boolean(reduceMotion)}
-                />
-              ))}
-            </ol>
-          </div>
         </div>
+
+        {pinned ? (
+          <>
+            <div className="mt-6 overflow-hidden px-12">
+              <motion.div style={{ x, gap: GAP }} className="flex w-max">
+                {processSteps.map((step, i) => (
+                  <StepCard
+                    key={step.id}
+                    step={step}
+                    locale={locale}
+                    width={CARD_W}
+                    isActive={i === activeIndex}
+                  />
+                ))}
+              </motion.div>
+            </div>
+            <ScrollProgress progress={trackProgress} />
+          </>
+        ) : (
+          // Mobile / reduced motion: a snap carousel the thumb controls.
+          <div
+            ref={carouselRef}
+            className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {processSteps.map((step, i) => (
+              <StepCard
+                key={step.id}
+                ref={(node) => {
+                  cardRefs.current[i] = node;
+                }}
+                step={step}
+                locale={locale}
+                width={260}
+                snap
+                isActive={i === carouselActive}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-// The marker riding the line as it draws — proof that something is always
-// actively moving, not just "lit or not." A small diamond, matching the
-// step badges' faceted language rather than a circular dot.
-function TravelMarker({
-  progress,
-  axis,
-}: {
-  progress: MotionValue<number>;
-  axis: "x" | "y";
-}) {
-  const percent = useTransform(progress, (v) => `${v * 100}%`);
-  const opacity = useTransform(progress, [0, 0.02, 0.98, 1], [0, 1, 1, 0]);
-
+function ScrollProgress({ progress }: { progress: MotionValue<number> }) {
   return (
-    <motion.span
-      aria-hidden
-      style={{
-        [axis === "x" ? "left" : "top"]: percent,
-        opacity,
-      }}
-      className="absolute -translate-x-1/2 -translate-y-1/2 rotate-45 bg-orange"
-    >
-      <span className="block h-2.5 w-2.5" />
-    </motion.span>
+    <div className="mx-auto mt-5 h-px w-full max-w-6xl px-12">
+      <div className="relative h-px w-full bg-border">
+        <motion.div
+          style={{ scaleX: progress }}
+          className="absolute inset-0 origin-left bg-orange"
+        />
+      </div>
+    </div>
   );
 }
 
-function Step({
+function StepCard({
+  ref,
   step,
   locale,
-  progress,
-  threshold,
-  reduceMotion,
+  width,
+  snap,
+  isActive,
 }: {
+  ref?: (node: HTMLElement | null) => void;
   step: ProcessStep;
   locale: Locale;
-  progress: MotionValue<number>;
-  threshold: number;
-  reduceMotion: boolean;
+  width: number;
+  snap?: boolean;
+  isActive?: boolean;
 }) {
   const Icon = ICONS[step.icon];
-  // Hovering a step ignites it on its own, independent of where the scroll
-  // line actually is — parked there for the length of its own transition
-  // instead of jumping straight to lit, and it never drags any other step
-  // along with it. Whichever source (scroll or hover) is further along wins.
-  const hoverLit = useMotionValue(0);
-
-  const scrollLit = useTransform(
-    progress,
-    [Math.max(threshold - 0.06, 0), threshold],
-    [0, 1],
-    { clamp: true }
-  );
-  const lit = useTransform([scrollLit, hoverLit], (values: number[]) =>
-    Math.max(values[0], values[1])
-  );
-
-  const numberColor = useTransform(
-    lit,
-    [0, 1],
-    ["var(--color-border)", "var(--color-orange)"]
-  );
-  const numberText = useTransform(
-    lit,
-    [0, 1],
-    ["var(--color-foreground-secondary)", "var(--color-orange)"]
-  );
-  const borderColor = useTransform(
-    lit,
-    [0, 1],
-    ["var(--color-border)", "var(--color-orange-deep)"]
-  );
-  // Floor is 0.85, not the more dramatic 0.55 it started at: Lighthouse
-  // caught that dimming text-foreground-secondary (7.4:1 at full opacity)
-  // down to 0.55 drops it to ~2.6:1, failing AA for anyone who lands on the
-  // page before scrolling reaches a given step. 0.85 keeps a visible "not
-  // lit yet" dim while staying above 4.5:1.
-  const bodyOpacity = useTransform(lit, [0, 1], [0.85, 1]);
-  const cardY = useTransform(lit, [0, 1], [0, -4]);
 
   return (
-    <li
-      className="relative md:flex-1"
-      onMouseEnter={() => hoverLit.set(1)}
-      onMouseLeave={() => hoverLit.set(0)}
+    <article
+      ref={ref}
+      style={{ width }}
+      className={`group relative shrink-0 overflow-hidden rounded-lg border bg-surface transition-colors duration-300 ${
+        isActive ? "border-orange" : "border-border hover:border-orange"
+      } ${snap ? "snap-start" : ""}`}
     >
-      <motion.div
-        style={{
-          y: reduceMotion ? 0 : cardY,
-          ...(reduceMotion
-            ? { borderColor: "var(--color-orange-deep)" }
-            : { borderColor }),
-        }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex gap-5 rounded-lg border bg-surface p-4 md:flex-col md:gap-0 md:p-5"
-      >
-        <motion.span
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <Image
+          src={step.image}
+          alt=""
+          fill
+          className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+          sizes="(max-width: 768px) 70vw, 260px"
+        />
+        {/* Number, stamped on the photo itself — the same corner-cut
+            faceted badge the old timeline used, just moved onto the image
+            instead of floating beside bare text. */}
+        <span
           aria-hidden
-          style={{
-            // Corner-cut octagon, not a circle: DESIGN.md bans "burbujas" and
-            // asks for the isotipo's own faceted, angular language everywhere,
-            // and this badge repeats 5 times — the site's most-visible place
-            // to get that rule wrong.
-            clipPath:
-              "polygon(10px 0, 32px 0, 42px 10px, 42px 32px, 32px 42px, 10px 42px, 0 32px, 0 10px)",
-            ...(reduceMotion
-              ? { borderColor: "var(--color-orange)", color: "var(--color-orange)" }
-              : { borderColor: numberColor, color: numberText }),
-          }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex h-[42px] w-[42px] shrink-0 items-center justify-center border bg-background"
+          style={{ clipPath: OCTAGON }}
+          className={`absolute left-2.5 top-2.5 flex h-8 w-8 items-center justify-center border text-xs font-bold backdrop-blur-sm transition-colors duration-300 ${
+            isActive
+              ? "border-orange bg-orange text-[#431407]"
+              : "border-white/40 bg-black/30 text-white"
+          }`}
         >
-          <Icon className="h-6 w-6" />
-        </motion.span>
+          {String(step.number).padStart(2, "0")}
+        </span>
+      </div>
 
-        <motion.div
-          style={reduceMotion ? undefined : { opacity: bodyOpacity }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="md:mt-5"
-        >
-          <span aria-hidden className="text-xs font-medium text-foreground-secondary">
-            {String(step.number).padStart(2, "0")}
-          </span>
-          <h3 className="mt-0.5 font-bold">{step.title[locale]}</h3>
-          <p className="mt-2 text-sm text-foreground-secondary">
-            {step.description[locale]}
-          </p>
-        </motion.div>
-      </motion.div>
-    </li>
+      <div className="p-4">
+        <div className="flex items-center gap-2 text-orange">
+          <Icon className="h-4 w-4" />
+        </div>
+        <h3 className="mt-2 text-sm font-bold">{step.title[locale]}</h3>
+        <p className="mt-1 text-xs text-foreground-secondary">
+          {step.description[locale]}
+        </p>
+      </div>
+    </article>
   );
 }
