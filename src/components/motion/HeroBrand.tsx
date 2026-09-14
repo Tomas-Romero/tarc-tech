@@ -17,12 +17,16 @@ export function HeroBrand() {
   const onAssembled = useCallback(() => setStruck(true), []);
 
   return (
-    <div className="flex flex-col items-center">
-      <HeroMark className="block h-auto w-full" onAssembled={onAssembled} />
+    <div className="flex w-full flex-col items-center">
+      {/* The mark stays small and narrow on its own — the wordmark below it
+          is sized and laid out independently now, so it can run "TARC Tech"
+          on one line instead of inheriting the mark's own narrow width and
+          wrapping onto two ("TARC" / "Tech" stacked, which read as broken). */}
+      <HeroMark className="block h-auto w-28 sm:w-32" onAssembled={onAssembled} />
 
-      <div className="mt-5 w-full sm:mt-6">
+      <div className="mt-5 sm:mt-6">
         <motion.p
-          className="tarc-logotype text-center text-[clamp(1.5rem,7vw,2.75rem)] leading-none tracking-tight text-foreground"
+          className="tarc-logotype whitespace-nowrap text-center text-[clamp(1.75rem,7vw,4rem)] leading-none tracking-tight text-foreground"
           initial={
             reduceMotion
               ? { opacity: 0 }

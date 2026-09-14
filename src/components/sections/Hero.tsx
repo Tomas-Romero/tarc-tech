@@ -18,10 +18,8 @@ export function Hero({ dict }: { dict: Dictionary }) {
     >
       <HeroBackground />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center px-6 py-16 text-center">
-        <div className="w-28 sm:w-32">
-          <HeroBrand />
-        </div>
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 py-16 text-center">
+        <HeroBrand />
 
         <h1 className="mt-10 max-w-xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
           {dict.hero.titleParts.map((part, i) =>
@@ -35,7 +33,7 @@ export function Hero({ dict }: { dict: Dictionary }) {
           )}
         </h1>
 
-        <p className="mt-6 max-w-md text-lg text-foreground-secondary">
+        <p className="mt-6 max-w-md text-lg text-foreground-secondary md:max-w-2xl">
           {dict.hero.subtitle}
         </p>
 

@@ -5,7 +5,6 @@ import { Services } from "@/components/sections/Services";
 import { Solutions } from "@/components/sections/Solutions";
 import { Process } from "@/components/sections/Process";
 import { Projects } from "@/components/sections/Projects";
-import { About } from "@/components/sections/About";
 import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { PageGrid } from "@/components/motion/PageGrid";
@@ -31,7 +30,6 @@ export default async function LocaleHomePage({
         <Solutions dict={dict} locale={locale} />
         <Process dict={dict} locale={locale} />
         <Projects dict={dict} locale={locale} />
-        <About dict={dict} />
         <Faq dict={dict} locale={locale} />
       </div>
       <FinalCta dict={dict} />
