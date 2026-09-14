@@ -8,6 +8,7 @@ import { Projects } from "@/components/sections/Projects";
 import { About } from "@/components/sections/About";
 import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
+import { PageGrid } from "@/components/motion/PageGrid";
 
 export default async function LocaleHomePage({
   params,
@@ -20,13 +21,19 @@ export default async function LocaleHomePage({
 
   return (
     <main>
-      <Hero dict={dict} />
-      <Services dict={dict} locale={locale} />
-      <Solutions dict={dict} locale={locale} />
-      <Process dict={dict} locale={locale} />
-      <Projects dict={dict} locale={locale} />
-      <About dict={dict} />
-      <Faq dict={dict} locale={locale} />
+      {/* The diagonal grid backdrop stops here on purpose — Tomás doesn't
+          want it behind the final CTA's own photo background or the
+          footer, so the wrapper (and the grid inside it) ends with Faq. */}
+      <div className="relative">
+        <PageGrid />
+        <Hero dict={dict} />
+        <Services dict={dict} locale={locale} />
+        <Solutions dict={dict} locale={locale} />
+        <Process dict={dict} locale={locale} />
+        <Projects dict={dict} locale={locale} />
+        <About dict={dict} />
+        <Faq dict={dict} locale={locale} />
+      </div>
       <FinalCta dict={dict} />
     </main>
   );

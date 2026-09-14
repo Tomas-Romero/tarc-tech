@@ -34,27 +34,37 @@ const VISIBLE_COUNT = LETTERS.filter((l) => l.char !== " ").length;
 // sits at the document's own bottom edge, and an IntersectionObserver-based
 // trigger there kept failing to fire — the browser has no more scroll room
 // left to move it "into" a detection zone once you're already at the end of
-// the page. Tying the reveal directly to scroll progress between "its top is
-// most of the way up the viewport" and "its own bottom reaches the bottom of
-// the viewport" sidesteps that: the second point is, by definition, exactly
-// where scrolling maxes out for the last element on the page, so it always
-// finishes right as you hit the true bottom — and starting the window at
-// `80%` rather than `100%` (of viewport height) buys a longer runway for the
-// letter-by-letter wave than the single-wipe version needed.
+// the page. Tying the reveal directly to scroll progress between "its top
+// just touches the bottom of the viewport" and "its own bottom reaches the
+// bottom of the viewport" sidesteps that: the second point is, by
+// definition, exactly where scrolling maxes out for the last element on the
+// page, so it always finishes right as you hit the true bottom.
+//
+// `start end` (not some smaller percentage) is the earliest that trigger
+// can legitimately fire — the element isn't on screen at all before that
+// point, so starting any "earlier" only burns through progress while it's
+// still invisible, which plays back as a *faster*, not slower, reveal once
+// it actually comes into view. The real lever for a longer, slower-feeling
+// wave is the runway itself: the extra `pt-[26vh]` below over-sizes this
+// wrapper well past the wordmark's own height, so there's real scroll
+// distance between "just entering" and "fully revealed" for the letters to
+// play out across (a previous version shrank the trigger window instead —
+// that pushed `start` *past* `end`, an inverted range that made the whole
+// reveal stop advancing).
 export function FooterBrand() {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 80%", "end end"],
+    offset: ["start end", "end end"],
   });
 
   return (
     <div
       ref={ref}
       aria-hidden
-      className="select-none px-4 pb-6 pt-8 sm:px-6"
+      className="select-none px-4 pb-6 sm:px-6"
     >
       <p className="tarc-logotype whitespace-nowrap text-center text-[clamp(3rem,14vw,11rem)] leading-[0.9] tracking-[-0.03em] text-foreground">
         {reduceMotion ? (
@@ -62,7 +72,7 @@ export function FooterBrand() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.8 }}
           >
             TARC <span className="text-orange">Tech</span>
           </motion.span>
