@@ -71,9 +71,9 @@
   "hero": {
     "titleParts": [
       { "text": "Custom", "accent": true },
-      { "text": " software for your business." }
+      { "text": " software solutions to power your business." }
     ],
-    "subtitle": "I design and build custom software for your business: I map out how you work today, propose the right solution, build it with your feedback along the way, and stay close after delivery.",
+    "subtitle": "We design and build the exact tool your business needs: we analyze how you work today, propose the ideal solution, build it around your feedback, and stay close by after delivery.",
     "ctaPrimary": "Let's work together",
     "ctaSecondary": "See projects",
     "signaturePrefix": "Built by ",

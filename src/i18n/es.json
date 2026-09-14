@@ -70,11 +70,11 @@
   },
   "hero": {
     "titleParts": [
-      { "text": "Software " },
+      { "text": "Soluciones de software " },
       { "text": "a medida", "accent": true },
-      { "text": " para tu empresa o negocio." }
+      { "text": " para potenciar tu negocio." }
     ],
-    "subtitle": "Diseño y desarrollo software a medida para tu negocio: relevo cómo trabajás hoy, te propongo la solución justa, la construyo con tu feedback en el camino y sigo cerca después de la entrega.",
+    "subtitle": "Diseñamos y desarrollamos la herramienta exacta que tu empresa necesita: analizamos cómo trabajás hoy, te proponemos la solución ideal, la construimos integrando tu feedback y te acompañamos de cerca después de la entrega.",
     "ctaPrimary": "Trabajemos juntos",
     "ctaSecondary": "Ver proyectos",
     "signaturePrefix": "Desarrollado por ",
