@@ -42,9 +42,19 @@ const PACE = 1.7;
 const HOLD_OUT_VH = 0.5;
 
 // Desktop: the section pins and the row of services travels sideways as the
-// visitor scrolls, then the page releases and carries on. Mobile keeps its
-// thumb — a native snap carousel instead of hijacking the scroll, which the
-// mid-range phone PRODUCT.md names as the judge would feel as jank.
+// visitor scrolls, then the page releases and carries on. Deliberately
+// drops out of the site's light theme while pinned — a dark, glass-and-glow
+// "engine room" that only exists for the length of this scroll-hijack, then
+// hands straight back to the page's own theme the instant it releases.
+// Tomás asked for this section to feel drastically more alive on desktop and
+// explicitly cleared changing the page's own mood to get there; it doesn't
+// follow the user's light/dark toggle because it isn't a persistent surface
+// — it's a staged moment, like FinalCta's own sanctioned exception to
+// "orange is never a background."
+//
+// Mobile keeps its thumb — a native snap carousel instead of hijacking the
+// scroll, which the mid-range phone PRODUCT.md names as the judge would feel
+// as jank — and stays on the page's normal light/dark theme, unchanged.
 export function Services({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const reduceMotion = useReducedMotion();
   const [pinned, setPinned] = useState(false);
@@ -145,44 +155,49 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
       // pixel mapping, plus a hold-out beat once every card has arrived).
       style={pinned ? { height: `calc(100vh + ${scrollDistance}px)` } : undefined}
     >
-      <div
-        className={
-          pinned
-            ? "sticky top-0 flex h-screen flex-col justify-center overflow-hidden"
-            : "py-24"
-        }
-      >
-        <div className="mx-auto w-full max-w-6xl px-6">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {dict.services.title}
-          </h2>
-          <p className="mt-4 max-w-xl text-foreground-secondary">
-            {dict.services.intro}
-          </p>
-        </div>
+      {pinned ? (
+        <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden bg-zinc-950">
+          <EngineRoomBackdrop progress={trackProgress} />
 
-        {pinned ? (
-          <>
-            <div className="mt-12 overflow-hidden px-12">
-              <motion.div style={{ x, gap: GAP }} className="flex w-max">
-                {services.map((service, i) => (
-                  <ServiceCard
-                    key={service.id}
-                    service={service}
-                    locale={locale}
-                    width={CARD_W}
-                    isActive={i === activeIndex}
-                    trackProgress={trackProgress}
-                    index={i}
-                    count={services.length}
-                  />
-                ))}
-              </motion.div>
-            </div>
+          <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              {dict.services.title}
+            </h2>
+            <p className="mt-4 max-w-xl text-white/60">{dict.services.intro}</p>
+          </div>
+
+          <div className="relative z-10 mt-12 overflow-hidden px-12">
+            <motion.div style={{ x, gap: GAP }} className="flex w-max">
+              {services.map((service, i) => (
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                  locale={locale}
+                  width={CARD_W}
+                  isActive={i === activeIndex}
+                  trackProgress={trackProgress}
+                  index={i}
+                  count={services.length}
+                />
+              ))}
+            </motion.div>
+          </div>
+          <div className="relative z-10">
             <ScrollProgress progress={trackProgress} />
-          </>
-        ) : (
-          // Mobile / reduced motion: a snap carousel the thumb controls.
+          </div>
+        </div>
+      ) : (
+        <div className="py-24">
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              {dict.services.title}
+            </h2>
+            <p className="mt-4 max-w-xl text-foreground-secondary">
+              {dict.services.intro}
+            </p>
+          </div>
+
+          {/* Mobile / reduced motion: a snap carousel the thumb controls. */}
           <div
             ref={carouselRef}
             className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4"
@@ -202,16 +217,50 @@ export function Services({ dict, locale }: { dict: Dictionary; locale: Locale })
               />
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </section>
+  );
+}
+
+// The "engine room": a faceted dark grid (same diagonal lattice angle
+// PageGrid uses elsewhere, just inverted for a dark surface) plus a warm
+// spotlight that drifts across as the track scrolls — tied to `progress`
+// rather than the mouse, so the light itself narrates how far through the
+// row you are.
+function EngineRoomBackdrop({ progress }: { progress: MotionValue<number> }) {
+  const spotlightX = useTransform(progress, [0, 1], ["20%", "80%"]);
+
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0">
+      <div
+        className="absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(55deg, #ffffff 0 1px, transparent 1px 64px), repeating-linear-gradient(-55deg, #ffffff 0 1px, transparent 1px 90px)",
+        }}
+      />
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          x: spotlightX,
+          translateX: "-50%",
+          background:
+            "radial-gradient(680px 480px at 50% 40%, var(--color-orange-deep) 0%, transparent 62%)",
+          opacity: 0.35,
+        }}
+      />
+      {/* Bottom vignette so the card row still reads as grounded, not
+          floating in a void. */}
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent" />
+    </div>
   );
 }
 
 function ScrollProgress({ progress }: { progress: MotionValue<number> }) {
   return (
     <div className="mx-auto mt-10 h-px w-full max-w-6xl px-12">
-      <div className="relative h-px w-full bg-border">
+      <div className="relative h-px w-full bg-white/15">
         <motion.div
           style={{ scaleX: progress }}
           className="absolute inset-0 origin-left bg-orange"
@@ -265,20 +314,39 @@ function ServiceCard({
     Math.max(values[0], values[1])
   );
 
-  const borderColor = useTransform(lit, [0, 1], ["var(--color-border)", "var(--color-orange)"]);
+  const borderColorDark = useTransform(lit, [0, 1], ["rgba(255,255,255,0.12)", "var(--color-orange)"]);
+  const borderColorLight = useTransform(lit, [0, 1], ["var(--color-border)", "var(--color-orange)"]);
   const emberScale = useTransform(lit, [0, 1], [0, 1]);
-  const iconColor = useTransform(lit, [0, 1], ["var(--color-orange)", "#431407"]);
-  const titleColor = useTransform(lit, [0, 1], ["var(--color-foreground)", "#431407"]);
-  const bodyColor = useTransform(lit, [0, 1], ["var(--color-foreground-secondary)", "#5a2410"]);
+  const iconColorDark = useTransform(lit, [0, 1], ["var(--color-orange)", "#431407"]);
+  const iconColorLight = useTransform(lit, [0, 1], ["var(--color-orange)", "#431407"]);
+  const titleColorDark = useTransform(lit, [0, 1], ["#ffffff", "#431407"]);
+  const titleColorLight = useTransform(lit, [0, 1], ["var(--color-foreground)", "#431407"]);
+  const bodyColorDark = useTransform(lit, [0, 1], ["rgba(255,255,255,0.65)", "#5a2410"]);
+  const bodyColorLight = useTransform(lit, [0, 1], ["var(--color-foreground-secondary)", "#5a2410"]);
+  const glow = useTransform(lit, [0, 1], [
+    "0 0 0px rgba(234,88,12,0)",
+    "0 12px 48px -8px rgba(234,88,12,0.55)",
+  ]);
+
+  const borderColor = trackProgress ? borderColorDark : borderColorLight;
+  const iconColor = trackProgress ? iconColorDark : iconColorLight;
+  const titleColor = trackProgress ? titleColorDark : titleColorLight;
+  const bodyColor = trackProgress ? bodyColorDark : bodyColorLight;
 
   return (
     <motion.article
       ref={ref}
-      style={trackProgress ? { width, borderColor } : { width }}
+      style={
+        trackProgress
+          ? { width, borderColor, boxShadow: glow }
+          : { width }
+      }
       onMouseEnter={() => hoverLit.set(1)}
       onMouseLeave={() => hoverLit.set(trackProgress ? 0 : isActive ? 1 : 0)}
-      className={`group relative shrink-0 overflow-hidden rounded-lg border bg-surface p-8 transition-colors duration-300 ${
-        trackProgress ? "" : isActive ? "border-orange" : "border-border hover:border-orange"
+      className={`group relative shrink-0 overflow-hidden rounded-lg border p-8 backdrop-blur-xl transition-colors duration-300 ${
+        trackProgress
+          ? "bg-white/[0.04]"
+          : `bg-surface ${isActive ? "border-orange" : "border-border hover:border-orange"}`
       } ${snap ? "snap-start" : ""}`}
     >
       {/* The ember floods up from the base on hover — or on its own, once
