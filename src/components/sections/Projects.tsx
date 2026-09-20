@@ -192,6 +192,37 @@ function StatusBadge({ label }: { label: string }) {
   );
 }
 
+// Short "needs / solution" preview shown directly on the card — same two
+// labels the modal already uses (`problemLabel` / `solutionLabel`), just
+// truncated to a line or two here so the case reads at a glance before the
+// visitor ever clicks in for the full detail (PLAN's no-fabrication rule
+// still applies: the problem line only renders when a real one is on
+// record, exactly like the modal already does).
+function NeedSolutionPreview({
+  project,
+  dict,
+  locale,
+}: {
+  project: Project;
+  dict: Dictionary;
+  locale: Locale;
+}) {
+  return (
+    <div className="relative mt-3 space-y-2 text-sm">
+      {project.problem && (
+        <p className="line-clamp-2 text-foreground-secondary">
+          <span className="font-semibold text-foreground">{dict.projects.problemLabel}: </span>
+          {project.problem[locale]}
+        </p>
+      )}
+      <p className="line-clamp-2 text-foreground-secondary">
+        <span className="font-semibold text-foreground">{dict.projects.solutionLabel}: </span>
+        {project.solution[locale]}
+      </p>
+    </div>
+  );
+}
+
 function StackBadges({ stack }: { stack: string[] }) {
   if (stack.length === 0) return null;
   return (
@@ -270,6 +301,7 @@ function FeaturedProjectCard({
           {isInDevelopment && <StatusBadge label={dict.projects.inDevelopment} />}
         </div>
         <p className="mt-2 text-foreground-secondary">{project.tagline[locale]}</p>
+        <NeedSolutionPreview project={project} dict={dict} locale={locale} />
         <StackBadges stack={project.stack} />
         <span className="relative mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-orange-deep">
           {dict.projects.openDetail}
@@ -376,6 +408,8 @@ function ProjectCard({
       <p className="relative mt-1 text-sm text-foreground-secondary">
         {project.tagline[locale]}
       </p>
+
+      <NeedSolutionPreview project={project} dict={dict} locale={locale} />
 
       <div className="relative">
         <StackBadges stack={project.stack} />

@@ -62,83 +62,95 @@ export function Nav({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const ctaHref = waLink(dict.whatsapp.nav);
 
   return (
-    <header
-      id="top"
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
-      }`}
-      style={{ height: "var(--nav-height)" }}
-    >
-      <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6">
-        <Link
-          href={`/${locale}#top`}
-          className="group/logo flex items-center gap-2"
-          aria-label="TARC Tech"
-        >
-          <Image
-            src="/brand/isotipo.svg"
-            alt=""
-            width={28}
-            height={28}
-            priority
-            className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/logo:scale-110 group-hover/logo:-rotate-6"
-          />
-          <span className="tarc-logotype text-lg">
-            TARC <span className="text-orange">Tech</span>
-          </span>
-        </Link>
-
-        <nav aria-label={dict.nav.primaryNav} className="hidden md:block">
-          <ul className="flex items-center gap-8 text-sm font-medium">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.id;
-              return (
-                <li key={link.id}>
-                  <Link
-                    href={`/${locale}#${link.id}`}
-                    aria-current={isActive ? "location" : undefined}
-                    className={`tap-target-expand group/link relative inline-block py-1 transition-colors ${
-                      isActive ? "text-foreground" : "text-foreground-secondary hover:text-foreground"
-                    }`}
-                  >
-                    {dict.nav[link.labelKey]}
-                    <span
-                      aria-hidden
-                      className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-orange transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                        isActive ? "scale-x-100" : "scale-x-0 group-hover/link:scale-x-100"
-                      }`}
-                    />
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        <div className="hidden items-center gap-3 md:flex">
-          <LocaleToggle locale={locale} label={dict.nav.languageLabel} scope="desktop" />
-          <ThemeToggle label={dict.nav.themeLabel} />
-          <a
-            href={ctaHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="tarc-cta-glow flex min-h-11 items-center rounded-md bg-orange px-4 text-sm font-medium text-[#431407] transition-transform duration-150 hover:bg-orange-hover active:scale-95"
+    <header id="top" className="fixed inset-x-0 top-0 z-50">
+      {/* The chrome bar's own translucency lives on this inner wrapper, not
+          the outer header: `backdrop-filter` establishes a containing block
+          for `position: fixed` descendants, so when it sat on `<header>`
+          itself, the mobile menu overlay below (also `fixed inset-0`, a
+          sibling of this bar) resolved its `inset-0` against the bar's own
+          ~72px box instead of the viewport — it collapsed to a 72px sliver
+          instead of covering the screen, and the page content showed through
+          underneath the rest of the drawer. Keeping `<header>` plain (no
+          transform/filter of its own) keeps it a no-op for its fixed
+          children's containing block, so the full-screen menu actually
+          covers the full screen regardless of scroll state. */}
+      <div
+        className={`transition-colors duration-300 ${
+          scrolled
+            ? "border-b border-border bg-background/80 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent"
+        }`}
+        style={{ height: "var(--nav-height)" }}
+      >
+        <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6">
+          <Link
+            href={`/${locale}#top`}
+            className="group/logo flex items-center gap-2"
+            aria-label="TARC Tech"
           >
-            {dict.nav.cta}
-          </a>
-        </div>
+            <Image
+              src="/brand/isotipo.svg"
+              alt=""
+              width={28}
+              height={28}
+              priority
+              className="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/logo:scale-110 group-hover/logo:-rotate-6"
+            />
+            <span className="tarc-logotype text-lg">
+              TARC <span className="text-orange">Tech</span>
+            </span>
+          </Link>
 
-        <button
-          type="button"
-          onClick={() => setMenuOpen(true)}
-          aria-label={dict.nav.openMenu}
-          aria-expanded={menuOpen}
-          className="flex h-11 w-11 items-center justify-center transition-transform duration-150 active:scale-90 md:hidden"
-        >
-          <MenuIcon className="h-6 w-6" />
-        </button>
+          <nav aria-label={dict.nav.primaryNav} className="hidden md:block">
+            <ul className="flex items-center gap-8 text-sm font-medium">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.id;
+                return (
+                  <li key={link.id}>
+                    <Link
+                      href={`/${locale}#${link.id}`}
+                      aria-current={isActive ? "location" : undefined}
+                      className={`tap-target-expand group/link relative inline-block py-1 transition-colors ${
+                        isActive ? "text-foreground" : "text-foreground-secondary hover:text-foreground"
+                      }`}
+                    >
+                      {dict.nav[link.labelKey]}
+                      <span
+                        aria-hidden
+                        className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-orange transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                          isActive ? "scale-x-100" : "scale-x-0 group-hover/link:scale-x-100"
+                        }`}
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <LocaleToggle locale={locale} label={dict.nav.languageLabel} scope="desktop" />
+            <ThemeToggle label={dict.nav.themeLabel} />
+            <a
+              href={ctaHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tarc-cta-glow flex min-h-11 items-center rounded-md bg-orange px-4 text-sm font-medium text-[#431407] transition-transform duration-150 hover:bg-orange-hover active:scale-95"
+            >
+              {dict.nav.cta}
+            </a>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label={dict.nav.openMenu}
+            aria-expanded={menuOpen}
+            className="flex h-11 w-11 items-center justify-center transition-transform duration-150 active:scale-90 md:hidden"
+          >
+            <MenuIcon className="h-6 w-6" />
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

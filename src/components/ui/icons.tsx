@@ -93,6 +93,19 @@ export function BrowserIcon({ className }: IconProps) {
   );
 }
 
+// "A medida" (custom-fit) reads as adjustable sliders set to different
+// positions — every track tuned, nothing left at a factory default.
+export function SlidersIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M4 6h7M15 6h5M4 12h11M19 12h1M4 18h3M11 18h9" />
+      <circle cx="13" cy="6" r="2" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" />
+      <circle cx="7" cy="18" r="2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function BoltIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>

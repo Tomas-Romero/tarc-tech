@@ -1,6 +1,7 @@
 import { getDictionary, isLocale } from "@/i18n";
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/sections/Hero";
+import { Signals } from "@/components/sections/Signals";
 import { Services } from "@/components/sections/Services";
 import { Solutions } from "@/components/sections/Solutions";
 import { Process } from "@/components/sections/Process";
@@ -26,6 +27,7 @@ export default async function LocaleHomePage({
       <div className="relative">
         <PageGrid />
         <Hero dict={dict} />
+        <Signals dict={dict} locale={locale} />
         <Services dict={dict} locale={locale} />
         <Solutions dict={dict} locale={locale} />
         <Process dict={dict} locale={locale} />

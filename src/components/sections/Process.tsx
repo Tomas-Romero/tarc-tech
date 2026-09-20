@@ -35,7 +35,11 @@ const OCTAGON =
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 // How much scroll (in viewport-heights) buys one step-to-step transition —
 // bigger than a single vh so each photo actually gets read, not flashed.
-const STEP_VH = 0.95;
+// Raised from the original 0.95 per Tomás's follow-up: the crossfade still
+// read as rushed at that pace, and the fix is more runway per step, not a
+// longer transition curve on the same runway (that would just soften the
+// blend, not slow the pace you actually feel while scrolling).
+const STEP_VH = 1.6;
 
 // Second authored moment of the page (PLAN §6.6), reinvented as a
 // full-bleed cinematic slideshow instead of a row of small cards: the
@@ -46,9 +50,11 @@ const STEP_VH = 0.95;
 // the size and weight to actually carry the section instead of sitting in
 // a thumbnail.
 //
-// Mobile keeps the small-card snap carousel from before, untouched — it
-// already reads well at that size, and a full-bleed photo per swipe would
-// fight the thumb for scroll ownership the same way a forced pin would.
+// Mobile drops the pin entirely and reads as a vertical connected timeline
+// instead (Tomás's follow-up: the old side-scrolling card carousel read
+// awkwardly on a phone) — a full-bleed photo per swipe would still fight the
+// thumb for scroll ownership the same way a forced pin would, so the pinned
+// cinematic treatment stays desktop-only either way.
 export function Process({
   dict,
   locale,
@@ -60,7 +66,6 @@ export function Process({
   const [pinned, setPinned] = useState(false);
   const [scrollDistance, setScrollDistance] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -96,14 +101,13 @@ export function Process({
     setActiveIndex((prev) => (prev === idx ? prev : idx));
   });
 
-  // Mobile carousel: the step nearest the container's center counts as
-  // "arrived," mirroring the desktop pin's activation with a normal
-  // IntersectionObserver instead of a scroll-progress calculation.
+  // Mobile timeline: the step nearest the middle of the viewport counts as
+  // "arrived" — the page itself scrolls now (no side-scrolling container of
+  // its own), so this watches the real viewport instead of a scroll-parent.
   useEffect(() => {
     if (pinned) return;
-    const root = carouselRef.current;
     const nodes = cardRefs.current.filter(Boolean) as HTMLElement[];
-    if (!root || nodes.length === 0) return;
+    if (nodes.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -114,7 +118,7 @@ export function Process({
         const idx = nodes.indexOf(visible.target as HTMLElement);
         if (idx >= 0) setCarouselActive(idx);
       },
-      { root, threshold: [0.6] },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 1] },
     );
 
     nodes.forEach((node) => observer.observe(node));
@@ -146,7 +150,13 @@ export function Process({
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/10 to-transparent" />
 
-          <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-between px-6 py-14">
+          {/* Title stays a compact top-left eyebrow instead of anchoring the
+              whole layout to `justify-between`; the step content below it
+              centers in the REMAINING space instead of pinning to the very
+              bottom edge, which is what read as "queda muy abajo y
+              separado" — text now lives where the eye actually rests
+              through most of the pin's scroll range. */}
+          <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col px-6 py-14">
             <div>
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 {dict.process.title}
@@ -154,7 +164,7 @@ export function Process({
               <p className="mt-3 max-w-md text-white/70">{dict.process.intro}</p>
             </div>
 
-            <div className="flex items-end justify-between gap-10">
+            <div className="flex flex-1 flex-col items-center justify-center gap-10 text-center">
               <ActiveStep step={processSteps[activeIndex]} locale={locale} />
               <StepRail steps={processSteps} activeIndex={activeIndex} />
             </div>
@@ -162,34 +172,38 @@ export function Process({
         </div>
       ) : (
         <div className="py-24">
-          <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="mx-auto w-full max-w-3xl px-6">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               {dict.process.title}
             </h2>
-            <p className="mt-4 max-w-xl text-foreground-secondary">
-              {dict.process.intro}
-            </p>
+            <p className="mt-4 text-foreground-secondary">{dict.process.intro}</p>
           </div>
 
-          {/* Mobile / reduced motion: a snap carousel the thumb controls. */}
-          <div
-            ref={carouselRef}
-            className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {processSteps.map((step, i) => (
-              <StepCard
-                key={step.id}
-                ref={(node) => {
-                  cardRefs.current[i] = node;
-                }}
-                step={step}
-                locale={locale}
-                width={260}
-                snap
-                isActive={i === carouselActive}
-              />
-            ))}
+          {/* Mobile / reduced motion: a vertical connected timeline instead
+              of the old side-scrolling card carousel — Tomás felt swiping
+              sideways read as awkward on a phone, and a timeline is the
+              native shape for "these five things happen in order" on a
+              column the thumb only ever moves up and down. Each step still
+              carries its own real photo (kept, per his brief), just as a
+              small thumbnail beside the text instead of a full card. */}
+          <div className="relative mx-auto mt-10 max-w-md px-6">
+            <div
+              aria-hidden
+              className="absolute bottom-6 left-[17px] top-6 w-px bg-border"
+            />
+            <ol className="relative space-y-10">
+              {processSteps.map((step, i) => (
+                <StepTimelineItem
+                  key={step.id}
+                  ref={(node) => {
+                    cardRefs.current[i] = node;
+                  }}
+                  step={step}
+                  locale={locale}
+                  isActive={i === carouselActive}
+                />
+              ))}
+            </ol>
           </div>
         </div>
       )}
@@ -253,7 +267,7 @@ function ActiveStep({ step, locale }: { step: ProcessStep; locale: Locale }) {
         transition={{ duration: 0.4, ease: EASE_OUT_EXPO }}
         className="max-w-xl"
       >
-        <span className="flex items-center gap-2 text-sm font-medium text-orange">
+        <span className="flex items-center justify-center gap-2 text-sm font-medium text-orange">
           <Icon className="h-5 w-5" />
           {String(step.number).padStart(2, "0")}
         </span>
@@ -307,64 +321,57 @@ function StepRail({
   );
 }
 
-function StepCard({
+function StepTimelineItem({
   ref,
   step,
   locale,
-  width,
-  snap,
   isActive,
 }: {
   ref?: (node: HTMLElement | null) => void;
   step: ProcessStep;
   locale: Locale;
-  width: number;
-  snap?: boolean;
   isActive?: boolean;
 }) {
   const Icon = ICONS[step.icon];
 
   return (
-    <article
-      ref={ref}
-      style={{ width }}
-      className={`group relative shrink-0 overflow-hidden rounded-lg border bg-surface transition-colors duration-300 ${
-        isActive ? "border-orange" : "border-border hover:border-orange"
-      } ${snap ? "snap-start" : ""}`}
-    >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
-          src={step.image}
-          alt=""
-          fill
-          className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-          sizes="(max-width: 768px) 70vw, 260px"
-        />
-        {/* Number, stamped on the photo itself — the same corner-cut
-            faceted badge the old timeline used, just moved onto the image
-            instead of floating beside bare text. */}
-        <span
-          aria-hidden
-          style={{ clipPath: OCTAGON }}
-          className={`absolute left-2.5 top-2.5 flex h-8 w-8 items-center justify-center border text-xs font-bold backdrop-blur-sm transition-colors duration-300 ${
-            isActive
-              ? "border-orange bg-orange text-[#431407]"
-              : "border-white/40 bg-black/30 text-white"
-          }`}
-        >
-          {String(step.number).padStart(2, "0")}
-        </span>
-      </div>
+    <li ref={ref} className="relative flex gap-4">
+      {/* Badge sits on top of the shared vertical line drawn by the parent
+          `<ol>` — the same octagon punch every numbered badge on the page
+          uses, so this reads as one more step in the site's own timeline
+          language, not a borrowed pattern. */}
+      <span
+        aria-hidden
+        style={{ clipPath: OCTAGON }}
+        className={`relative z-10 mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border text-xs font-bold transition-colors duration-300 ${
+          isActive
+            ? "border-orange bg-orange text-[#431407]"
+            : "border-border bg-background text-foreground-secondary"
+        }`}
+      >
+        {String(step.number).padStart(2, "0")}
+      </span>
 
-      <div className="p-4">
-        <div className="flex items-center gap-2 text-orange">
-          <Icon className="h-4 w-4" />
+      <div className="flex min-w-0 flex-1 gap-4">
+        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border border-border">
+          <Image
+            src={step.image}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="64px"
+          />
         </div>
-        <h3 className="mt-2 text-sm font-bold">{step.title[locale]}</h3>
-        <p className="mt-1 text-xs text-foreground-secondary">
-          {step.description[locale]}
-        </p>
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 text-orange">
+            <Icon className="h-4 w-4" />
+          </div>
+          <h3 className="mt-1 text-base font-bold">{step.title[locale]}</h3>
+          <p className="mt-1 text-sm text-foreground-secondary">
+            {step.description[locale]}
+          </p>
+        </div>
       </div>
-    </article>
+    </li>
   );
 }

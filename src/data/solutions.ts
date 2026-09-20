@@ -3,7 +3,7 @@ import type { Dictionary } from "@/i18n";
 
 export type Solution = {
   id: string;
-  icon: "register" | "storefront" | "tray" | "browser" | "bolt";
+  icon: "register" | "sliders" | "storefront" | "tray" | "browser" | "bolt";
   title: LocalizedText;
   body: LocalizedText;
   /** Real project this solution has actually shipped as — omitted when none.
@@ -24,8 +24,8 @@ export const solutions: Solution[] = [
     id: "ventas-stock",
     icon: "register",
     title: {
-      es: "Sistema de ventas y stock",
-      en: "Sales and inventory system",
+      es: "Sistemas de ventas y stock",
+      en: "Sales and inventory systems",
     },
     body: {
       es: "Un sistema para llevar el control diario de tu comercio: qué vendés, qué tenés en stock y qué necesitás reponer. Pensado para kioscos, comercios y distribuidoras que hoy anotan todo a mano o en planillas sueltas, y terminan perdiendo tiempo — o plata — por no saber qué tienen en el momento que lo necesitan.",
@@ -35,11 +35,24 @@ export const solutions: Solution[] = [
     whatsappKey: "solutionSales",
   },
   {
+    id: "sistema-medida",
+    icon: "sliders",
+    title: {
+      es: "Sistemas a medida",
+      en: "Custom-built systems",
+    },
+    body: {
+      es: "Si tu negocio funciona distinto y ninguna idea de esta lista describe exactamente tu caso, igual podemos ayudarte: relevamos cómo trabajás hoy y construimos el sistema alrededor de ese proceso puntual, en vez de forzarte a adaptarte vos a un programa genérico.",
+      en: "If your business runs differently and none of these ideas quite describes your case, we can still help: we look at how you actually work today and build the system around that specific process, instead of making you adapt to a generic program.",
+    },
+    whatsappKey: "solutionCustom",
+  },
+  {
     id: "tienda-online",
     icon: "storefront",
     title: {
-      es: "Tienda online y catálogo digital",
-      en: "Online store and digital catalog",
+      es: "Tiendas online y catálogos digitales",
+      en: "Online stores and digital catalogs",
     },
     body: {
       es: "Una tienda online con un panel simple para cargar y editar productos vos mismo, sin depender de nadie ni saber programar. Ideal si vendés indumentaria, productos o servicios y hoy dependés solo de redes sociales, perdiendo pedidos por no tener un catálogo ordenado y siempre actualizado.",
@@ -56,8 +69,8 @@ export const solutions: Solution[] = [
       en: "Restaurant management",
     },
     body: {
-      es: "Un sistema que conecta pedidos, cocina, mozos y caja en un solo lugar. Pensado para restaurantes y rotiserías donde hoy los pedidos se pierden entre comandas de papel e idas y vueltas a la cocina, generando demoras y errores que terminan afectando al cliente.",
-      en: "A system that connects orders, kitchen, waiters and register in one place. Built for restaurants and food shops where orders currently get lost between paper tickets and trips to the kitchen, causing delays and mistakes that end up affecting the customer.",
+      es: "Un sistema pensado para restaurantes, rotiserías y cualquier negocio de comida: menú y comandas digitales, gestión de pedidos (en el salón, para llevar o por delivery), pedidos que llegan directo a cocina y caja, sin perderse entre papeles ni idas y vueltas. Para locales donde hoy las comandas de papel generan demoras, errores y pedidos que se traspapelan, afectando directamente al cliente.",
+      en: "A system built for restaurants, food shops and any food business: digital menu and order tickets, order management (dine-in, takeout or delivery), orders that go straight to the kitchen and register with nothing lost on paper along the way. For places where paper tickets currently cause delays, mistakes and lost orders that end up affecting the customer.",
     },
     example: "Sistema Gastronómico",
     whatsappKey: "solutionFood",
@@ -66,8 +79,8 @@ export const solutions: Solution[] = [
     id: "web-institucional",
     icon: "browser",
     title: {
-      es: "Web institucional o de servicios",
-      en: "Company or services website",
+      es: "Web institucionales",
+      en: "Company websites",
     },
     body: {
       es: "Un sitio institucional que genera una primera impresión profesional y convierte visitas en contactos reales. Para empresas y consultoras que todavía no tienen presencia web, o tienen una desactualizada, y pierden oportunidades frente a quien busca información antes de decidir con quién trabajar.",
@@ -80,8 +93,8 @@ export const solutions: Solution[] = [
     id: "automatizaciones",
     icon: "bolt",
     title: {
-      es: "Automatizaciones a medida",
-      en: "Custom automation",
+      es: "Automatizaciones",
+      en: "Automation",
     },
     body: {
       es: "Reportes, integraciones entre sistemas y tareas repetitivas que dejan de hacerse a mano. Para cualquier negocio donde alguien pierde horas por semana copiando datos entre planillas o armando el mismo informe una y otra vez, en vez de dedicar ese tiempo a lo que realmente hace crecer el negocio.",

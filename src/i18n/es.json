@@ -17,20 +17,29 @@
   },
   "services": {
     "title": "Servicios",
-    "intro": "Todo lo que tu negocio necesita para operar en digital."
+    "intro": "Soluciones únicas para llevar tu negocio al próximo nivel. Descubrí cómo podemos ayudarte a escalar y crecer."
   },
   "faq": {
     "title": "Preguntas frecuentes"
   },
   "finalCta": {
-    "title": "Contame en qué estás pensando",
-    "subtitle": "Sin vueltas: me contás tu idea, la pensamos juntos y te digo con sinceridad si puedo ayudarte.",
-    "button": "Escribime por WhatsApp",
+    "titleParts": [
+      { "text": "Construyamos y mejoremos tu negocio " },
+      { "text": "juntos", "accent": true },
+      { "text": "." }
+    ],
+    "subtitle": "Contanos tu desafío: te vamos a contactar para entender qué necesitás y proponerte una forma de trabajo.",
+    "button": "Escribinos por WhatsApp",
     "location": "San Rafael, Mendoza, Argentina — trabajo remoto con todo el país."
+  },
+  "signals": {
+    "title": "¿Te suena alguna de estas señales?",
+    "intro": "Si te identificás con alguna, probablemente ya sea momento de resolverlo.",
+    "cta": "Quiero resolver esto"
   },
   "projects": {
     "title": "Proyectos",
-    "intro": "Sistemas reales, funcionando para negocios reales.",
+    "intro": "Mirá los casos de nuestros clientes y cómo ayudamos a innovar y mejorar sus negocios.",
     "filterAll": "Todos",
     "filterClients": "Clientes",
     "filterOwn": "Productos propios",
@@ -79,7 +88,9 @@
     "solutionFood": "Hola Tomás, tengo un negocio gastronómico y quiero un sistema de gestión.",
     "solutionWeb": "Hola Tomás, necesito una web para mi empresa.",
     "solutionAutomation": "Hola Tomás, quiero automatizar tareas repetitivas en mi negocio.",
+    "solutionCustom": "Hola Tomás, tengo un proceso particular y quiero un sistema hecho a medida.",
     "projectModal": "Hola Tomás, vi {project} en tu web y quiero algo parecido.",
-    "finalCta": "Hola Tomás, quiero contarte qué necesito y ver cómo lo resolverías."
+    "finalCta": "Hola Tomás, quiero contarte qué necesito y ver cómo lo resolverías.",
+    "signals": "Hola Tomás, me identifiqué con algunas señales de tu web y quiero contarte mi caso."
   }
 }

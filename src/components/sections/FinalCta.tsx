@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import type { Dictionary } from "@/i18n";
 import { waLink } from "@/lib/whatsapp";
 import { social } from "@/lib/social";
@@ -20,6 +21,13 @@ const ON_ORANGE = "#431407";
 // stagger rather than as one flat block.
 export function FinalCta({ dict }: { dict: Dictionary }) {
   const reduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [-42, 42]);
 
   const item = (delay: number) => ({
     initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 },
@@ -29,18 +37,34 @@ export function FinalCta({ dict }: { dict: Dictionary }) {
   });
 
   return (
-    <section id="contacto" className="relative overflow-hidden px-6 py-24">
+    <section
+      ref={sectionRef}
+      id="contacto"
+      className="relative overflow-hidden px-6 py-32 sm:py-40"
+    >
       {/* Real photo Tomás picked for this section, in its own color — the
           card sitting on top of it is a translucent tint rather than a
           solid fill, so the photo actually shows through instead of only
-          living in the margins around the card. */}
-      <Image
-        src="/contact/contact-visual.jpg"
-        alt=""
+          living in the margins around the card. Given extra vertical
+          overscan (inset -15%) plus a scroll-linked parallax drift, so the
+          photo has room to move without ever showing a bare edge. */}
+      <motion.div style={{ y: imageY }} className="absolute inset-[-15%]">
+        <Image
+          src="/contact/contact-visual.jpg"
+          alt=""
+          aria-hidden
+          fill
+          className="pointer-events-none object-cover opacity-[0.5]"
+          sizes="100vw"
+        />
+      </motion.div>
+      <div
         aria-hidden
-        fill
-        className="pointer-events-none absolute inset-0 object-cover opacity-[0.35]"
-        sizes="100vw"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, var(--color-background) 0%, transparent 18%, transparent 82%, var(--color-background) 100%)",
+        }}
       />
 
       <motion.div
@@ -48,14 +72,22 @@ export function FinalCta({ dict }: { dict: Dictionary }) {
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, margin: "0px 0px -10% 0px" }}
         transition={{ duration: reduceMotion ? 0.4 : 0.7, ease: EASE_OUT_EXPO }}
-        className="relative mx-auto max-w-5xl overflow-hidden rounded-lg bg-orange/60 px-6 py-16 text-center backdrop-blur-sm sm:px-12"
+        className="relative mx-auto max-w-5xl overflow-hidden rounded-lg bg-orange/60 px-6 py-16 text-center backdrop-blur-sm sm:px-12 sm:py-20"
         style={{ color: ON_ORANGE }}
       >
         <motion.h2
           {...item(0)}
-          className="relative mx-auto max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl"
+          className="relative mx-auto max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
         >
-          {dict.finalCta.title}
+          {dict.finalCta.titleParts.map((part, i) =>
+            part.accent ? (
+              <em key={i} className="tarc-accent-text" style={{ color: ON_ORANGE }}>
+                {part.text}
+              </em>
+            ) : (
+              <span key={i}>{part.text}</span>
+            )
+          )}
         </motion.h2>
 
         <motion.p

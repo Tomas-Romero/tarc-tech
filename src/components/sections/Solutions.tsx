@@ -9,6 +9,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SectionBackdrop } from "@/components/motion/SectionBackdrop";
 import {
   RegisterIcon,
+  SlidersIcon,
   StorefrontIcon,
   TrayIcon,
   BrowserIcon,
@@ -17,6 +18,7 @@ import {
 
 const ICONS: Record<Solution["icon"], ComponentType<{ className?: string }>> = {
   register: RegisterIcon,
+  sliders: SlidersIcon,
   storefront: StorefrontIcon,
   tray: TrayIcon,
   browser: BrowserIcon,

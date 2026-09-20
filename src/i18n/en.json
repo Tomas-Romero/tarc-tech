@@ -17,20 +17,29 @@
   },
   "services": {
     "title": "Services",
-    "intro": "Everything your business needs to operate digitally."
+    "intro": "Unique solutions to take your business to the next level. Discover how we can help you scale and grow."
   },
   "faq": {
     "title": "Frequently asked questions"
   },
   "finalCta": {
-    "title": "Tell me what you're thinking about",
-    "subtitle": "No sales pitch: tell me your idea, we think it through together, and I'll tell you honestly if I can help.",
-    "button": "Message me on WhatsApp",
+    "titleParts": [
+      { "text": "Let's build and improve your business " },
+      { "text": "together", "accent": true },
+      { "text": "." }
+    ],
+    "subtitle": "Tell us your challenge: we'll get in touch to understand what you need and propose a way of working.",
+    "button": "Message us on WhatsApp",
     "location": "San Rafael, Mendoza, Argentina — working remotely across the country."
+  },
+  "signals": {
+    "title": "Does any of this sound familiar?",
+    "intro": "If you recognize any of these, it's probably time to fix it.",
+    "cta": "I want to fix this"
   },
   "projects": {
     "title": "Projects",
-    "intro": "Real systems, running for real businesses.",
+    "intro": "Take a look at our clients' cases and how we helped innovate and improve their businesses.",
     "filterAll": "All",
     "filterClients": "Clients",
     "filterOwn": "Own products",
@@ -78,7 +87,9 @@
     "solutionFood": "Hi Tomás, I run a food business and I need a management system.",
     "solutionWeb": "Hi Tomás, I need a website for my company.",
     "solutionAutomation": "Hi Tomás, I'd like to automate repetitive tasks in my business.",
+    "solutionCustom": "Hi Tomás, I have a particular process and I'd like a system built specifically for it.",
     "projectModal": "Hi Tomás, I saw {project} on your site and I'd like something similar.",
-    "finalCta": "Hi Tomás, I'd like to tell you what I need and see how you'd solve it."
+    "finalCta": "Hi Tomás, I'd like to tell you what I need and see how you'd solve it.",
+    "signals": "Hi Tomás, I recognized some of the signals on your site and I'd like to tell you about my case."
   }
 }
