@@ -22,8 +22,8 @@ export const faq: FaqEntry[] = [
       en: "Do you work with businesses outside San Rafael?",
     },
     answer: {
-      es: "Sí. Trabajo de forma remota con todo el país. El relevamiento, las devoluciones y el soporte funcionan igual por videollamada y WhatsApp.",
-      en: "Yes. I work remotely across the country. Discovery, feedback and support all work the same over video calls and WhatsApp.",
+      es: "Sí. Trabajamos de forma remota con todo el país. El relevamiento, las devoluciones y el soporte funcionan igual por videollamada y WhatsApp.",
+      en: "Yes. We work remotely across the country. Discovery, feedback and support all work the same over video calls and WhatsApp.",
     },
   },
   {
@@ -33,8 +33,8 @@ export const faq: FaqEntry[] = [
       en: "How long does a project take?",
     },
     answer: {
-      es: "Depende del alcance. Primero relevo tu negocio y recién ahí te doy una estimación concreta para tu caso, con el alcance claro por escrito.",
-      en: "It depends on the scope. I get to know your business first, and only then give you a concrete estimate for your case, with the scope written down.",
+      es: "Depende del alcance. Primero relevamos tu negocio y recién ahí te damos una estimación concreta para tu caso, con el alcance claro por escrito.",
+      en: "It depends on the scope. We get to know your business first, and only then give you a concrete estimate for your case, with the scope written down.",
     },
   },
   {
@@ -44,8 +44,8 @@ export const faq: FaqEntry[] = [
       en: "What happens after delivery?",
     },
     answer: {
-      es: "Sigo disponible: mejoras, ajustes y respaldo. La entrega incluye la puesta en marcha acompañada, no es dejarte el sistema y desaparecer.",
-      en: "I stay available: improvements, adjustments and backup. Delivery includes hands-on launch support — I don't hand it over and disappear.",
+      es: "Seguimos disponibles: mejoras, ajustes y respaldo. La entrega incluye la puesta en marcha acompañada, no es dejarte el sistema y desaparecer.",
+      en: "We stay available: improvements, adjustments and backup. Delivery includes hands-on launch support — we don't hand it over and disappear.",
     },
   },
   {
@@ -55,8 +55,8 @@ export const faq: FaqEntry[] = [
       en: "Can I ask for changes while it's being built?",
     },
     answer: {
-      es: "Sí, y es parte del método. Vas viendo prototipos y me das feedback en el camino, justamente para que no haya sorpresas al final.",
-      en: "Yes, and it's built into how I work. You see prototypes and give feedback along the way, precisely so there are no surprises at the end.",
+      es: "Sí, y es parte del método. Vas viendo prototipos y nos das feedback en el camino, justamente para que no haya sorpresas al final.",
+      en: "Yes, and it's built into how we work. You see prototypes and give us feedback along the way, precisely so there are no surprises at the end.",
     },
   },
   {
@@ -66,8 +66,8 @@ export const faq: FaqEntry[] = [
       en: "What about my data and security?",
     },
     answer: {
-      es: "Los datos de tu negocio son tuyos. Dónde se alojan y quién accede a qué se define con vos durante el relevamiento, antes de escribir una línea de código.",
-      en: "Your business's data is yours. Where it lives and who can access what is decided with you during discovery, before a line of code is written.",
+      es: "Los datos de tu negocio son tuyos. Dónde se alojan y quién accede a qué lo definimos junto con vos durante el relevamiento, antes de escribir una línea de código.",
+      en: "Your business's data is yours. Where it lives and who can access what is something we decide together with you during discovery, before a line of code is written.",
     },
   },
 ];

@@ -139,7 +139,7 @@ export function Solutions({
             {/* Closing card for everything the list doesn't cover — the one place
                 in this section that gets the solid orange CTA. */}
             <Reveal delay={0.06}>
-              <div className="rounded-lg border border-border bg-surface p-6 sm:p-8">
+              <div className="rounded-lg border border-foreground/10 bg-surface p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_24px_-16px_rgba(0,0,0,0.16)] sm:p-8">
                 <h3 className="text-lg font-bold sm:text-xl">
                   {dict.solutions.fallbackTitle}
                 </h3>
@@ -191,7 +191,7 @@ function SolutionPanel({
         ease: EASE_OUT_EXPO,
         delay: reduceMotion ? 0 : 0.04,
       }}
-      className="group relative overflow-hidden rounded-lg border border-border bg-surface p-6 transition-colors duration-300 hover:border-orange sm:p-8"
+      className="group relative overflow-hidden rounded-lg border border-foreground/10 bg-surface p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_24px_-16px_rgba(0,0,0,0.16)] transition-colors duration-300 hover:border-orange sm:p-8"
     >
       {/* The left edge lights on hover — the same ember the services row uses,
           held to a hairline here so five panels in a column never shout. */}

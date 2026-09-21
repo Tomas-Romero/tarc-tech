@@ -155,8 +155,15 @@ export function Process({
               centers in the REMAINING space instead of pinning to the very
               bottom edge, which is what read as "queda muy abajo y
               separado" — text now lives where the eye actually rests
-              through most of the pin's scroll range. */}
-          <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col px-6 py-14">
+              through most of the pin's scroll range. Top padding is pinned
+              to `--nav-height` (plus a little air) rather than a flat `py`
+              value: this box sticks flush to the viewport's own top edge, so
+              a padding shorter than the fixed nav's height let the nav's own
+              72px bar clip the heading's ascenders for as long as the
+              section stayed pinned — not a one-off transient overlap like a
+              normal scrolling section gets, but the whole time this title is
+              on screen. */}
+          <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col px-6 pb-14 pt-[calc(var(--nav-height)+1.5rem)]">
             <div>
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 {dict.process.title}

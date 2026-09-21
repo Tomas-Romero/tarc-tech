@@ -286,6 +286,38 @@ export function MailIcon({ className }: IconProps) {
   );
 }
 
+// The three "señales" icons — one per recognizable pain point, none reused
+// elsewhere, same as the process step icons above.
+
+export function SpreadsheetIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="3" y="4" width="18" height="16" rx="1.5" />
+      <path d="M3 9.5h18M9.5 9.5V20M15 9.5V20" />
+    </svg>
+  );
+}
+
+export function DuplicateIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <rect x="8.5" y="8.5" width="12" height="12" rx="1.5" />
+      <path d="M15.5 8.5V5a1.5 1.5 0 0 0-1.5-1.5H5A1.5 1.5 0 0 0 3.5 5v9A1.5 1.5 0 0 0 5 15.5h3.5" />
+    </svg>
+  );
+}
+
+export function RepeatIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>
+      <path d="M4 11V9a4 4 0 0 1 4-4h11" />
+      <path d="M16 2.5 19 5l-3 2.5" />
+      <path d="M20 13v2a4 4 0 0 1-4 4H5" />
+      <path d="M8 21.5 5 19l3-2.5" />
+    </svg>
+  );
+}
+
 export function MapPinIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden>

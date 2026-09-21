@@ -17,6 +17,10 @@ export type Service = {
    *  offering itself includes, not a client claim, so it's safe to state
    *  plainly rather than needing a real example to point to. */
   highlights: LocalizedList;
+  /** Real screenshot for the card's visual, when Tomás supplied one — see
+   *  `public/services`. Falls back to a built mockup (ServiceVisual.tsx)
+   *  when omitted; never a stock photo either way. */
+  image?: string;
 };
 
 // Real content only — see PLAN-LANDING-TARC-TECH.md §6.4.
@@ -46,6 +50,7 @@ export const services: Service[] = [
       es: ["Reportes que se arman solos", "Datos que ya no cargás dos veces", "Alertas y avisos automáticos"],
       en: ["Reports that build themselves", "Data you never enter twice", "Automatic alerts and reminders"],
     },
+    image: "/services/tarctech_servicios_automatizaciones.png",
   },
   {
     id: "apps",
@@ -59,6 +64,7 @@ export const services: Service[] = [
       es: ["Modo offline real", "Para Android, iOS o escritorio", "Sincroniza cuando vuelve la conexión"],
       en: ["Real offline mode", "For Android, iOS or desktop", "Syncs the moment connection returns"],
     },
+    image: "/services/tarctech-servicios-apps-mobile.png",
   },
   {
     id: "saas",
@@ -72,6 +78,7 @@ export const services: Service[] = [
       es: ["Arquitectura multi-tenant", "Planes y suscripciones", "Pensado para crecer"],
       en: ["Multi-tenant architecture", "Plans and subscriptions", "Built to grow"],
     },
+    image: "/services/tarctech_servicios_productosaas.png",
   },
   {
     id: "payment-security",
@@ -111,5 +118,6 @@ export const services: Service[] = [
       es: ["Vos mismo editás el contenido", "Optimizado para buscadores", "Formulario de contacto integrado"],
       en: ["You edit the content yourself", "Optimized for search engines", "Built-in contact form"],
     },
+    image: "/services/tarctech-services-webempresariales.png",
   },
 ];

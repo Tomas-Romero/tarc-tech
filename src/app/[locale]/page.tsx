@@ -27,11 +27,11 @@ export default async function LocaleHomePage({
       <div className="relative">
         <PageGrid />
         <Hero dict={dict} />
-        <Signals dict={dict} locale={locale} />
         <Services dict={dict} locale={locale} />
         <Solutions dict={dict} locale={locale} />
         <Process dict={dict} locale={locale} />
         <Projects dict={dict} locale={locale} />
+        <Signals dict={dict} locale={locale} />
         <Faq dict={dict} locale={locale} />
       </div>
       <FinalCta dict={dict} />

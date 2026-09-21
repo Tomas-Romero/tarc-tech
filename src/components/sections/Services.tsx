@@ -72,7 +72,7 @@ function ServiceCard({
   const highlights = service.highlights[locale];
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-orange">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-foreground/10 bg-surface p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_24px_-16px_rgba(0,0,0,0.16)] transition-colors duration-300 hover:border-orange">
       <span
         aria-hidden
         style={{ clipPath: OCTAGON }}
@@ -81,7 +81,7 @@ function ServiceCard({
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      <ServiceVisual id={service.id} />
+      <ServiceVisual service={service} />
 
       <div className="mt-5 flex items-center gap-2 text-orange">
         <Icon className="h-6 w-6" />

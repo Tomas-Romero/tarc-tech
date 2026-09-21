@@ -2,6 +2,7 @@ import type { LocalizedText } from "./projects";
 
 export type Signal = {
   id: string;
+  icon: "spreadsheet" | "duplicate" | "repeat";
   title: LocalizedText;
   body: LocalizedText;
 };
@@ -12,6 +13,7 @@ export type Signal = {
 export const signals: Signal[] = [
   {
     id: "planillas",
+    icon: "spreadsheet",
     title: {
       es: "¿Todo termina en una planilla?",
       en: "Does everything end up in a spreadsheet?",
@@ -23,6 +25,7 @@ export const signals: Signal[] = [
   },
   {
     id: "datos-duplicados",
+    icon: "duplicate",
     title: {
       es: "¿Cargás los mismos datos más de una vez?",
       en: "Do you enter the same data more than once?",
@@ -34,6 +37,7 @@ export const signals: Signal[] = [
   },
   {
     id: "tareas-repetidas",
+    icon: "repeat",
     title: {
       es: "¿Las tareas se repiten todos los días?",
       en: "Do the same tasks repeat every day?",
