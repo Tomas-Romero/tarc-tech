@@ -72,7 +72,7 @@ export const solutions: Solution[] = [
       es: "Un sistema pensado para restaurantes, rotiserías y cualquier negocio de comida: menú y comandas digitales, gestión de pedidos (en el salón, para llevar o por delivery), pedidos que llegan directo a cocina y caja, sin perderse entre papeles ni idas y vueltas. Para locales donde hoy las comandas de papel generan demoras, errores y pedidos que se traspapelan, afectando directamente al cliente.",
       en: "A system built for restaurants, food shops and any food business: digital menu and order tickets, order management (dine-in, takeout or delivery), orders that go straight to the kitchen and register with nothing lost on paper along the way. For places where paper tickets currently cause delays, mistakes and lost orders that end up affecting the customer.",
     },
-    example: "Sistema Gastronómico",
+    example: "RestoZest",
     whatsappKey: "solutionFood",
   },
   {

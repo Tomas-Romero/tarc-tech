@@ -68,15 +68,27 @@ export const projects: Project[] = [
       es: "Sitio web para una consultora de reclutamiento y RRHH",
       en: "Website for a recruiting and HR consultancy",
     },
-    // TODO: falta que Tomás complete el problema concreto del cliente (PLAN §7.2 / §16).
+    problem: {
+      es: "GatheringHR, una consultora de reclutamiento y RRHH, necesitaba una página institucional formal para mostrar sus servicios de forma más dinámica tanto a empresas como a postulantes, y una manera más ágil de recibir contactos y mantener actualizadas sus búsquedas laborales activas.",
+      en: "GatheringHR, a recruiting and HR consultancy, needed a formal institutional site to present its services more dynamically to both companies and job applicants, along with a more agile way to receive contacts and keep its active job postings up to date.",
+    },
     solution: {
-      es: "Presencia web profesional para captar contactos.",
-      en: "A professional web presence to generate contacts.",
+      es: "Sitio institucional con secciones diferenciadas para empresas y para postulantes, un formulario de contacto directo y un listado de búsquedas laborales activas que la consultora puede mantener actualizado de forma ágil.",
+      en: "An institutional site with separate sections for companies and job applicants, a direct contact form, and a listing of active job postings the consultancy can keep up to date in an agile way.",
     },
     features: {
-      // TODO: falta la lista de funcionalidades — a completar con Tomás (PLAN §7.2 / §16).
-      es: [],
-      en: [],
+      es: [
+        "Secciones diferenciadas para empresas y para postulantes",
+        "Formulario de contacto directo",
+        "Listado de búsquedas laborales activas, fácil de mantener actualizado",
+        "Diseño institucional moderno",
+      ],
+      en: [
+        "Separate sections for companies and job applicants",
+        "Direct contact form",
+        "Listing of active job postings, easy to keep up to date",
+        "Modern institutional design",
+      ],
     },
     stack: ["JavaScript", "SCSS", "Tailwind CSS"],
     images: ["/projects/gatheringhr-home.png"],
@@ -117,7 +129,7 @@ export const projects: Project[] = [
   },
   {
     id: "sistema-gastronomico",
-    name: "Sistema Gastronómico",
+    name: "RestoZest",
     type: "producto",
     status: "en-desarrollo",
     tagline: {
